@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "numeric": "cpp",
+        "cmath": "cpp",
+        "sstream": "cpp",
+        "algorithm": "cpp",
+        "fstream": "cpp",
+        "string": "cpp",
+        "cstdio": "cpp"
+    }
+}

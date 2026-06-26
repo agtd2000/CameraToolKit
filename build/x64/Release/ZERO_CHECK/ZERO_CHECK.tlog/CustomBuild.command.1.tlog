@@ -1,0 +1,10 @@
+^E:\PROJECTS\STUDY\MVTOOLKIT\BUILD\CMAKEFILES\3D19C5BBE1888FC2E260CC0298FD0309\GENERATE.STAMP.RULE
+setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -SE:/Projects/Study/MvToolKit -BE:/Projects/Study/MvToolKit/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/Projects/Study/MvToolKit/build/CameraToolKit.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

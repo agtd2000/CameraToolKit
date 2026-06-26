@@ -1,0 +1,346 @@
+#include "algo/image_node.h"
+#include <opencv2/imgproc.hpp>
+#include <opencv2/photo.hpp>
+#include <algorithm>
+
+namespace mvtk {
+namespace algo {
+
+void CorrectionPipeline::AddNode(std::shared_ptr<ImageNode> node) {
+    nodes_.push_back(node);
+}
+
+void CorrectionPipeline::RemoveNode(const std::string& name) {
+    nodes_.erase(std::remove_if(nodes_.begin(), nodes_.end(),
+        [&name](const std::shared_ptr<ImageNode>& node) {
+            return node->GetName() == name;
+        }), nodes_.end());
+}
+
+void CorrectionPipeline::Clear() {
+    nodes_.clear();
+}
+
+cv::Mat CorrectionPipeline::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool CorrectionPipeline::ProcessInPlace(cv::Mat& input) {
+    for (const auto& node : nodes_) {
+        if (node->IsEnabled()) {
+            if (!node->ProcessInPlace(input)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+size_t CorrectionPipeline::GetNodeCount() const {
+    return nodes_.size();
+}
+
+std::shared_ptr<ImageNode> CorrectionPipeline::GetNode(const std::string& name) {
+    for (const auto& node : nodes_) {
+        if (node->GetName() == name) {
+            return node;
+        }
+    }
+    return nullptr;
+}
+
+std::vector<std::string> CorrectionPipeline::GetNodeNames() const {
+    std::vector<std::string> names;
+    for (const auto& node : nodes_) {
+        names.push_back(node->GetName());
+    }
+    return names;
+}
+
+void CorrectionPipeline::EnableNode(const std::string& name, bool enabled) {
+    auto node = GetNode(name);
+    if (node) {
+        node->SetEnabled(enabled);
+    }
+}
+
+bool CorrectionPipeline::IsNodeEnabled(const std::string& name) const {
+    for (const auto& node : nodes_) {
+        if (node->GetName() == name) {
+            return node->IsEnabled();
+        }
+    }
+    return false;
+}
+
+void CorrectionPipeline::SetPipelineOrder(const std::vector<std::string>& order) {
+    std::vector<std::shared_ptr<ImageNode>> new_order;
+    for (const auto& name : order) {
+        auto node = GetNode(name);
+        if (node) {
+            new_order.push_back(node);
+        }
+    }
+    nodes_ = new_order;
+}
+
+LSCNode::LSCNode() : enabled_(true) {}
+
+cv::Mat LSCNode::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool LSCNode::ProcessInPlace(cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return true;
+    }
+    
+    if (!dark_frame_.empty()) {
+        cv::subtract(input, dark_frame_, input, cv::noArray(), input.depth());
+    }
+    
+    if (!gain_map_.empty()) {
+        cv::Mat gain_map;
+        if (gain_map_.type() != input.type()) {
+            gain_map_.convertTo(gain_map, input.type());
+        } else {
+            gain_map = gain_map_;
+        }
+        
+        if (gain_map.size() != input.size()) {
+            cv::resize(gain_map, gain_map, input.size());
+        }
+        
+        for (int y = 0; y < input.rows; ++y) {
+            for (int x = 0; x < input.cols; ++x) {
+                if (input.channels() == 1) {
+                    input.at<ushort>(y, x) = static_cast<ushort>(input.at<ushort>(y, x) * gain_map.at<float>(y, x));
+                } else if (input.channels() == 3) {
+                    cv::Vec3s pix = input.at<cv::Vec3s>(y, x);
+                    cv::Vec3f gain = gain_map.at<cv::Vec3f>(y, x);
+                    input.at<cv::Vec3s>(y, x) = cv::Vec3s(
+                        static_cast<short>(pix[0] * gain[0]),
+                        static_cast<short>(pix[1] * gain[1]),
+                        static_cast<short>(pix[2] * gain[2])
+                    );
+                }
+            }
+        }
+    }
+    
+    return true;
+}
+
+void LSCNode::SetGainMap(const cv::Mat& gain_map) {
+    gain_map.copyTo(gain_map_);
+}
+
+void LSCNode::SetDarkFrame(const cv::Mat& dark_frame) {
+    dark_frame.copyTo(dark_frame_);
+}
+
+DenoiseNode::DenoiseNode() : enabled_(true), sigma_(1.0f) {}
+
+cv::Mat DenoiseNode::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool DenoiseNode::ProcessInPlace(cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return true;
+    }
+    
+    cv::Mat output;
+    if (input.depth() == CV_16U) {
+        cv::GaussianBlur(input, output, cv::Size(0, 0), sigma_);
+    } else {
+        cv::fastNlMeansDenoisingColored(input, output, sigma_, sigma_, 7, 21);
+    }
+    output.copyTo(input);
+    
+    return true;
+}
+
+void DenoiseNode::SetSigma(float sigma) {
+    sigma_ = sigma;
+}
+
+InterpolationNode::InterpolationNode() : enabled_(true), type_(InterpolationType::BICUBIC) {}
+
+cv::Mat InterpolationNode::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool InterpolationNode::ProcessInPlace(cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return true;
+    }
+    
+    int cv_type = cv::INTER_CUBIC;
+    switch (type_) {
+        case InterpolationType::BILINEAR:
+            cv_type = cv::INTER_LINEAR;
+            break;
+        case InterpolationType::BICUBIC:
+            cv_type = cv::INTER_CUBIC;
+            break;
+        case InterpolationType::LANCZOS:
+            cv_type = cv::INTER_LANCZOS4;
+            break;
+    }
+    
+    cv::Mat output;
+    cv::Size size = output_size_.width > 0 ? output_size_ : input.size();
+    cv::resize(input, output, size, 0, 0, cv_type);
+    output.copyTo(input);
+    
+    return true;
+}
+
+void InterpolationNode::SetType(InterpolationType type) {
+    type_ = type;
+}
+
+void InterpolationNode::SetOutputSize(const cv::Size& size) {
+    output_size_ = size;
+}
+
+WhiteBalanceNode::WhiteBalanceNode() : enabled_(true), gains_(1.0f, 1.0f, 1.0f) {}
+
+cv::Mat WhiteBalanceNode::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool WhiteBalanceNode::ProcessInPlace(cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return true;
+    }
+    
+    cv::Mat float_img;
+    input.convertTo(float_img, CV_32F);
+    
+    if (input.channels() == 3) {
+        std::vector<cv::Mat> channels;
+        cv::split(float_img, channels);
+        channels[0] *= gains_[0];
+        channels[1] *= gains_[1];
+        channels[2] *= gains_[2];
+        cv::merge(channels, float_img);
+    } else if (input.channels() == 1) {
+        float_img *= gains_[1];
+    }
+    
+    float_img.convertTo(input, input.type());
+    
+    return true;
+}
+
+void WhiteBalanceNode::SetGains(const cv::Vec3f& gains) {
+    gains_ = gains;
+}
+
+void WhiteBalanceNode::SetTemperature(float /*temperature*/) {
+}
+
+CCMNode::CCMNode() : enabled_(true), offset_(0.0f, 0.0f, 0.0f) {
+    matrix_ = cv::Mat::eye(3, 3, CV_32F);
+}
+
+cv::Mat CCMNode::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool CCMNode::ProcessInPlace(cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return true;
+    }
+    
+    if (input.channels() != 3) {
+        return true;
+    }
+    
+    cv::Mat float_img;
+    input.convertTo(float_img, CV_32F);
+    
+    cv::Mat reshaped = float_img.reshape(1, float_img.total());
+    cv::Mat transformed = reshaped * matrix_.t();
+    
+    if (offset_[0] != 0.0f || offset_[1] != 0.0f || offset_[2] != 0.0f) {
+        for (int i = 0; i < transformed.rows; ++i) {
+            transformed.at<float>(i, 0) += offset_[0];
+            transformed.at<float>(i, 1) += offset_[1];
+            transformed.at<float>(i, 2) += offset_[2];
+        }
+    }
+    
+    cv::Mat result = transformed.reshape(3, float_img.rows);
+    result.convertTo(input, input.type());
+    
+    return true;
+}
+
+void CCMNode::SetMatrix(const cv::Mat& matrix) {
+    matrix.copyTo(matrix_);
+}
+
+void CCMNode::SetOffset(const cv::Vec3f& offset) {
+    offset_ = offset;
+}
+
+GammaNode::GammaNode() : enabled_(true), gamma_(2.2f), input_min_(0.0f), input_max_(65535.0f) {}
+
+cv::Mat GammaNode::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool GammaNode::ProcessInPlace(cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return true;
+    }
+    
+    cv::Mat float_img;
+    input.convertTo(float_img, CV_32F);
+    
+    float_img -= input_min_;
+    float_img /= (input_max_ - input_min_);
+    float_img = cv::max(float_img, 0.0f);
+    float_img = cv::min(float_img, 1.0f);
+    
+    cv::pow(float_img, 1.0f / gamma_, float_img);
+    
+    if (input.depth() == CV_16U) {
+        float_img *= 65535.0f;
+        float_img.convertTo(input, CV_16U);
+    } else {
+        float_img *= 255.0f;
+        float_img.convertTo(input, CV_8U);
+    }
+    
+    return true;
+}
+
+void GammaNode::SetGamma(float gamma) {
+    gamma_ = gamma;
+}
+
+void GammaNode::SetInputRange(float min, float max) {
+    input_min_ = min;
+    input_max_ = max;
+}
+
+}
+}

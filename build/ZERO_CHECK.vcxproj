@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6A91B151-3265-3FD9-9EE5-33846E9BC415}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>ZERO_CHECK</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\Projects\Study\MvToolKit\build\CMakeFiles\3d19c5bbe1888fc2e260cc0298fd0309\generate.stamp.rule">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Checking Build System</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -SE:/Projects/Study/MvToolKit -BE:/Projects/Study/MvToolKit/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/Projects/Study/MvToolKit/build/CameraToolKit.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeCXXInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeDependentOption.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeFindDependencyMacro.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeGenericSystem.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeInitializeConfigs.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeLanguageInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeRCInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeSystemSpecificInitialize.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckCXXSourceCompiles.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckIncludeFileCXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckLibraryExists.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\MSVC.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindOpenGL.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindPackageMessage.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindTIFF.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindThreads.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Internal\CheckSourceCompiles.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-Initialize.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-MSVC.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\WindowsPaths.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\SelectLibraryConfigurations.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffConfig.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffConfigVersion.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffTargets-release.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffTargets.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslConfig.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\BuildFlatBuffers.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatcTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatcTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\flatbuffers-config-version.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\flatbuffers-config.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGConfig.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig-version.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-debug.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-release.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-config-version.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-config.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-generate.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-module.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-options.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-debug.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-release.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config-debug.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config-release.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config.cmake;D:\vcpkg\installed\x64-windows\share\tiff\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-config.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-debug.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-release.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsConfig.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets.cmake;D:\vcpkg\scripts\buildsystems\vcpkg.cmake;E:\Projects\Study\MvToolKit\CMakeLists.txt;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeCXXCompiler.cmake;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeRCCompiler.cmake;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Projects\Study\MvToolKit\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Checking Build System</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -SE:/Projects/Study/MvToolKit -BE:/Projects/Study/MvToolKit/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/Projects/Study/MvToolKit/build/CameraToolKit.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeCXXInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeDependentOption.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeFindDependencyMacro.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeGenericSystem.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeInitializeConfigs.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeLanguageInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeRCInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeSystemSpecificInitialize.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckCXXSourceCompiles.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckIncludeFileCXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckLibraryExists.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\MSVC.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindOpenGL.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindPackageMessage.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindTIFF.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindThreads.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Internal\CheckSourceCompiles.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-Initialize.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-MSVC.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\WindowsPaths.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\SelectLibraryConfigurations.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffConfig.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffConfigVersion.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffTargets-release.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffTargets.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslConfig.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\BuildFlatBuffers.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatcTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatcTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\flatbuffers-config-version.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\flatbuffers-config.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGConfig.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig-version.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-debug.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-release.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-config-version.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-config.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-generate.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-module.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-options.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-debug.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-release.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config-debug.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config-release.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config.cmake;D:\vcpkg\installed\x64-windows\share\tiff\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-config.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-debug.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-release.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsConfig.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets.cmake;D:\vcpkg\scripts\buildsystems\vcpkg.cmake;E:\Projects\Study\MvToolKit\CMakeLists.txt;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeCXXCompiler.cmake;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeRCCompiler.cmake;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Projects\Study\MvToolKit\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Checking Build System</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -SE:/Projects/Study/MvToolKit -BE:/Projects/Study/MvToolKit/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/Projects/Study/MvToolKit/build/CameraToolKit.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeCXXInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeDependentOption.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeFindDependencyMacro.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeGenericSystem.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeInitializeConfigs.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeLanguageInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeRCInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeSystemSpecificInitialize.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckCXXSourceCompiles.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckIncludeFileCXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckLibraryExists.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\MSVC.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindOpenGL.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindPackageMessage.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindTIFF.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindThreads.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Internal\CheckSourceCompiles.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-Initialize.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-MSVC.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\WindowsPaths.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\SelectLibraryConfigurations.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffConfig.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffConfigVersion.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffTargets-release.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffTargets.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslConfig.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\BuildFlatBuffers.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatcTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatcTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\flatbuffers-config-version.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\flatbuffers-config.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGConfig.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig-version.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-debug.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-release.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-config-version.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-config.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-generate.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-module.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-options.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-debug.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-release.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config-debug.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config-release.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config.cmake;D:\vcpkg\installed\x64-windows\share\tiff\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-config.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-debug.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-release.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsConfig.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets.cmake;D:\vcpkg\scripts\buildsystems\vcpkg.cmake;E:\Projects\Study\MvToolKit\CMakeLists.txt;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeCXXCompiler.cmake;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeRCCompiler.cmake;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Projects\Study\MvToolKit\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</BuildInParallel>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Checking Build System</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"D:\Program Files\CMake\bin\cmake.exe" -SE:/Projects/Study/MvToolKit -BE:/Projects/Study/MvToolKit/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/Projects/Study/MvToolKit/build/CameraToolKit.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeCXXInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeCommonLanguageInclude.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeDependentOption.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeFindDependencyMacro.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeGenericSystem.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeInitializeConfigs.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeLanguageInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeRCInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeSystemSpecificInformation.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CMakeSystemSpecificInitialize.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckCXXSourceCompiles.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckIncludeFileCXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\CheckLibraryExists.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\MSVC-CXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Compiler\MSVC.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindOpenGL.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindPackageHandleStandardArgs.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindPackageMessage.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindTIFF.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\FindThreads.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Internal\CheckSourceCompiles.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-Initialize.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows-MSVC.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\Windows.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\Platform\WindowsPaths.cmake;D:\Program Files\CMake\share\cmake-3.29\Modules\SelectLibraryConfigurations.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffConfig.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffConfigVersion.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffTargets-release.cmake;D:\ProgramData\anaconda3\Library\lib\cmake\tiff\TiffTargets.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslConfig.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\absl\abslTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\BuildFlatBuffers.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatBuffersTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatcTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\FlatcTargets.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\flatbuffers-config-version.cmake;D:\vcpkg\installed\x64-windows\share\flatbuffers\flatbuffers-config.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGConfig.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\nanosvg\NanoSVGTargets.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig-version.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-debug.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-release.cmake;D:\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-config-version.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-config.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-generate.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-module.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-options.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-debug.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-release.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets.cmake;D:\vcpkg\installed\x64-windows\share\protobuf\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config-debug.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config-release.cmake;D:\vcpkg\installed\x64-windows\share\quirc\quirc-config.cmake;D:\vcpkg\installed\x64-windows\share\tiff\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-config.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-debug.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-release.cmake;D:\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsConfig.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets-debug.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets-release.cmake;D:\vcpkg\installed\x64-windows\share\wxwidgets\wxWidgetsTargets.cmake;D:\vcpkg\scripts\buildsystems\vcpkg.cmake;E:\Projects\Study\MvToolKit\CMakeLists.txt;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeCXXCompiler.cmake;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeRCCompiler.cmake;E:\Projects\Study\MvToolKit\build\CMakeFiles\3.29.8\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Projects\Study\MvToolKit\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
