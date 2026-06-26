@@ -366,7 +366,7 @@ open ./CameraToolKit.app
 - **单例模式**：全局唯一Logger实例
 - **日志级别**：DEBUG / INFO / WARN / ERROR / FATAL
 - **输出方式**：同时输出到文件、控制台和UI日志面板
-- **自动命名**：`mvtoolkit_YYYYMMDD_HHMMSS.log`
+- **自动命名**：`cameratoolkit_YYYYMMDD_HHMMSS.log`
 - **回调机制**：支持自定义日志回调，实现UI实时显示
 
 ## 算法原理
