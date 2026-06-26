@@ -10,7 +10,7 @@ Logger::Logger() : min_level_(LogLevel::LOG_DEBUG), file_open_(false) {
     std::time_t now = std::time(nullptr);
     std::tm* local_time = std::localtime(&now);
     std::ostringstream oss;
-    oss << "mvtoolkit_" 
+    oss << "cameratoolkit_" 
         << std::setw(4) << std::setfill('0') << local_time->tm_year + 1900
         << std::setw(2) << std::setfill('0') << local_time->tm_mon + 1
         << std::setw(2) << std::setfill('0') << local_time->tm_mday

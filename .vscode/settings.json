@@ -6,6 +6,8 @@
         "algorithm": "cpp",
         "fstream": "cpp",
         "string": "cpp",
-        "cstdio": "cpp"
+        "cstdio": "cpp",
+        "iostream": "cpp",
+        "mutex": "cpp"
     }
 }
