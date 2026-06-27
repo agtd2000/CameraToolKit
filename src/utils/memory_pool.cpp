@@ -1,16 +1,65 @@
 #include "utils/memory_pool.h"
+#include <cstdlib>
+#include <cstdint>
 
 namespace mvtk {
 namespace utils {
 
-MemoryPool::MemoryPool(size_t pool_size, int width, int height, int type, bool use_double_buffer)
+#if defined(_WIN32) || defined(_WIN64)
+#include <malloc.h>
+#define aligned_malloc(size, alignment) _aligned_malloc(size, alignment)
+#define aligned_free(ptr) _aligned_free(ptr)
+#else
+#include <stdlib.h>
+#define aligned_malloc(size, alignment) posix_memalign((void**)&ptr, alignment, size)
+#define aligned_free(ptr) free(ptr)
+#endif
+
+MemoryPool::MemoryPool(size_t pool_size, int width, int height, int type, bool use_double_buffer, int alignment)
     : pool_size_(pool_size), width_(width), height_(height), type_(type),
-      use_double_buffer_(use_double_buffer), front_buffer_idx_(0), back_buffer_idx_(1) {
+      use_double_buffer_(use_double_buffer), front_buffer_idx_(0), back_buffer_idx_(1), alignment_(alignment) {
     Init(pool_size, width, height, type);
 }
 
 MemoryPool::~MemoryPool() {
     Reset();
+}
+
+cv::Mat MemoryPool::createAlignedMat(int rows, int cols, int type, int alignment, void*& out_ptr, size_t& out_size) {
+    cv::Mat mat;
+    int depth = CV_MAT_DEPTH(type);
+    int channels = CV_MAT_CN(type);
+    size_t elem_size;
+    
+    if (depth == CV_8U || depth == CV_8S) {
+        elem_size = 1 * channels;
+    } else if (depth == CV_16U || depth == CV_16S) {
+        elem_size = 2 * channels;
+    } else if (depth == CV_32S) {
+        elem_size = 4 * channels;
+    } else if (depth == CV_32F) {
+        elem_size = 4 * channels;
+    } else if (depth == CV_64F) {
+        elem_size = 8 * channels;
+    } else {
+        elem_size = 1 * channels;
+    }
+    
+    size_t row_size = (cols * elem_size + alignment - 1) & ~(alignment - 1);
+    out_size = rows * row_size;
+    
+    void* ptr = aligned_malloc(out_size, alignment);
+    out_ptr = ptr;
+    
+    if (!ptr) {
+        mat.create(rows, cols, type);
+        return mat;
+    }
+    
+    mat = cv::Mat(rows, cols, type, ptr, row_size);
+    mat.setTo(0);
+    
+    return mat;
 }
 
 void MemoryPool::Init(size_t pool_size, int width, int height, int type) {
@@ -23,8 +72,11 @@ void MemoryPool::Init(size_t pool_size, int width, int height, int type) {
     
     buffers_.resize(pool_size);
     for (auto& item : buffers_) {
-        item.data.create(height, width, type);
-        item.data.setTo(0);
+        void* ptr = nullptr;
+        size_t size = 0;
+        item.data = createAlignedMat(height, width, type, alignment_, ptr, size);
+        item.aligned_ptr = ptr;
+        item.allocated_size = size;
         item.in_use = false;
     }
     
@@ -40,7 +92,11 @@ void MemoryPool::Resize(size_t pool_size) {
     if (pool_size < pool_size_) {
         for (size_t i = pool_size; i < pool_size_; ++i) {
             if (!buffers_[i].in_use) {
-                buffers_[i].data.release();
+                buffers_[i].data = cv::Mat();
+                if (buffers_[i].aligned_ptr) {
+                    aligned_free(buffers_[i].aligned_ptr);
+                    buffers_[i].aligned_ptr = nullptr;
+                }
             }
         }
         buffers_.resize(pool_size);
@@ -48,8 +104,11 @@ void MemoryPool::Resize(size_t pool_size) {
         size_t old_size = buffers_.size();
         buffers_.resize(pool_size);
         for (size_t i = old_size; i < pool_size; ++i) {
-            buffers_[i].data.create(height_, width_, type_);
-            buffers_[i].data.setTo(0);
+            void* ptr = nullptr;
+            size_t size = 0;
+            buffers_[i].data = createAlignedMat(height_, width_, type_, alignment_, ptr, size);
+            buffers_[i].aligned_ptr = ptr;
+            buffers_[i].allocated_size = size;
             buffers_[i].in_use = false;
         }
     }
@@ -60,9 +119,22 @@ void MemoryPool::Reset() {
     std::lock_guard<std::mutex> lock(mutex_);
     for (auto& item : buffers_) {
         item.in_use = false;
-        item.data.release();
+        item.data = cv::Mat();
+        if (item.aligned_ptr) {
+            aligned_free(item.aligned_ptr);
+            item.aligned_ptr = nullptr;
+        }
     }
     buffers_.clear();
+}
+
+void MemoryPool::SetAlignment(int alignment) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (alignment != alignment_) {
+        alignment_ = alignment;
+        Reset();
+        Init(pool_size_, width_, height_, type_);
+    }
 }
 
 cv::Mat MemoryPool::Acquire() {
@@ -75,9 +147,15 @@ cv::Mat MemoryPool::Acquire() {
         }
     }
     
-    cv::Mat new_data(height_, width_, type_);
-    new_data.setTo(0);
-    buffers_.push_back({new_data, true});
+    BufferItem new_item;
+    void* ptr = nullptr;
+    size_t size = 0;
+    new_item.data = createAlignedMat(height_, width_, type_, alignment_, ptr, size);
+    new_item.aligned_ptr = ptr;
+    new_item.allocated_size = size;
+    new_item.in_use = true;
+    
+    buffers_.push_back(new_item);
     pool_size_++;
     
     return buffers_.back().data;
@@ -93,7 +171,7 @@ void MemoryPool::Release(cv::Mat& mat) {
         }
     }
     
-    mat.release();
+    mat = cv::Mat();
 }
 
 size_t MemoryPool::GetPoolSize() const {

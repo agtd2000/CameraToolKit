@@ -1,0 +1,13 @@
+========== Log Started ==========
+Timestamp: 2026-06-27 16:02:47
+==================================
+[2026-06-27 16:02:47] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-27 16:02:47] [INFO] MainFrame initialized successfully
+[2026-06-27 16:03:17] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\MvToolKit\images\dark
+[2026-06-27 16:03:18] [DEBUG] [DATA] ImageInfo = Loaded 10 dark field images from folder
+[2026-06-27 16:03:19] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\MvToolKit\images\bright
+[2026-06-27 16:03:20] [DEBUG] [DATA] ImageInfo = Loaded 10 bright field images from folder
+[2026-06-27 16:07:01] [INFO] [OPERATION] Tone Mapping Changed - Linear
+[2026-06-27 16:07:03] [INFO] [OPERATION] Tone Mapping Changed - Histogram Equalization
+[2026-06-27 16:07:05] [INFO] [OPERATION] Tone Mapping Changed - Gamma
+[2026-06-27 16:07:07] [INFO] [OPERATION] Tone Mapping Changed - Linear

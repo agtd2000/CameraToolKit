@@ -5,10 +5,13 @@
 #include <wx/notebook.h>
 #include <wx/combobox.h>
 #include <wx/checkbox.h>
+#include <wx/radiobox.h>
 #include "utils/logger.h"
 
 namespace mvtk {
 namespace wxui {
+
+constexpr int ID_DENOISE_POSITION = wxID_HIGHEST + 100;
 
 class MainFrame : public wxFrame {
 public:
@@ -27,6 +30,8 @@ private:
     wxCheckBox* wb_checkbox_;
     wxCheckBox* ccm_checkbox_;
     wxCheckBox* gamma_checkbox_;
+    
+    wxRadioBox* denoise_position_radio_;
 
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
@@ -34,6 +39,7 @@ private:
     
     void OnToneMappingChanged(wxCommandEvent& event);
     void OnPipelineNodeChanged(wxCommandEvent& event);
+    void OnDenoisePositionChanged(wxCommandEvent& event);
     void OnLogUpdate(mvtk::utils::LogLevel level, const std::string& message);
 
     DECLARE_EVENT_TABLE()

@@ -41,6 +41,10 @@ struct DeadPixelDetectParams {
     double avg_brightness_min = 0.0;            ///< 平均亮度最小值
     double avg_brightness_max = 255.0;          ///< 平均亮度最大值
     int kernel_size = 3;                        ///< 邻域核大小（3x3或5x5）
+    bool use_dynamic_threshold = false;         ///< 是否使用动态阈值
+    double dynamic_factor = 3.0;                ///< 动态阈值因子（倍数于局部标准差）
+    bool use_gradient_check = false;            ///< 是否使用梯度检测（避免边缘误判）
+    double gradient_threshold = 10.0;           ///< 梯度检测阈值
 };
 
 /**

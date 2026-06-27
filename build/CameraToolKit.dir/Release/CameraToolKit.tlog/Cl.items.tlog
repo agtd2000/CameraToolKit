@@ -1,4 +1,5 @@
 E:\Projects\Study\MvToolKit\src\main.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\main.obj
+E:\Projects\Study\MvToolKit\src\algo\scm.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\scm.obj
 E:\Projects\Study\MvToolKit\src\algo\dead_pixel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\dead_pixel.obj
 E:\Projects\Study\MvToolKit\src\algo\flat_field.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\flat_field.obj
 E:\Projects\Study\MvToolKit\src\algo\white_balance.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\white_balance.obj
@@ -14,6 +15,7 @@ E:\Projects\Study\MvToolKit\src\wxui\main_app.cpp;E:\Projects\Study\MvToolKit\bu
 E:\Projects\Study\MvToolKit\src\wxui\main_frame.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\main_frame.obj
 E:\Projects\Study\MvToolKit\src\wxui\image_canvas.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\image_canvas.obj
 E:\Projects\Study\MvToolKit\src\wxui\neumorphic_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\neumorphic_panel.obj
+E:\Projects\Study\MvToolKit\src\wxui\scm_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\scm_panel.obj
 E:\Projects\Study\MvToolKit\src\wxui\dead_pixel_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\dead_pixel_panel.obj
 E:\Projects\Study\MvToolKit\src\wxui\flat_field_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\flat_field_panel.obj
 E:\Projects\Study\MvToolKit\src\wxui\quick_color_calib_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\quick_color_calib_panel.obj

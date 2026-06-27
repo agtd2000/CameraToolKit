@@ -1,0 +1,26 @@
+========== Log Started ==========
+Timestamp: 2026-06-27 15:52:52
+==================================
+[2026-06-27 15:52:52] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-27 15:52:54] [INFO] MainFrame initialized successfully
+[2026-06-27 15:53:10] [ERROR] [ERROR-ImageLoad] Dark folder does not exist: E:\Projects\Study\MvToolKit\build\images\flat.BMP
+[2026-06-27 15:53:29] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\MvToolKit\images\dark
+[2026-06-27 15:53:31] [DEBUG] [DATA] ImageInfo = Loaded 5 dark field images from folder
+[2026-06-27 15:53:32] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\MvToolKit\images\bright
+[2026-06-27 15:53:34] [DEBUG] [DATA] ImageInfo = Loaded 5 bright field images from folder
+[2026-06-27 15:55:52] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\MvToolKit\images\dark
+[2026-06-27 15:55:53] [DEBUG] [DATA] ImageInfo = Loaded 10 dark field images from folder
+[2026-06-27 15:55:54] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\MvToolKit\images\bright
+[2026-06-27 15:55:55] [DEBUG] [DATA] ImageInfo = Loaded 10 bright field images from folder
+[2026-06-27 15:57:31] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\MvToolKit\images\dark
+[2026-06-27 15:57:32] [DEBUG] [DATA] ImageInfo = Loaded 10 dark field images from folder
+[2026-06-27 15:57:33] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\MvToolKit\images\dark
+[2026-06-27 15:57:34] [DEBUG] [DATA] ImageInfo = Loaded 10 dark field images from folder
+[2026-06-27 15:57:35] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\MvToolKit\images\bright
+[2026-06-27 15:57:36] [DEBUG] [DATA] ImageInfo = Loaded 10 bright field images from folder
+[2026-06-27 15:57:37] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\MvToolKit\images\bright
+[2026-06-27 15:57:37] [DEBUG] [DATA] ImageInfo = Loaded 10 bright field images from folder
+[2026-06-27 15:59:06] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\MvToolKit\images\dark
+[2026-06-27 15:59:08] [DEBUG] [DATA] ImageInfo = Loaded 10 dark field images from folder
+[2026-06-27 15:59:08] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\MvToolKit\images\bright
+[2026-06-27 15:59:09] [DEBUG] [DATA] ImageInfo = Loaded 10 bright field images from folder

@@ -4,6 +4,9 @@
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\scm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\dead_pixel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,6 +50,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\neumorphic_panel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\scm_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\dead_pixel_panel.cpp">

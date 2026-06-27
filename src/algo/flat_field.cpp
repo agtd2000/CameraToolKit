@@ -8,6 +8,10 @@
 #include <fstream>
 #include <cmath>
 #include <algorithm>
+#include <limits>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 #include "algo/flat_field.h"
 
@@ -65,6 +69,9 @@ FlatFieldResult FlatFieldCorrector::calibrate(const cv::Mat& flat_image, const F
     result.gain_map = cv::Mat::zeros(rows, cols, CV_64FC(flat_f.channels()));
 
     if (flat_f.channels() == 1) {
+#ifdef _OPENMP
+#pragma omp parallel for schedule(static)
+#endif
         for (int y = 0; y < rows; ++y) {
             for (int x = 0; x < cols; ++x) {
                 double val = flat_f.at<double>(y, x);
@@ -73,17 +80,18 @@ FlatFieldResult FlatFieldCorrector::calibrate(const cv::Mat& flat_image, const F
             }
         }
     } else {
+#ifdef _OPENMP
+#pragma omp parallel for schedule(static)
+#endif
         for (int y = 0; y < rows; ++y) {
             for (int x = 0; x < cols; ++x) {
                 cv::Vec3d val = flat_f.at<cv::Vec3d>(y, x);
                 if (params.channel_mode == 0) {
-                    // 独立通道
                     for (int c = 0; c < 3; ++c) {
                         double gain = (val[c] > 1e-6) ? reference_brightness / val[c] : 1.0;
                         result.gain_map.at<cv::Vec3d>(y, x)[c] = gain;
                     }
                 } else {
-                    // 统一增益（取三通道均值计算）
                     double avg = (val[0] + val[1] + val[2]) / 3.0;
                     double gain = (avg > 1e-6) ? reference_brightness / avg : 1.0;
                     result.gain_map.at<cv::Vec3d>(y, x) = cv::Vec3d(gain, gain, gain);
@@ -147,21 +155,130 @@ FlatFieldResult FlatFieldCorrector::calibrate(const cv::Mat& flat_image, const F
 
 FlatFieldResult FlatFieldCorrector::calibrateWithDark(
     const cv::Mat& flat_image, const cv::Mat& dark_image, const FlatFieldCalibParams& params) {
-    // 减去暗电流
     cv::Mat flat_f, dark_f;
     flat_image.convertTo(flat_f, CV_64F);
     dark_image.convertTo(dark_f, CV_64F);
 
     cv::Mat corrected_flat = flat_f - dark_f;
-
-    // 确保非负
     cv::max(corrected_flat, 0.0, corrected_flat);
 
-    // 转回原始类型进行标定
-    cv::Mat corrected_flat_u8;
-    corrected_flat.convertTo(corrected_flat_u8, flat_image.type());
+    FlatFieldResult result;
+    if (corrected_flat.empty()) return result;
 
-    return calibrate(corrected_flat_u8, params);
+    int rows = corrected_flat.rows;
+    int cols = corrected_flat.cols;
+
+    double reference_brightness = 0.0;
+
+    switch (params.mode) {
+    case LSCCalibMode::CENTER: {
+        int cx = cols / 2, cy = rows / 2;
+        int radius = std::min(cols, rows) / 8;
+        cv::Rect center_roi(cx - radius, cy - radius, radius * 2, radius * 2);
+        cv::Scalar center_mean = cv::mean(corrected_flat(center_roi));
+        if (corrected_flat.channels() == 1) {
+            reference_brightness = center_mean[0];
+        } else {
+            reference_brightness = (center_mean[0] + center_mean[1] + center_mean[2]) / 3.0;
+        }
+        break;
+    }
+    case LSCCalibMode::BRIGHTEST: {
+        double max_val = 0.0;
+        int block_size = std::min(cols, rows) / 8;
+        for (int y = 0; y < rows - block_size; y += block_size) {
+            for (int x = 0; x < cols - block_size; x += block_size) {
+                cv::Rect roi(x, y, block_size, block_size);
+                cv::Scalar block_mean = cv::mean(corrected_flat(roi));
+                double val = (block_mean[0] + block_mean[1] + block_mean[2]) / (corrected_flat.channels() > 1 ? 3.0 : 1.0);
+                if (val > max_val) max_val = val;
+            }
+        }
+        reference_brightness = max_val;
+        break;
+    }
+    case LSCCalibMode::TARGET_LUMA:
+        reference_brightness = params.target_brightness;
+        break;
+    }
+
+    result.gain_map = cv::Mat::zeros(rows, cols, CV_64FC(corrected_flat.channels()));
+
+    if (corrected_flat.channels() == 1) {
+#ifdef _OPENMP
+#pragma omp parallel for schedule(static)
+#endif
+        for (int y = 0; y < rows; ++y) {
+            for (int x = 0; x < cols; ++x) {
+                double val = corrected_flat.at<double>(y, x);
+                double gain = (val > 1e-6) ? reference_brightness / val : 1.0;
+                result.gain_map.at<double>(y, x) = gain;
+            }
+        }
+    } else {
+#ifdef _OPENMP
+#pragma omp parallel for schedule(static)
+#endif
+        for (int y = 0; y < rows; ++y) {
+            for (int x = 0; x < cols; ++x) {
+                cv::Vec3d val = corrected_flat.at<cv::Vec3d>(y, x);
+                if (params.channel_mode == 0) {
+                    for (int c = 0; c < 3; ++c) {
+                        double gain = (val[c] > 1e-6) ? reference_brightness / val[c] : 1.0;
+                        result.gain_map.at<cv::Vec3d>(y, x)[c] = gain;
+                    }
+                } else {
+                    double avg = (val[0] + val[1] + val[2]) / 3.0;
+                    double gain = (avg > 1e-6) ? reference_brightness / avg : 1.0;
+                    result.gain_map.at<cv::Vec3d>(y, x) = cv::Vec3d(gain, gain, gain);
+                }
+            }
+        }
+    }
+
+    cv::Mat smoothed;
+    int ksize = params.smooth_kernel;
+    if (ksize % 2 == 0) ksize++;
+    if (ksize >= 3) {
+        cv::GaussianBlur(result.gain_map, smoothed, cv::Size(ksize, ksize), 0);
+    } else {
+        smoothed = result.gain_map;
+    }
+
+    if (params.edge_fill > 0) {
+        cv::copyMakeBorder(smoothed, result.gain_map, params.edge_fill, params.edge_fill,
+                           params.edge_fill, params.edge_fill, cv::BORDER_REFLECT_101);
+        result.gain_map = result.gain_map(cv::Rect(params.edge_fill, params.edge_fill, cols, rows)).clone();
+    } else {
+        result.gain_map = smoothed;
+    }
+
+    result.corrected_image = apply(flat_image, result.gain_map, params.edge_fill);
+    result.uniformity = computeUniformity(result.corrected_image);
+
+    int cx = cols / 2, cy = rows / 2;
+    int r = std::min(cols, rows) / 8;
+    cv::Rect center_roi(cx - r, cy - r, r * 2, r * 2);
+    cv::Scalar center_mean = cv::mean(result.corrected_image(center_roi));
+    result.center_brightness = (center_mean[0] + center_mean[1] + center_mean[2]) / (corrected_flat.channels() > 1 ? 3.0 : 1.0);
+
+    int edge_r = std::min(cols, rows) / 8;
+    double edge_sum = 0;
+    int edge_count = 0;
+    std::vector<cv::Rect> corners = {
+        cv::Rect(0, 0, edge_r, edge_r),
+        cv::Rect(cols - edge_r, 0, edge_r, edge_r),
+        cv::Rect(0, rows - edge_r, edge_r, edge_r),
+        cv::Rect(cols - edge_r, rows - edge_r, edge_r, edge_r)
+    };
+    for (const auto& cr : corners) {
+        cv::Scalar m = cv::mean(result.corrected_image(cr));
+        edge_sum += (m[0] + m[1] + m[2]) / (corrected_flat.channels() > 1 ? 3.0 : 1.0);
+        edge_count++;
+    }
+    result.edge_brightness = edge_sum / edge_count;
+
+    return result;
 }
 
 cv::Mat FlatFieldCorrector::apply(const cv::Mat& image, const cv::Mat& gain_map, int edge_fill) {
@@ -184,8 +301,24 @@ cv::Mat FlatFieldCorrector::apply(const cv::Mat& image, const cv::Mat& gain_map,
         result_f = img_f.mul(gain_map);
     }
 
-    // 截断到有效范围
-    double max_val = (image.depth() == CV_8U) ? 255.0 : 65535.0;
+    double max_val = 255.0;
+    int depth = image.depth();
+    if (depth == CV_8U) {
+        max_val = 255.0;
+    } else if (depth == CV_8S) {
+        max_val = 127.0;
+    } else if (depth == CV_16U) {
+        max_val = 65535.0;
+    } else if (depth == CV_16S) {
+        max_val = 32767.0;
+    } else if (depth == CV_32S) {
+        max_val = static_cast<double>(std::numeric_limits<int>::max());
+    } else if (depth == CV_32F) {
+        max_val = 1.0;
+    } else if (depth == CV_64F) {
+        max_val = 1.0;
+    }
+
     cv::min(result_f, max_val, result_f);
     cv::max(result_f, 0.0, result_f);
 

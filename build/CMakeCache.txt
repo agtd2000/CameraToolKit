@@ -84,6 +84,9 @@ CMAKE_MODULE_LINKER_FLAGS_RELEASE:STRING=/INCREMENTAL:NO
 // RELWITHDEBINFO builds.
 CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING=/debug /INCREMENTAL
 
+//MSVC runtime library
+CMAKE_MSVC_RUNTIME_LIBRARY:STRING=MultiThreaded$<$<CONFIG:Debug>:Debug>DLL
+
 //Path to a program.
 CMAKE_MT:FILEPATH=CMAKE_MT-NOTFOUND
 
@@ -198,7 +201,7 @@ CameraToolKit_SOURCE_DIR:STATIC=E:/Projects/Study/MvToolKit
 NanoSVG_DIR:PATH=D:/vcpkg/installed/x64-windows/share/nanosvg
 
 //No help, variable specified on the command line.
-OPENCV_DIR:UNINITIALIZED=D:/vcpkg/installed/x64-windows/share/opencv4
+OPENCV_DIR:UNINITIALIZED=D:/opencv/build
 
 //OpenGL library for win32
 OPENGL_gl_LIBRARY:STRING=opengl32
@@ -208,6 +211,12 @@ OPENGL_glu_LIBRARY:STRING=glu32
 
 //The directory containing a CMake configuration file for OpenCV.
 OpenCV_DIR:PATH=D:/vcpkg/installed/x64-windows/share/opencv4
+
+//CXX compiler flags for OpenMP parallelization
+OpenMP_CXX_FLAGS:STRING=-openmp
+
+//CXX compiler libraries for OpenMP parallelization
+OpenMP_CXX_LIB_NAMES:STRING=
 
 //The directory containing a CMake configuration file for Protobuf.
 Protobuf_DIR:PATH=D:/vcpkg/installed/x64-windows/share/protobuf
@@ -525,6 +534,10 @@ CMAKE_TOOLCHAIN_FILE-ADVANCED:INTERNAL=1
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding OpenCV
 FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[D:/vcpkg/installed/x64-windows][v4.12.0()]
+//Details about finding OpenMP
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[TRUE][c ][v2.0()]
+//Details about finding OpenMP_CXX
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX:INTERNAL=[-openmp][v2.0()]
 //Details about finding Protobuf
 FIND_PACKAGE_MESSAGE_DETAILS_Protobuf:INTERNAL=[D:/vcpkg/installed/x64-windows/tools/protobuf/protoc.exe][optimized;D:/vcpkg/installed/x64-windows/bin/libprotobuf.dll;debug;D:/vcpkg/installed/x64-windows/debug/bin/libprotobufd.dll][D:/vcpkg/installed/x64-windows/include][v33.4.0()]
 //Details about finding TIFF
@@ -535,6 +548,16 @@ FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 OPENGL_gl_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_glu_LIBRARY
 OPENGL_glu_LIBRARY-ADVANCED:INTERNAL=1
+//Result of TRY_COMPILE
+OpenMP_COMPILE_RESULT_CXX_openmp:INTERNAL=TRUE
+//ADVANCED property for variable: OpenMP_CXX_FLAGS
+OpenMP_CXX_FLAGS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_CXX_LIB_NAMES
+OpenMP_CXX_LIB_NAMES-ADVANCED:INTERNAL=1
+//CXX compiler's OpenMP specification date
+OpenMP_CXX_SPEC_DATE:INTERNAL=200203
+//Result of TRY_COMPILE
+OpenMP_SPECTEST_CXX_:INTERNAL=TRUE
 //Install the dependencies listed in your manifest:
 //\n    If this is off, you will have to manually install your dependencies.
 //\n    See https://github.com/microsoft/vcpkg/tree/master/docs/specifications/manifests.md

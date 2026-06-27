@@ -1,4 +1,5 @@
 #include "wxui/main_frame.h"
+#include "wxui/scm_panel.h"
 #include "wxui/dead_pixel_panel.h"
 #include "wxui/flat_field_panel.h"
 #include "wxui/quick_color_calib_panel.h"
@@ -17,6 +18,7 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_MENU(wxID_EXIT, MainFrame::OnExit)
     EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
     EVT_CLOSE(MainFrame::OnClose)
+    EVT_RADIOBOX(ID_DENOISE_POSITION, MainFrame::OnDenoisePositionChanged)
 END_EVENT_TABLE()
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -24,7 +26,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
       log_text_ctrl_(nullptr), tone_mapping_combo_(nullptr),
       lsc_checkbox_(nullptr), denoise_checkbox_(nullptr),
       interpolation_checkbox_(nullptr), wb_checkbox_(nullptr),
-      ccm_checkbox_(nullptr), gamma_checkbox_(nullptr) {
+      ccm_checkbox_(nullptr), gamma_checkbox_(nullptr),
+      denoise_position_radio_(nullptr) {
 
     SetBackgroundColour(Style::NEU_BG_COLOR);
 
@@ -59,6 +62,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     notebook_ = new wxNotebook(this, wxID_ANY);
     notebook_->SetBackgroundColour(wxColour(245, 246, 248));
 
+    notebook_->AddPage(new SCMPanel(notebook_), "SCM");
     notebook_->AddPage(new DeadPixelPanel(notebook_), "Dead Pixel");
     notebook_->AddPage(new FlatFieldPanel(notebook_), "Flat Field");
     notebook_->AddPage(new QuickColorCalibPanel(notebook_), "Quick Calib");
@@ -98,6 +102,15 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     denoise_checkbox_->SetForegroundColour(Style::NEU_TEXT_COLOR);
     denoise_checkbox_->SetValue(true);
     left_sizer->Add(denoise_checkbox_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+    
+    wxString denoise_positions[] = {"Pre-LSC", "Post-LSC", "Both"};
+    denoise_position_radio_ = new wxRadioBox(left_panel, ID_DENOISE_POSITION, "Denoise Position",
+                                             wxDefaultPosition, wxSize(160, -1),
+                                             3, denoise_positions, 1, wxRA_SPECIFY_COLS);
+    denoise_position_radio_->SetFont(Style::GetSansFont(8));
+    denoise_position_radio_->SetForegroundColour(Style::NEU_TEXT_COLOR);
+    denoise_position_radio_->SetSelection(1);
+    left_sizer->Add(denoise_position_radio_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     
     interpolation_checkbox_ = new wxCheckBox(left_panel, wxID_ANY, "Interpolation");
     interpolation_checkbox_->SetFont(Style::GetSansFont(9));
@@ -204,6 +217,18 @@ void MainFrame::OnPipelineNodeChanged(wxCommandEvent& event) {
         bool enabled = cb->GetValue();
         MV_LOG_OPERATION("Pipeline Node Changed", name + " = " + (enabled ? "Enabled" : "Disabled"));
     }
+}
+
+void MainFrame::OnDenoisePositionChanged(wxCommandEvent& event) {
+    int selection = event.GetSelection();
+    std::string position;
+    switch (selection) {
+        case 0: position = "Pre-LSC"; break;
+        case 1: position = "Post-LSC"; break;
+        case 2: position = "Both"; break;
+        default: position = "Unknown";
+    }
+    MV_LOG_OPERATION("Denoise Position Changed", position);
 }
 
 void MainFrame::OnLogUpdate(mvtk::utils::LogLevel level, const std::string& message) {

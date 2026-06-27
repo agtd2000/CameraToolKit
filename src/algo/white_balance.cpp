@@ -138,20 +138,18 @@ cv::Mat WhiteBalance::apply(const cv::Mat& image, const WBCorrectParams& params)
     image.convertTo(result, CV_64F);
 
     if (result.channels() == 3) {
-        // BGR顺序
-        for (int y = 0; y < result.rows; ++y) {
-            for (int x = 0; x < result.cols; ++x) {
-                cv::Vec3d& pixel = result.at<cv::Vec3d>(y, x);
-                pixel[0] *= params.b_gain; // B
-                pixel[1] *= params.g_gain; // G
-                pixel[2] *= params.r_gain; // R
-            }
-        }
+        std::vector<cv::Mat> channels(3);
+        cv::split(result, channels);
+        
+        channels[0] *= params.b_gain;
+        channels[1] *= params.g_gain;
+        channels[2] *= params.r_gain;
+        
+        cv::merge(channels, result);
     } else {
         result *= params.g_gain;
     }
 
-    // 截断
     double max_val = (image.depth() == CV_8U) ? 255.0 : 65535.0;
     cv::min(result, max_val, result);
     cv::max(result, 0.0, result);

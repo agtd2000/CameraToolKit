@@ -8,7 +8,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_TOOLCHAIN_FILE "D:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
 set(wxWidgets_DIR "D:/vcpkg/installed/x64-windows/share/wxwidgets" CACHE PATH "wxWidgets config directory")
 
+if(MSVC)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL" CACHE STRING "MSVC runtime library")
+endif()
+
 find_package(OpenCV REQUIRED)
+
+find_package(OpenMP)
 
 find_package(wxWidgets CONFIG REQUIRED COMPONENTS core base adv aui)
 
@@ -19,6 +25,7 @@ file(GLOB IMGUI_SOURCES
 )
 
 set(CORE_SOURCES
+    src/algo/scm.cpp
     src/algo/dead_pixel.cpp
     src/algo/flat_field.cpp
     src/algo/white_balance.cpp
@@ -37,6 +44,7 @@ set(WXUI_SOURCES
     src/wxui/main_frame.cpp
     src/wxui/image_canvas.cpp
     src/wxui/neumorphic_panel.cpp
+    src/wxui/scm_panel.cpp
     src/wxui/dead_pixel_panel.cpp
     src/wxui/flat_field_panel.cpp
     src/wxui/quick_color_calib_panel.cpp
@@ -71,6 +79,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${OpenCV_LIBS}
     wx::core wx::base wx::adv wx::aui
 )
+
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_CXX)
+endif()
 
 file(COPY ${CMAKE_SOURCE_DIR}/images DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY ${CMAKE_SOURCE_DIR}/src/logo/logo.ico DESTINATION ${CMAKE_BINARY_DIR}/Release)

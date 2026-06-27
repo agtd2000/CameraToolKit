@@ -200,12 +200,104 @@ std::vector<double> ColorCorrectionMatrix::computeErrors(
         out[2] = ccm_params.ccm(2,0)*p[0] + ccm_params.ccm(2,1)*p[1] + ccm_params.ccm(2,2)*p[2];
         out *= 255.0;
 
-        // 计算DeltaE00
         cv::Vec3d lab1 = mvtk::ColorErrorCalculator::rgbToLab(out);
         cv::Vec3d lab2 = mvtk::ColorErrorCalculator::rgbToLab(ref_colors[i]);
         errors.push_back(mvtk::ColorErrorCalculator::deltaE00(lab1, lab2));
     }
     return errors;
+}
+
+namespace {
+double computeR2(const std::vector<double>& x, const std::vector<double>& y) {
+    if (x.size() != y.size() || x.size() < 2) return 0.0;
+    
+    size_t n = x.size();
+    double sum_x = std::accumulate(x.begin(), x.end(), 0.0);
+    double sum_y = std::accumulate(y.begin(), y.end(), 0.0);
+    double sum_xy = 0.0, sum_x2 = 0.0, sum_y2 = 0.0;
+    
+    for (size_t i = 0; i < n; ++i) {
+        sum_xy += x[i] * y[i];
+        sum_x2 += x[i] * x[i];
+        sum_y2 += y[i] * y[i];
+    }
+    
+    double numerator = n * sum_xy - sum_x * sum_y;
+    double denominator = std::sqrt((n * sum_x2 - sum_x * sum_x) * (n * sum_y2 - sum_y * sum_y));
+    
+    if (denominator < 1e-10) return 0.0;
+    
+    double r = numerator / denominator;
+    return r * r;
+}
+}
+
+LinearityCheckResult ColorCorrectionMatrix::checkLinearity(
+    const std::vector<cv::Vec3d>& src_colors,
+    const std::vector<cv::Vec3d>& ref_colors,
+    double min_r2_threshold) {
+    
+    LinearityCheckResult result;
+    result.is_linear = false;
+    result.r_channel_r2 = 0.0;
+    result.g_channel_r2 = 0.0;
+    result.b_channel_r2 = 0.0;
+    result.avg_r2 = 0.0;
+    result.suggested_min_luma = 0.0;
+    result.suggested_max_luma = 0.0;
+    
+    if (src_colors.size() != ref_colors.size() || src_colors.size() < 3) {
+        result.message = "颜色样本数量不足，至少需要3个颜色样本";
+        return result;
+    }
+    
+    std::vector<std::pair<double, size_t>> indexed_colors;
+    for (size_t i = 0; i < src_colors.size(); ++i) {
+        double ref_luma = (ref_colors[i][0] + ref_colors[i][1] + ref_colors[i][2]) / 3.0;
+        indexed_colors.emplace_back(ref_luma, i);
+    }
+    
+    std::sort(indexed_colors.begin(), indexed_colors.end());
+    
+    std::vector<double> ref_luma_values;
+    std::vector<double> src_r_values, src_g_values, src_b_values;
+    std::vector<double> ref_r_values, ref_g_values, ref_b_values;
+    
+    for (const auto& entry : indexed_colors) {
+        size_t idx = entry.second;
+        ref_luma_values.push_back(entry.first);
+        src_r_values.push_back(src_colors[idx][0]);
+        src_g_values.push_back(src_colors[idx][1]);
+        src_b_values.push_back(src_colors[idx][2]);
+        ref_r_values.push_back(ref_colors[idx][0]);
+        ref_g_values.push_back(ref_colors[idx][1]);
+        ref_b_values.push_back(ref_colors[idx][2]);
+    }
+    
+    result.r_channel_r2 = computeR2(ref_r_values, src_r_values);
+    result.g_channel_r2 = computeR2(ref_g_values, src_g_values);
+    result.b_channel_r2 = computeR2(ref_b_values, src_b_values);
+    result.avg_r2 = (result.r_channel_r2 + result.g_channel_r2 + result.b_channel_r2) / 3.0;
+    
+    result.is_linear = (result.avg_r2 >= min_r2_threshold);
+    
+    if (result.is_linear) {
+        result.message = "传感器线性度验证通过";
+    } else {
+        result.message = "传感器线性度验证失败：R通道R²=" + std::to_string(result.r_channel_r2) +
+                         ", G通道R²=" + std::to_string(result.g_channel_r2) +
+                         ", B通道R²=" + std::to_string(result.b_channel_r2) +
+                         "。建议调整曝光设置，确保色卡亮度落在相机线性响应区内。";
+    }
+    
+    double min_luma = ref_luma_values.front();
+    double max_luma = ref_luma_values.back();
+    double range = max_luma - min_luma;
+    
+    result.suggested_min_luma = min_luma + range * 0.1;
+    result.suggested_max_luma = max_luma - range * 0.1;
+    
+    return result;
 }
 
 } // namespace mvtk

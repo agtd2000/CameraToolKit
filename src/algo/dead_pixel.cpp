@@ -12,6 +12,9 @@
 #include <cmath>
 #include <map>
 #include <set>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 #include "algo/dead_pixel.h"
 
@@ -28,19 +31,35 @@ std::vector<DeadPixel> DeadPixelDetector::detect(const cv::Mat& image, const Dea
         gray = image.clone();
     }
 
-    // 转换为double进行计算
     cv::Mat dbl;
     gray.convertTo(dbl, CV_64F);
+
+    cv::Mat gradient_mag;
+    if (params.use_gradient_check) {
+        cv::Mat grad_x, grad_y;
+        cv::Sobel(dbl, grad_x, CV_64F, 1, 0, 3);
+        cv::Sobel(dbl, grad_y, CV_64F, 0, 1, 3);
+        cv::magnitude(grad_x, grad_y, gradient_mag);
+    }
 
     int half_k = params.kernel_size / 2;
     int rows = dbl.rows;
     int cols = dbl.cols;
 
+#ifdef _OPENMP
+    std::vector<std::vector<DeadPixel>> thread_results(omp_get_max_threads());
+#endif
+
+#ifdef _OPENMP
+#pragma omp parallel for schedule(static)
+#endif
     for (int y = half_k; y < rows - half_k; ++y) {
+#ifdef _OPENMP
+        int tid = omp_get_thread_num();
+#endif
         for (int x = half_k; x < cols - half_k; ++x) {
             double center_val = dbl.at<double>(y, x);
 
-            // 计算邻域统计量（排除中心像素）
             std::vector<double> neighbors;
             double sum = 0.0;
             int count = 0;
@@ -55,16 +74,34 @@ std::vector<DeadPixel> DeadPixelDetector::detect(const cv::Mat& image, const Dea
             }
 
             double mean = sum / count;
-            double diff = center_val - mean;
 
-            // 检查平均亮度范围
             if (mean < params.avg_brightness_min || mean > params.avg_brightness_max) continue;
 
+            double diff = center_val - mean;
+
+            double threshold = params.threshold;
+            if (params.use_dynamic_threshold) {
+                double variance = 0.0;
+                for (double val : neighbors) {
+                    variance += (val - mean) * (val - mean);
+                }
+                variance /= count;
+                double stddev = std::sqrt(variance);
+                threshold = params.dynamic_factor * stddev;
+            }
+
             bool is_dead = false;
-            if (params.type == DeadPixelType::BRIGHT && diff > params.threshold) {
+            if (params.type == DeadPixelType::BRIGHT && diff > threshold) {
                 is_dead = true;
-            } else if (params.type == DeadPixelType::DARK && diff < -params.threshold) {
+            } else if (params.type == DeadPixelType::DARK && diff < -threshold) {
                 is_dead = true;
+            }
+
+            if (is_dead && params.use_gradient_check) {
+                double grad_val = gradient_mag.at<double>(y, x);
+                if (grad_val > params.gradient_threshold) {
+                    is_dead = false;
+                }
             }
 
             if (is_dead) {
@@ -73,10 +110,20 @@ std::vector<DeadPixel> DeadPixelDetector::detect(const cv::Mat& image, const Dea
                 dp.y = y;
                 dp.type = params.type;
                 dp.value = center_val;
+#ifdef _OPENMP
+                thread_results[tid].push_back(dp);
+#else
                 result.push_back(dp);
+#endif
             }
         }
     }
+
+#ifdef _OPENMP
+    for (auto& tr : thread_results) {
+        result.insert(result.end(), tr.begin(), tr.end());
+    }
+#endif
 
     return result;
 }
@@ -130,50 +177,64 @@ cv::Mat DeadPixelDetector::correct(const cv::Mat& image,
     if (image.empty() || pixels.empty()) return image.clone();
 
     cv::Mat result = image.clone();
-    int half_k = 1; // 3x3邻域
+    cv::Mat img_f;
+    image.convertTo(img_f, CV_64F);
+    
+    int half_k = 1;
+    int depth = image.depth();
+    double max_val = 255.0;
+    
+    if (depth == CV_8U) {
+        max_val = 255.0;
+    } else if (depth == CV_16U) {
+        max_val = 65535.0;
+    } else if (depth == CV_32F || depth == CV_64F) {
+        max_val = 1.0;
+    }
 
     for (const auto& dp : pixels) {
         if (dp.x < half_k || dp.x >= image.cols - half_k ||
             dp.y < half_k || dp.y >= image.rows - half_k) continue;
 
-        if (image.channels() == 1) {
+        for (int c = 0; c < image.channels(); ++c) {
             std::vector<double> neighbors;
             for (int dy = -half_k; dy <= half_k; ++dy) {
                 for (int dx = -half_k; dx <= half_k; ++dx) {
                     if (dy == 0 && dx == 0) continue;
-                    neighbors.push_back(image.at<uint8_t>(dp.y + dy, dp.x + dx));
+                    if (image.channels() == 1) {
+                        neighbors.push_back(img_f.at<double>(dp.y + dy, dp.x + dx));
+                    } else {
+                        neighbors.push_back(img_f.at<cv::Vec3d>(dp.y + dy, dp.x + dx)[c]);
+                    }
                 }
             }
 
             double val;
             if (params.method == 0) {
-                // 邻域均值
                 val = std::accumulate(neighbors.begin(), neighbors.end(), 0.0) / neighbors.size();
             } else {
-                // 邻域中值
                 std::sort(neighbors.begin(), neighbors.end());
                 val = neighbors[neighbors.size() / 2];
             }
-            result.at<uint8_t>(dp.y, dp.x) = static_cast<uint8_t>(std::round(val));
-        } else {
-            // 多通道处理
-            for (int c = 0; c < image.channels(); ++c) {
-                std::vector<double> neighbors;
-                for (int dy = -half_k; dy <= half_k; ++dy) {
-                    for (int dx = -half_k; dx <= half_k; ++dx) {
-                        if (dy == 0 && dx == 0) continue;
-                        neighbors.push_back(image.at<cv::Vec3b>(dp.y + dy, dp.x + dx)[c]);
-                    }
+            
+            val = std::max(0.0, std::min(max_val, val));
+            
+            if (image.channels() == 1) {
+                if (depth == CV_8U) {
+                    result.at<uint8_t>(dp.y, dp.x) = static_cast<uint8_t>(std::round(val));
+                } else if (depth == CV_16U) {
+                    result.at<uint16_t>(dp.y, dp.x) = static_cast<uint16_t>(std::round(val));
+                } else if (depth == CV_32F) {
+                    result.at<float>(dp.y, dp.x) = static_cast<float>(val);
+                } else if (depth == CV_64F) {
+                    result.at<double>(dp.y, dp.x) = val;
                 }
-
-                double val;
-                if (params.method == 0) {
-                    val = std::accumulate(neighbors.begin(), neighbors.end(), 0.0) / neighbors.size();
-                } else {
-                    std::sort(neighbors.begin(), neighbors.end());
-                    val = neighbors[neighbors.size() / 2];
+            } else {
+                if (depth == CV_8U) {
+                    result.at<cv::Vec3b>(dp.y, dp.x)[c] = static_cast<uint8_t>(std::round(val));
+                } else if (depth == CV_16U) {
+                    result.at<cv::Vec3w>(dp.y, dp.x)[c] = static_cast<uint16_t>(std::round(val));
                 }
-                result.at<cv::Vec3b>(dp.y, dp.x)[c] = static_cast<uint8_t>(std::round(val));
             }
         }
     }

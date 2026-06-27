@@ -51,6 +51,20 @@ struct CCMCorrectParams {
 };
 
 /**
+ * @brief 传感器线性度验证结果
+ */
+struct LinearityCheckResult {
+    bool is_linear;           ///< 是否在线性响应区
+    double r_channel_r2;      ///< R通道线性拟合R²值
+    double g_channel_r2;      ///< G通道线性拟合R²值
+    double b_channel_r2;      ///< B通道线性拟合R²值
+    double avg_r2;            ///< 平均R²值
+    double suggested_min_luma; ///< 建议的最小亮度值
+    double suggested_max_luma; ///< 建议的最大亮度值
+    std::string message;      ///< 验证消息
+};
+
+/**
  * @brief 色彩校正矩阵类
  */
 class ColorCorrectionMatrix {
@@ -109,6 +123,18 @@ public:
         const std::vector<cv::Vec3d>& src_colors,
         const std::vector<cv::Vec3d>& ref_colors,
         const CCMCorrectParams& ccm_params);
+
+    /**
+     * @brief 验证传感器线性度（CCM标定前的预处理步骤）
+     * @param src_colors 输入图像中的颜色值
+     * @param ref_colors 参考颜色值（应按亮度排序）
+     * @param min_r2_threshold R²最小值阈值（默认0.98）
+     * @return 线性度验证结果
+     */
+    static LinearityCheckResult checkLinearity(
+        const std::vector<cv::Vec3d>& src_colors,
+        const std::vector<cv::Vec3d>& ref_colors,
+        double min_r2_threshold = 0.98);
 };
 
 } // namespace mvtk

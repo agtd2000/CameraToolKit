@@ -24,7 +24,7 @@ events:
       The output was:
       0
       閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.23+b0019275e
-      鐢熸垚鍚姩鏃堕棿涓?2026/6/26 22:30:09銆?
+      鐢熸垚鍚姩鏃堕棿涓?2026/6/27 14:06:02銆?
       
       鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\3.29.8\\CompilerIdCXX\\CompilerIdCXX.vcxproj鈥?榛樿鐩爣)銆?
       PrepareForBuild:
@@ -62,7 +62,7 @@ events:
           0 涓鍛?
           0 涓敊璇?
       
-      宸茬敤鏃堕棿 00:00:03.62
+      宸茬敤鏃堕棿 00:00:04.29
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -81,8 +81,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-8xzc5c"
-      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-8xzc5c"
+      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-z7mf2e"
+      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-z7mf2e"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -96,40 +96,40 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-8xzc5c'
+        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-z7mf2e'
         
-        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_c672e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_2366f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.23+b0019275e
-        鐢熸垚鍚姩鏃堕棿涓?2026/6/26 22:30:14銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/6/27 14:06:08銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8xzc5c\\cmTC_c672e.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z7mf2e\\cmTC_2366f.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_c672e.dir\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_2366f.dir\\Debug\\鈥濄€?
           宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8xzc5c\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_c672e.dir\\Debug\\cmTC_c672e.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z7mf2e\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_2366f.dir\\Debug\\cmTC_2366f.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_c672e.dir\\Debug\\cmTC_c672e.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_c672e.dir\\Debug\\cmTC_c672e.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_2366f.dir\\Debug\\cmTC_2366f.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_2366f.dir\\Debug\\cmTC_2366f.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_c672e.dir\\Debug\\\\" /Fd"cmTC_c672e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "D:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_2366f.dir\\Debug\\\\" /Fd"cmTC_2366f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "D:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35220 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_c672e.dir\\Debug\\\\" /Fd"cmTC_c672e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "D:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_2366f.dir\\Debug\\\\" /Fd"cmTC_2366f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "D:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
           CMakeCXXCompilerABI.cpp
         Link:
-          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8xzc5c\\Debug\\cmTC_c672e.exe" /INCREMENTAL /ILK:"cmTC_c672e.dir\\Debug\\cmTC_c672e.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-8xzc5c/Debug/cmTC_c672e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-8xzc5c/Debug/cmTC_c672e.lib" /MACHINE:X64  /machine:x64 cmTC_c672e.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_c672e.vcxproj -> E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8xzc5c\\Debug\\cmTC_c672e.exe
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z7mf2e\\Debug\\cmTC_2366f.exe" /INCREMENTAL /ILK:"cmTC_2366f.dir\\Debug\\cmTC_2366f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-z7mf2e/Debug/cmTC_2366f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-z7mf2e/Debug/cmTC_2366f.lib" /MACHINE:X64  /machine:x64 cmTC_2366f.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_2366f.vcxproj -> E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z7mf2e\\Debug\\cmTC_2366f.exe
         FinalizeBuildStatus:
-          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_c672e.dir\\Debug\\cmTC_c672e.tlog\\unsuccessfulbuild鈥濄€?
-          姝ｅ湪瀵光€渃mTC_c672e.dir\\Debug\\cmTC_c672e.tlog\\cmTC_c672e.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8xzc5c\\cmTC_c672e.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
+          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_2366f.dir\\Debug\\cmTC_2366f.tlog\\unsuccessfulbuild鈥濄€?
+          姝ｅ湪瀵光€渃mTC_2366f.dir\\Debug\\cmTC_2366f.tlog\\cmTC_2366f.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z7mf2e\\cmTC_2366f.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
         
         宸叉垚鍔熺敓鎴愩€?
             0 涓鍛?
             0 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:02.20
+        宸茬敤鏃堕棿 00:00:02.16
         
       exitCode: 0
   -
@@ -178,16 +178,17 @@ events:
       - "D:/vcpkg/installed/x64-windows/share/opencv4/OpenCVModules.cmake:19 (find_dependency)"
       - "D:/vcpkg/installed/x64-windows/share/opencv4/OpenCVConfig.cmake:128 (include)"
       - "D:/vcpkg/scripts/buildsystems/vcpkg.cmake:908 (_find_package)"
-      - "CMakeLists.txt:11 (find_package)"
+      - "CMakeLists.txt:15 (find_package)"
     checks:
       - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
     directories:
-      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-utljj3"
-      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-utljj3"
+      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-ngg88u"
+      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-ngg88u"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
       CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
       VCPKG_INSTALLED_DIR: "D:/vcpkg/installed"
       VCPKG_PREFER_SYSTEM_LIBS: "OFF"
       VCPKG_TARGET_TRIPLET: "x64-windows"
@@ -196,40 +197,40 @@ events:
       variable: "CMAKE_HAVE_LIBC_PTHREAD"
       cached: true
       stdout: |
-        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-utljj3'
+        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-ngg88u'
         
-        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_6312b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_34fbe.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.23+b0019275e
-        鐢熸垚鍚姩鏃堕棿涓?2026/6/26 22:30:18銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/6/27 14:06:18銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\cmTC_6312b.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\cmTC_34fbe.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_6312b.dir\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_34fbe.dir\\Debug\\鈥濄€?
           宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_6312b.dir\\Debug\\cmTC_6312b.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_34fbe.dir\\Debug\\cmTC_34fbe.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_6312b.dir\\Debug\\cmTC_6312b.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_6312b.dir\\Debug\\cmTC_6312b.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_34fbe.dir\\Debug\\cmTC_34fbe.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_34fbe.dir\\Debug\\cmTC_34fbe.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_6312b.dir\\Debug\\\\" /Fd"cmTC_6312b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\src.cxx"
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_34fbe.dir\\Debug\\\\" /Fd"cmTC_34fbe.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\src.cxx"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35220 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_6312b.dir\\Debug\\\\" /Fd"cmTC_6312b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\src.cxx"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_34fbe.dir\\Debug\\\\" /Fd"cmTC_34fbe.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\src.cxx"
           src.cxx
-        E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\src.cxx(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\cmTC_6312b.vcxproj]
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\cmTC_6312b.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+        E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\src.cxx(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\cmTC_34fbe.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\cmTC_34fbe.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
         
         鐢熸垚澶辫触銆?
         
-        鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\cmTC_6312b.vcxproj鈥?榛樿鐩爣) (1) ->
+        鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\cmTC_34fbe.vcxproj鈥?榛樿鐩爣) (1) ->
         (ClCompile 鐩爣) -> 
-          E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\src.cxx(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-utljj3\\cmTC_6312b.vcxproj]
+          E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\src.cxx(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ngg88u\\cmTC_34fbe.vcxproj]
         
             0 涓鍛?
             1 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:00.87
+        宸茬敤鏃堕棿 00:00:00.85
         
       exitCode: 1
   -
@@ -249,16 +250,17 @@ events:
       - "D:/vcpkg/installed/x64-windows/share/opencv4/OpenCVModules.cmake:19 (find_dependency)"
       - "D:/vcpkg/installed/x64-windows/share/opencv4/OpenCVConfig.cmake:128 (include)"
       - "D:/vcpkg/scripts/buildsystems/vcpkg.cmake:908 (_find_package)"
-      - "CMakeLists.txt:11 (find_package)"
+      - "CMakeLists.txt:15 (find_package)"
     checks:
       - "Looking for pthread_create in pthreads"
     directories:
-      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-j8hybj"
-      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-j8hybj"
+      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-ofh7v9"
+      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-ofh7v9"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
       CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
       VCPKG_INSTALLED_DIR: "D:/vcpkg/installed"
       VCPKG_PREFER_SYSTEM_LIBS: "OFF"
       VCPKG_TARGET_TRIPLET: "x64-windows"
@@ -267,42 +269,42 @@ events:
       variable: "CMAKE_HAVE_PTHREADS_CREATE"
       cached: true
       stdout: |
-        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-j8hybj'
+        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-ofh7v9'
         
-        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_01697.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_feb7a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.23+b0019275e
-        鐢熸垚鍚姩鏃堕棿涓?2026/6/26 22:30:20銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/6/27 14:06:20銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\cmTC_01697.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\cmTC_feb7a.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_01697.dir\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_feb7a.dir\\Debug\\鈥濄€?
           宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_01697.dir\\Debug\\cmTC_01697.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_feb7a.dir\\Debug\\cmTC_feb7a.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_01697.dir\\Debug\\cmTC_01697.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_01697.dir\\Debug\\cmTC_01697.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_feb7a.dir\\Debug\\cmTC_feb7a.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_feb7a.dir\\Debug\\cmTC_feb7a.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_01697.dir\\Debug\\\\" /Fd"cmTC_01697.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\CheckFunctionExists.cxx"
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_feb7a.dir\\Debug\\\\" /Fd"cmTC_feb7a.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\CheckFunctionExists.cxx"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35220 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_01697.dir\\Debug\\\\" /Fd"cmTC_01697.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\CheckFunctionExists.cxx"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_feb7a.dir\\Debug\\\\" /Fd"cmTC_feb7a.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\CheckFunctionExists.cxx"
           CheckFunctionExists.cxx
         Link:
-          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\Debug\\cmTC_01697.exe" /INCREMENTAL /ILK:"cmTC_01697.dir\\Debug\\cmTC_01697.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-j8hybj/Debug/cmTC_01697.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-j8hybj/Debug/cmTC_01697.lib" /MACHINE:X64  /machine:x64 cmTC_01697.dir\\Debug\\CheckFunctionExists.obj
-        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\cmTC_01697.vcxproj]
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\cmTC_01697.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\Debug\\cmTC_feb7a.exe" /INCREMENTAL /ILK:"cmTC_feb7a.dir\\Debug\\cmTC_feb7a.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-ofh7v9/Debug/cmTC_feb7a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-ofh7v9/Debug/cmTC_feb7a.lib" /MACHINE:X64  /machine:x64 cmTC_feb7a.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\cmTC_feb7a.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\cmTC_feb7a.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
         
         鐢熸垚澶辫触銆?
         
-        鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\cmTC_01697.vcxproj鈥?榛樿鐩爣) (1) ->
+        鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\cmTC_feb7a.vcxproj鈥?榛樿鐩爣) (1) ->
         (Link 鐩爣) -> 
-          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-j8hybj\\cmTC_01697.vcxproj]
+          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-ofh7v9\\cmTC_feb7a.vcxproj]
         
             0 涓鍛?
             1 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:01.22
+        宸茬敤鏃堕棿 00:00:01.10
         
       exitCode: 1
   -
@@ -322,16 +324,17 @@ events:
       - "D:/vcpkg/installed/x64-windows/share/opencv4/OpenCVModules.cmake:19 (find_dependency)"
       - "D:/vcpkg/installed/x64-windows/share/opencv4/OpenCVConfig.cmake:128 (include)"
       - "D:/vcpkg/scripts/buildsystems/vcpkg.cmake:908 (_find_package)"
-      - "CMakeLists.txt:11 (find_package)"
+      - "CMakeLists.txt:15 (find_package)"
     checks:
       - "Looking for pthread_create in pthread"
     directories:
-      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-203n0v"
-      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-203n0v"
+      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-rz6pdf"
+      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-rz6pdf"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
       CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
       VCPKG_INSTALLED_DIR: "D:/vcpkg/installed"
       VCPKG_PREFER_SYSTEM_LIBS: "OFF"
       VCPKG_TARGET_TRIPLET: "x64-windows"
@@ -340,42 +343,162 @@ events:
       variable: "CMAKE_HAVE_PTHREAD_CREATE"
       cached: true
       stdout: |
-        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-203n0v'
+        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-rz6pdf'
         
-        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_a234b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_d2efd.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.23+b0019275e
-        鐢熸垚鍚姩鏃堕棿涓?2026/6/26 22:30:23銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/6/27 14:06:23銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\cmTC_a234b.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\cmTC_d2efd.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_a234b.dir\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_d2efd.dir\\Debug\\鈥濄€?
           宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_a234b.dir\\Debug\\cmTC_a234b.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_d2efd.dir\\Debug\\cmTC_d2efd.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_a234b.dir\\Debug\\cmTC_a234b.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_a234b.dir\\Debug\\cmTC_a234b.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_d2efd.dir\\Debug\\cmTC_d2efd.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_d2efd.dir\\Debug\\cmTC_d2efd.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_a234b.dir\\Debug\\\\" /Fd"cmTC_a234b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\CheckFunctionExists.cxx"
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_d2efd.dir\\Debug\\\\" /Fd"cmTC_d2efd.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\CheckFunctionExists.cxx"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35220 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_a234b.dir\\Debug\\\\" /Fd"cmTC_a234b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\CheckFunctionExists.cxx"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_d2efd.dir\\Debug\\\\" /Fd"cmTC_d2efd.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\CheckFunctionExists.cxx"
           CheckFunctionExists.cxx
         Link:
-          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\Debug\\cmTC_a234b.exe" /INCREMENTAL /ILK:"cmTC_a234b.dir\\Debug\\cmTC_a234b.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-203n0v/Debug/cmTC_a234b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-203n0v/Debug/cmTC_a234b.lib" /MACHINE:X64  /machine:x64 cmTC_a234b.dir\\Debug\\CheckFunctionExists.obj
-        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\cmTC_a234b.vcxproj]
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\cmTC_a234b.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\Debug\\cmTC_d2efd.exe" /INCREMENTAL /ILK:"cmTC_d2efd.dir\\Debug\\cmTC_d2efd.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-rz6pdf/Debug/cmTC_d2efd.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-rz6pdf/Debug/cmTC_d2efd.lib" /MACHINE:X64  /machine:x64 cmTC_d2efd.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\cmTC_d2efd.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\cmTC_d2efd.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
         
         鐢熸垚澶辫触銆?
         
-        鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\cmTC_a234b.vcxproj鈥?榛樿鐩爣) (1) ->
+        鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\cmTC_d2efd.vcxproj鈥?榛樿鐩爣) (1) ->
         (Link 鐩爣) -> 
-          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-203n0v\\cmTC_a234b.vcxproj]
+          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rz6pdf\\cmTC_d2efd.vcxproj]
         
             0 涓鍛?
             1 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:01.21
+        宸茬敤鏃堕棿 00:00:01.09
         
       exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Program Files/CMake/share/cmake-3.29/Modules/FindOpenMP.cmake:219 (try_compile)"
+      - "D:/Program Files/CMake/share/cmake-3.29/Modules/FindOpenMP.cmake:487 (_OPENMP_GET_FLAGS)"
+      - "D:/vcpkg/scripts/buildsystems/vcpkg.cmake:908 (_find_package)"
+      - "CMakeLists.txt:17 (find_package)"
+    description: "Detecting CXX OpenMP compiler info"
+    directories:
+      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-qpvpvi"
+      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-qpvpvi"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+      VCPKG_INSTALLED_DIR: "D:/vcpkg/installed"
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "D:/vcpkg"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CXX_openmp"
+      cached: true
+      stdout: |
+        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-qpvpvi'
+        
+        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_8b4d0.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.23+b0019275e
+        鐢熸垚鍚姩鏃堕棿涓?2026/6/27 14:06:26銆?
+        
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qpvpvi\\cmTC_8b4d0.vcxproj鈥?榛樿鐩爣)銆?
+        PrepareForBuild:
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_8b4d0.dir\\Debug\\鈥濄€?
+          宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qpvpvi\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_8b4d0.dir\\Debug\\cmTC_8b4d0.tlog\\鈥濄€?
+        InitializeBuildStatus:
+          姝ｅ湪鍒涘缓鈥渃mTC_8b4d0.dir\\Debug\\cmTC_8b4d0.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_8b4d0.dir\\Debug\\cmTC_8b4d0.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+        ClCompile:
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /openmp /std:c++17 /Fo"cmTC_8b4d0.dir\\Debug\\\\" /Fd"cmTC_8b4d0.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qpvpvi\\OpenMPTryFlag.cpp"
+          鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35220 鐗?
+          鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /openmp /std:c++17 /Fo"cmTC_8b4d0.dir\\Debug\\\\" /Fd"cmTC_8b4d0.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qpvpvi\\OpenMPTryFlag.cpp"
+          OpenMPTryFlag.cpp
+        Link:
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qpvpvi\\Debug\\cmTC_8b4d0.exe" /INCREMENTAL /ILK:"cmTC_8b4d0.dir\\Debug\\cmTC_8b4d0.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-qpvpvi/Debug/cmTC_8b4d0.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-qpvpvi/Debug/cmTC_8b4d0.lib" /MACHINE:X64  /machine:x64 cmTC_8b4d0.dir\\Debug\\OpenMPTryFlag.obj
+          cmTC_8b4d0.vcxproj -> E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qpvpvi\\Debug\\cmTC_8b4d0.exe
+        FinalizeBuildStatus:
+          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_8b4d0.dir\\Debug\\cmTC_8b4d0.tlog\\unsuccessfulbuild鈥濄€?
+          姝ｅ湪瀵光€渃mTC_8b4d0.dir\\Debug\\cmTC_8b4d0.tlog\\cmTC_8b4d0.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qpvpvi\\cmTC_8b4d0.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
+        
+        宸叉垚鍔熺敓鎴愩€?
+            0 涓鍛?
+            0 涓敊璇?
+        
+        宸茬敤鏃堕棿 00:00:02.12
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Program Files/CMake/share/cmake-3.29/Modules/FindOpenMP.cmake:421 (try_compile)"
+      - "D:/Program Files/CMake/share/cmake-3.29/Modules/FindOpenMP.cmake:561 (_OPENMP_GET_SPEC_DATE)"
+      - "D:/vcpkg/scripts/buildsystems/vcpkg.cmake:908 (_find_package)"
+      - "CMakeLists.txt:17 (find_package)"
+    description: "Detecting CXX OpenMP version"
+    directories:
+      source: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-bmdkxb"
+      binary: "E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-bmdkxb"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+      VCPKG_INSTALLED_DIR: "D:/vcpkg/installed"
+      VCPKG_PREFER_SYSTEM_LIBS: "OFF"
+      VCPKG_TARGET_TRIPLET: "x64-windows"
+      Z_VCPKG_ROOT_DIR: "D:/vcpkg"
+    buildResult:
+      variable: "OpenMP_SPECTEST_CXX_"
+      cached: true
+      stdout: |
+        Change Dir: 'E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-bmdkxb'
+        
+        Run Build Command(s): "d:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_ebc24.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.23+b0019275e
+        鐢熸垚鍚姩鏃堕棿涓?2026/6/27 14:06:30銆?
+        
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-bmdkxb\\cmTC_ebc24.vcxproj鈥?榛樿鐩爣)銆?
+        PrepareForBuild:
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_ebc24.dir\\Debug\\鈥濄€?
+          宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-bmdkxb\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_ebc24.dir\\Debug\\cmTC_ebc24.tlog\\鈥濄€?
+        InitializeBuildStatus:
+          姝ｅ湪鍒涘缓鈥渃mTC_ebc24.dir\\Debug\\cmTC_ebc24.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_ebc24.dir\\Debug\\cmTC_ebc24.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+        ClCompile:
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /openmp /std:c++17 /Fo"cmTC_ebc24.dir\\Debug\\\\" /Fd"cmTC_ebc24.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-bmdkxb\\OpenMPCheckVersion.cpp"
+          鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35220 鐗?
+          鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /openmp /std:c++17 /Fo"cmTC_ebc24.dir\\Debug\\\\" /Fd"cmTC_ebc24.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-bmdkxb\\OpenMPCheckVersion.cpp"
+          OpenMPCheckVersion.cpp
+        Link:
+          d:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-bmdkxb\\Debug\\cmTC_ebc24.exe" /INCREMENTAL /ILK:"cmTC_ebc24.dir\\Debug\\cmTC_ebc24.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-bmdkxb/Debug/cmTC_ebc24.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Projects/Study/MvToolKit/build/CMakeFiles/CMakeScratch/TryCompile-bmdkxb/Debug/cmTC_ebc24.lib" /MACHINE:X64  /machine:x64 cmTC_ebc24.dir\\Debug\\OpenMPCheckVersion.obj
+          cmTC_ebc24.vcxproj -> E:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-bmdkxb\\Debug\\cmTC_ebc24.exe
+        FinalizeBuildStatus:
+          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_ebc24.dir\\Debug\\cmTC_ebc24.tlog\\unsuccessfulbuild鈥濄€?
+          姝ｅ湪瀵光€渃mTC_ebc24.dir\\Debug\\cmTC_ebc24.tlog\\cmTC_ebc24.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\Projects\\Study\\MvToolKit\\build\\CMakeFiles\\CMakeScratch\\TryCompile-bmdkxb\\cmTC_ebc24.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
+        
+        宸叉垚鍔熺敓鎴愩€?
+            0 涓鍛?
+            0 涓敊璇?
+        
+        宸茬敤鏃堕棿 00:00:02.10
+        
+      exitCode: 0
 ...

@@ -19,8 +19,16 @@ public:
     virtual void SetEnabled(bool enabled) = 0;
 };
 
+enum class DenoisePosition {
+    PRE_LSC,
+    POST_LSC,
+    BOTH
+};
+
 class CorrectionPipeline {
 public:
+    CorrectionPipeline() : denoise_position_(DenoisePosition::POST_LSC) {}
+    
     void AddNode(std::shared_ptr<ImageNode> node);
     void RemoveNode(const std::string& name);
     void Clear();
@@ -37,8 +45,14 @@ public:
     
     void SetPipelineOrder(const std::vector<std::string>& order);
     
+    void SetDenoisePosition(DenoisePosition position);
+    DenoisePosition GetDenoisePosition() const;
+    
+    void UpdatePipelineOrder();
+    
 private:
     std::vector<std::shared_ptr<ImageNode>> nodes_;
+    DenoisePosition denoise_position_;
 };
 
 class LSCNode : public ImageNode {

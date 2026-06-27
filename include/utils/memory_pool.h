@@ -12,7 +12,7 @@ namespace utils {
 class MemoryPool {
 public:
     MemoryPool(size_t pool_size = 8, int width = 1920, int height = 1080, 
-               int type = CV_16UC1, bool use_double_buffer = true);
+               int type = CV_16UC1, bool use_double_buffer = true, int alignment = 64);
     ~MemoryPool();
     
     void Init(size_t pool_size, int width, int height, int type);
@@ -29,17 +29,25 @@ public:
     int GetWidth() const { return width_; }
     int GetHeight() const { return height_; }
     int GetType() const { return type_; }
+    int GetAlignment() const { return alignment_; }
     
     bool IsDoubleBufferEnabled() const { return use_double_buffer_; }
     cv::Mat GetFrontBuffer();
     cv::Mat GetBackBuffer();
     void SwapBuffers();
     
+    void SetAlignment(int alignment);
+    
 private:
     struct BufferItem {
         cv::Mat data;
         bool in_use;
+        void* aligned_ptr;
+        size_t allocated_size;
+        BufferItem() : in_use(false), aligned_ptr(nullptr), allocated_size(0) {}
     };
+    
+    cv::Mat createAlignedMat(int rows, int cols, int type, int alignment, void*& out_ptr, size_t& out_size);
     
     std::vector<BufferItem> buffers_;
     mutable std::mutex mutex_;
@@ -52,6 +60,7 @@ private:
     bool use_double_buffer_;
     int front_buffer_idx_;
     int back_buffer_idx_;
+    int alignment_;
 };
 
 class ScopedBuffer {

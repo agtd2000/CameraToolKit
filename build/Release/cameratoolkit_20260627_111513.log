@@ -1,8 +1,0 @@
-========== Log Started ==========
-Timestamp: 2026-06-27 11:15:13
-==================================
-[2026-06-27 11:15:13] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
-[2026-06-27 11:15:13] [INFO] MainFrame initialized successfully
-[2026-06-27 11:15:33] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\MvToolKit\build\images\flat.BMP
-[2026-06-27 11:15:33] [DEBUG] [DATA] ImageInfo = Size: 2048x2048
-[2026-06-27 11:24:28] [INFO] [OPERATION] Close - Application closing

@@ -21,6 +21,76 @@ void CorrectionPipeline::Clear() {
     nodes_.clear();
 }
 
+void CorrectionPipeline::SetDenoisePosition(DenoisePosition position) {
+    denoise_position_ = position;
+    UpdatePipelineOrder();
+}
+
+DenoisePosition CorrectionPipeline::GetDenoisePosition() const {
+    return denoise_position_;
+}
+
+void CorrectionPipeline::UpdatePipelineOrder() {
+    if (nodes_.empty()) return;
+    
+    std::vector<std::shared_ptr<ImageNode>> new_order;
+    std::shared_ptr<ImageNode> denoise_node = nullptr;
+    bool has_lsc = false;
+    
+    for (const auto& node : nodes_) {
+        if (node->GetName() == "Denoise") {
+            denoise_node = node;
+        } else if (node->GetName() == "LSC") {
+            has_lsc = true;
+        }
+    }
+    
+    if (!denoise_node) {
+        return;
+    }
+    
+    switch (denoise_position_) {
+        case DenoisePosition::PRE_LSC:
+            new_order.push_back(denoise_node);
+            for (const auto& node : nodes_) {
+                if (node->GetName() != "Denoise") {
+                    new_order.push_back(node);
+                }
+            }
+            break;
+            
+        case DenoisePosition::POST_LSC:
+            for (const auto& node : nodes_) {
+                if (node->GetName() != "Denoise") {
+                    new_order.push_back(node);
+                }
+            }
+            new_order.push_back(denoise_node);
+            break;
+            
+        case DenoisePosition::BOTH:
+            new_order.push_back(denoise_node);
+            bool added_post = false;
+            for (const auto& node : nodes_) {
+                if (node->GetName() != "Denoise") {
+                    new_order.push_back(node);
+                    if (has_lsc && !added_post && node->GetName() == "LSC") {
+                        new_order.push_back(denoise_node);
+                        added_post = true;
+                    }
+                }
+            }
+            if (!added_post && has_lsc) {
+                new_order.push_back(denoise_node);
+            }
+            break;
+    }
+    
+    if (!new_order.empty()) {
+        nodes_ = new_order;
+    }
+}
+
 cv::Mat CorrectionPipeline::Process(const cv::Mat& input) {
     cv::Mat result = input.clone();
     ProcessInPlace(result);
