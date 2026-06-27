@@ -5,6 +5,8 @@
 #include "wxui/color_error_panel.h"
 #include "wxui/color_char_calib_panel.h"
 #include "wxui/spectral_calib_panel.h"
+#include "neumorphic_panel.h"
+#include "style_defs.h"
 #include "utils/logger.h"
 #include "utils/tone_mapping.h"
 
@@ -23,6 +25,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
       lsc_checkbox_(nullptr), denoise_checkbox_(nullptr),
       interpolation_checkbox_(nullptr), wb_checkbox_(nullptr),
       ccm_checkbox_(nullptr), gamma_checkbox_(nullptr) {
+
+    SetBackgroundColour(Style::NEU_BG_COLOR);
 
     aui_manager_.SetManagedWindow(this);
 
@@ -50,8 +54,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     CreateStatusBar();
     SetStatusText("Ready");
+    SetFont(Style::GetSansFont(10));
 
     notebook_ = new wxNotebook(this, wxID_ANY);
+    notebook_->SetBackgroundColour(wxColour(245, 246, 248));
 
     notebook_->AddPage(new DeadPixelPanel(notebook_), "Dead Pixel");
     notebook_->AddPage(new FlatFieldPanel(notebook_), "Flat Field");
@@ -60,60 +66,77 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     notebook_->AddPage(new ColorCharCalibPanel(notebook_), "Color Char");
     notebook_->AddPage(new SpectralCalibPanel(notebook_), "Spectral");
 
-    wxPanel* left_panel = new wxPanel(this, wxID_ANY);
+    NeumorphicPanel* left_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* left_sizer = new wxBoxSizer(wxVERTICAL);
     
     wxStaticText* tone_title = new wxStaticText(left_panel, wxID_ANY, "Tone Mapping");
-    left_sizer->Add(tone_title, 0, wxALL, 5);
+    Style::ApplyNeumorphicStyle(tone_title, true);
+    left_sizer->Add(tone_title, 0, wxALL, Style::SPACING_MEDIUM);
     
-    tone_mapping_combo_ = new wxComboBox(left_panel, wxID_ANY, "Percentile", wxDefaultPosition, wxDefaultSize,
+    tone_mapping_combo_ = new wxComboBox(left_panel, wxID_ANY, "Percentile", wxDefaultPosition, wxSize(160, -1),
                                          {"Linear", "Percentile", "Histogram Equalization", "Gamma"},
                                          wxCB_READONLY);
-    left_sizer->Add(tone_mapping_combo_, 0, wxEXPAND | wxALL, 5);
+    Style::ApplyNeumorphicStyle(tone_mapping_combo_);
+    left_sizer->Add(tone_mapping_combo_, 0, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
     tone_mapping_combo_->Bind(wxEVT_COMBOBOX, &MainFrame::OnToneMappingChanged, this);
     
     wxStaticLine* line1 = new wxStaticLine(left_panel, wxID_ANY);
-    left_sizer->Add(line1, 0, wxEXPAND | wxALL, 5);
+    left_sizer->Add(line1, 0, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
     
     wxStaticText* pipeline_title = new wxStaticText(left_panel, wxID_ANY, "Correction Pipeline");
-    left_sizer->Add(pipeline_title, 0, wxALL, 5);
+    Style::ApplyNeumorphicStyle(pipeline_title, true);
+    left_sizer->Add(pipeline_title, 0, wxALL, Style::SPACING_MEDIUM);
     
     lsc_checkbox_ = new wxCheckBox(left_panel, wxID_ANY, "LSC");
+    lsc_checkbox_->SetFont(Style::GetSansFont(9));
+    lsc_checkbox_->SetForegroundColour(Style::NEU_TEXT_COLOR);
     lsc_checkbox_->SetValue(true);
-    left_sizer->Add(lsc_checkbox_, 0, wxALL, 2);
+    left_sizer->Add(lsc_checkbox_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     
     denoise_checkbox_ = new wxCheckBox(left_panel, wxID_ANY, "Denoise");
+    denoise_checkbox_->SetFont(Style::GetSansFont(9));
+    denoise_checkbox_->SetForegroundColour(Style::NEU_TEXT_COLOR);
     denoise_checkbox_->SetValue(true);
-    left_sizer->Add(denoise_checkbox_, 0, wxALL, 2);
+    left_sizer->Add(denoise_checkbox_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     
     interpolation_checkbox_ = new wxCheckBox(left_panel, wxID_ANY, "Interpolation");
+    interpolation_checkbox_->SetFont(Style::GetSansFont(9));
+    interpolation_checkbox_->SetForegroundColour(Style::NEU_TEXT_COLOR);
     interpolation_checkbox_->SetValue(true);
-    left_sizer->Add(interpolation_checkbox_, 0, wxALL, 2);
+    left_sizer->Add(interpolation_checkbox_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     
     wb_checkbox_ = new wxCheckBox(left_panel, wxID_ANY, "White Balance");
+    wb_checkbox_->SetFont(Style::GetSansFont(9));
+    wb_checkbox_->SetForegroundColour(Style::NEU_TEXT_COLOR);
     wb_checkbox_->SetValue(true);
-    left_sizer->Add(wb_checkbox_, 0, wxALL, 2);
+    left_sizer->Add(wb_checkbox_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     
     ccm_checkbox_ = new wxCheckBox(left_panel, wxID_ANY, "CCM");
+    ccm_checkbox_->SetFont(Style::GetSansFont(9));
+    ccm_checkbox_->SetForegroundColour(Style::NEU_TEXT_COLOR);
     ccm_checkbox_->SetValue(true);
-    left_sizer->Add(ccm_checkbox_, 0, wxALL, 2);
+    left_sizer->Add(ccm_checkbox_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     
     gamma_checkbox_ = new wxCheckBox(left_panel, wxID_ANY, "Gamma");
+    gamma_checkbox_->SetFont(Style::GetSansFont(9));
+    gamma_checkbox_->SetForegroundColour(Style::NEU_TEXT_COLOR);
     gamma_checkbox_->SetValue(true);
-    left_sizer->Add(gamma_checkbox_, 0, wxALL, 2);
+    left_sizer->Add(gamma_checkbox_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     
     left_sizer->AddStretchSpacer();
     left_panel->SetSizer(left_sizer);
 
-    wxPanel* right_panel = new wxPanel(this, wxID_ANY);
+    NeumorphicPanel* right_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* right_sizer = new wxBoxSizer(wxVERTICAL);
     
     wxStaticText* right_title = new wxStaticText(right_panel, wxID_ANY, "Log");
-    right_sizer->Add(right_title, 0, wxALL, 5);
+    Style::ApplyNeumorphicStyle(right_title, true);
+    right_sizer->Add(right_title, 0, wxALL, Style::SPACING_MEDIUM);
     
     log_text_ctrl_ = new wxTextCtrl(right_panel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize,
                                     wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH);
-    right_sizer->Add(log_text_ctrl_, 1, wxEXPAND | wxALL, 5);
+    Style::ApplyNeumorphicStyle(log_text_ctrl_);
+    right_sizer->Add(log_text_ctrl_, 1, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
     right_panel->SetSizer(right_sizer);
 
     utils::Logger::GetInstance().SetLogCallback(

@@ -87,7 +87,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "D:/vcpkg/installed/x64-windows/include/opencv4" /external:I "D:/vcpkg/installed/x64-windows/lib/mswud" /external:I "D:/vcpkg/installed/x64-windows/include" /utf-8</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -107,10 +107,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;NOMINMAX;WIN32_LEAN_AND_MEAN;_USE_MATH_DEFINES;UNICODE;_UNICODE;__WXMSW__;WXUSINGDLL;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswud;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswud;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswud;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswud;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -145,7 +145,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "D:/vcpkg/installed/x64-windows/include/opencv4" /external:I "D:/vcpkg/installed/x64-windows/lib/mswu" /external:I "D:/vcpkg/installed/x64-windows/include" /utf-8</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -165,10 +165,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;NOMINMAX;WIN32_LEAN_AND_MEAN;_USE_MATH_DEFINES;UNICODE;_UNICODE;__WXMSW__;WXUSINGDLL;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -203,7 +203,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "D:/vcpkg/installed/x64-windows/include/opencv4" /external:I "D:/vcpkg/installed/x64-windows/lib/mswu" /external:I "D:/vcpkg/installed/x64-windows/include" /utf-8</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -223,10 +223,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;NOMINMAX;WIN32_LEAN_AND_MEAN;_USE_MATH_DEFINES;UNICODE;_UNICODE;__WXMSW__;WXUSINGDLL;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -261,7 +261,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "D:/vcpkg/installed/x64-windows/include/opencv4" /external:I "D:/vcpkg/installed/x64-windows/lib/mswu" /external:I "D:/vcpkg/installed/x64-windows/include" /utf-8</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -280,10 +280,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;NOMINMAX;WIN32_LEAN_AND_MEAN;_USE_MATH_DEFINES;UNICODE;_UNICODE;__WXMSW__;WXUSINGDLL;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\Study\MvToolKit\include;E:\Projects\Study\MvToolKit\src\wxui;D:\vcpkg\installed\x64-windows\include\opencv4;D:\vcpkg\installed\x64-windows\lib\mswu;D:\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -389,6 +389,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\main_app.cpp" />
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\main_frame.cpp" />
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\image_canvas.cpp" />
+    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\neumorphic_panel.cpp" />
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\dead_pixel_panel.cpp" />
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\flat_field_panel.cpp" />
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\quick_color_calib_panel.cpp" />

@@ -1,0 +1,21 @@
+========== Log Started ==========
+Timestamp: 2026-06-27 10:42:19
+==================================
+[2026-06-27 10:42:19] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-27 10:42:19] [INFO] MainFrame initialized successfully
+[2026-06-27 10:42:48] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\MvToolKit\build\images\colorchecker.bmp
+[2026-06-27 10:42:48] [DEBUG] [DATA] ImageInfo = Size: 2048x2048, Channels: 3, Depth: 0
+[2026-06-27 10:43:05] [INFO] [OPERATION] Detect Color Checker - Starting auto detection...
+[2026-06-27 10:43:05] [DEBUG] [DATA] ROIResult = Detected 24 ROIs (Auto)
+[2026-06-27 10:43:05] [DEBUG] [DATA] BrightnessCheck = Value: 0.267555, Range: [0.550000, 0.650000], Status: Out of Range
+[2026-06-27 10:43:17] [INFO] [OPERATION] Load Reference Image - Path: E:\Projects\Study\MvToolKit\build\images\colorchecker.bmp
+[2026-06-27 10:43:18] [DEBUG] [DATA] RefImageInfo = Size: 2048x2048
+[2026-06-27 10:43:24] [INFO] [OPERATION] Detect Reference Color Checker - Starting auto detection...
+[2026-06-27 10:43:24] [DEBUG] [DATA] RefROIResult = Detected 24 ROIs (Auto)
+[2026-06-27 10:43:27] [INFO] [OPERATION] Calibrate - Mode: Standard, ROIs: 24, WB Method: 0, CCM Method: 0, Stat Method: 1
+[2026-06-27 10:43:27] [DEBUG] [DATA] WhiteBalance = R Gain: 0.887727, G Gain: 1.000000, B Gain: 1.097338
+[2026-06-27 10:43:27] [DEBUG] [DATA] CCMMatrix = [1.048654,-0.018360,0.083928] [0.112873,0.776444,0.141215] [0.124371,-0.053173,0.864115]
+[2026-06-27 10:43:27] [DEBUG] [DATA] DeltaE00 = Mean: 3.227843, Max: 14.492643
+[2026-06-27 10:43:27] [INFO] [OPERATION] Calibration - Completed successfully
+[2026-06-27 10:43:41] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\MvToolKit\build\images\colorchecker.bmp
+[2026-06-27 10:43:42] [DEBUG] [DATA] ImageInfo = Size: 2048x2048

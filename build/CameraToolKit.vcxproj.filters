@@ -46,6 +46,9 @@
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\image_canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\neumorphic_panel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\dead_pixel_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

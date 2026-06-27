@@ -13,6 +13,7 @@ E:\Projects\Study\MvToolKit\src\algo\image_node.cpp;E:\Projects\Study\MvToolKit\
 E:\Projects\Study\MvToolKit\src\wxui\main_app.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\main_app.obj
 E:\Projects\Study\MvToolKit\src\wxui\main_frame.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\main_frame.obj
 E:\Projects\Study\MvToolKit\src\wxui\image_canvas.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\image_canvas.obj
+E:\Projects\Study\MvToolKit\src\wxui\neumorphic_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\neumorphic_panel.obj
 E:\Projects\Study\MvToolKit\src\wxui\dead_pixel_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\dead_pixel_panel.obj
 E:\Projects\Study\MvToolKit\src\wxui\flat_field_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\flat_field_panel.obj
 E:\Projects\Study\MvToolKit\src\wxui\quick_color_calib_panel.cpp;E:\Projects\Study\MvToolKit\build\CameraToolKit.dir\Release\quick_color_calib_panel.obj

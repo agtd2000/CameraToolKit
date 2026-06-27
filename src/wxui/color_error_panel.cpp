@@ -1,4 +1,6 @@
 #include "wxui/color_error_panel.h"
+#include "neumorphic_panel.h"
+#include "style_defs.h"
 #include "algo/white_balance.h"
 #include "utils/image_io.h"
 #include <wx/grid.h>
@@ -26,105 +28,167 @@ BEGIN_EVENT_TABLE(ColorErrorPanel, wxPanel)
 END_EVENT_TABLE()
 
 ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
+    SetBackgroundColour(Style::NEU_BG_COLOR);
+    SetFont(Style::GetSansFont(10));
+
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
-    wxStaticBox* src_static_box = new wxStaticBox(this, wxID_ANY, "Source Image");
-    wxStaticBoxSizer* src_box = new wxStaticBoxSizer(src_static_box, wxVERTICAL);
+    wxBoxSizer* top_row = new wxBoxSizer(wxHORIZONTAL);
+
+    NeumorphicPanel* src_panel = new NeumorphicPanel(this, wxID_ANY);
+    wxBoxSizer* src_box = new wxBoxSizer(wxVERTICAL);
+    
+    wxStaticText* src_title = new wxStaticText(src_panel, wxID_ANY, "Source Image");
+    Style::ApplyNeumorphicStyle(src_title, true);
+    src_box->Add(src_title, 0, wxALL, Style::SPACING_MEDIUM);
+    
     wxBoxSizer* src_row1 = new wxBoxSizer(wxHORIZONTAL);
-    src_row1->Add(new wxStaticText(src_static_box, wxID_ANY, "Source:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    src_source_combo_ = new wxComboBox(src_static_box, wxID_ANY, "Local Image", wxDefaultPosition, wxDefaultSize,
+    wxStaticText* src_label = new wxStaticText(src_panel, wxID_ANY, "Source:");
+    Style::ApplyNeumorphicStyle(src_label);
+    src_row1->Add(src_label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, Style::SPACING_SMALL);
+    src_source_combo_ = new wxComboBox(src_panel, wxID_ANY, "Local Image", wxDefaultPosition, wxSize(120, -1),
                                        {"Local Image", "Camera"}, wxCB_READONLY);
-    src_row1->Add(src_source_combo_, 1);
-    src_box->Add(src_row1, 0, wxEXPAND | wxALL, 5);
+    Style::ApplyNeumorphicStyle(src_source_combo_);
+    src_row1->Add(src_source_combo_, 0);
+    src_box->Add(src_row1, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     wxBoxSizer* src_row2 = new wxBoxSizer(wxHORIZONTAL);
-    src_path_ctrl_ = new wxTextCtrl(src_static_box, wxID_ANY, "", wxDefaultPosition, wxSize(300, -1));
-    load_src_btn_ = new wxButton(src_static_box, CE_ID_SRC_LOAD_BTN, "Load");
-    src_row2->Add(src_path_ctrl_, 1, wxRIGHT, 5);
-    src_row2->Add(load_src_btn_, 0);
-    src_box->Add(src_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
+    load_src_btn_ = new wxButton(src_panel, CE_ID_SRC_LOAD_BTN, "Load");
+    Style::ApplyNeumorphicStyle(load_src_btn_);
+    src_path_ctrl_ = new wxTextCtrl(src_panel, wxID_ANY, "", wxDefaultPosition, wxSize(200, -1));
+    Style::ApplyNeumorphicStyle(src_path_ctrl_);
+    src_row2->Add(load_src_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+    src_row2->Add(src_path_ctrl_, 1);
+    src_box->Add(src_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     wxBoxSizer* src_camera_row = new wxBoxSizer(wxHORIZONTAL);
-    open_src_camera_btn_ = new wxButton(src_static_box, CE_ID_SRC_OPEN_CAMERA_BTN, "Open Camera");
-    capture_src_btn_ = new wxButton(src_static_box, CE_ID_SRC_CAPTURE_BTN, "Capture");
-    close_src_camera_btn_ = new wxButton(src_static_box, CE_ID_SRC_CLOSE_CAMERA_BTN, "Close Camera");
+    open_src_camera_btn_ = new wxButton(src_panel, CE_ID_SRC_OPEN_CAMERA_BTN, "Open Camera");
+    Style::ApplyNeumorphicStyle(open_src_camera_btn_);
+    capture_src_btn_ = new wxButton(src_panel, CE_ID_SRC_CAPTURE_BTN, "Capture");
+    Style::ApplyNeumorphicStyle(capture_src_btn_);
+    close_src_camera_btn_ = new wxButton(src_panel, CE_ID_SRC_CLOSE_CAMERA_BTN, "Close");
+    Style::ApplyNeumorphicStyle(close_src_camera_btn_);
     capture_src_btn_->Disable();
     close_src_camera_btn_->Disable();
-    src_camera_row->Add(open_src_camera_btn_, 0, wxRIGHT, 5);
-    src_camera_row->Add(capture_src_btn_, 0, wxRIGHT, 5);
+    src_camera_row->Add(open_src_camera_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+    src_camera_row->Add(capture_src_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     src_camera_row->Add(close_src_camera_btn_, 0);
-    src_box->Add(src_camera_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-    main_sizer->Add(src_box, 0, wxEXPAND | wxALL, 5);
+    src_box->Add(src_camera_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+    src_panel->SetSizer(src_box);
+    top_row->Add(src_panel, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
 
-    wxStaticBox* ref_static_box = new wxStaticBox(this, wxID_ANY, "Reference Image");
-    wxStaticBoxSizer* ref_box = new wxStaticBoxSizer(ref_static_box, wxVERTICAL);
+    NeumorphicPanel* ref_panel = new NeumorphicPanel(this, wxID_ANY);
+    wxBoxSizer* ref_box = new wxBoxSizer(wxVERTICAL);
+    
+    wxStaticText* ref_title = new wxStaticText(ref_panel, wxID_ANY, "Reference Image");
+    Style::ApplyNeumorphicStyle(ref_title, true);
+    ref_box->Add(ref_title, 0, wxALL, Style::SPACING_MEDIUM);
+    
     wxBoxSizer* ref_row1 = new wxBoxSizer(wxHORIZONTAL);
-    ref_row1->Add(new wxStaticText(ref_static_box, wxID_ANY, "Source:"), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-    ref_source_combo_ = new wxComboBox(ref_static_box, wxID_ANY, "Local Image", wxDefaultPosition, wxDefaultSize,
+    wxStaticText* ref_label = new wxStaticText(ref_panel, wxID_ANY, "Source:");
+    Style::ApplyNeumorphicStyle(ref_label);
+    ref_row1->Add(ref_label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, Style::SPACING_SMALL);
+    ref_source_combo_ = new wxComboBox(ref_panel, wxID_ANY, "Local Image", wxDefaultPosition, wxSize(120, -1),
                                        {"Local Image", "Camera"}, wxCB_READONLY);
-    ref_row1->Add(ref_source_combo_, 1);
-    ref_box->Add(ref_row1, 0, wxEXPAND | wxALL, 5);
+    Style::ApplyNeumorphicStyle(ref_source_combo_);
+    ref_row1->Add(ref_source_combo_, 0);
+    ref_box->Add(ref_row1, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     wxBoxSizer* ref_row2 = new wxBoxSizer(wxHORIZONTAL);
-    ref_path_ctrl_ = new wxTextCtrl(ref_static_box, wxID_ANY, "", wxDefaultPosition, wxSize(300, -1));
-    load_ref_btn_ = new wxButton(ref_static_box, CE_ID_REF_LOAD_BTN, "Load");
-    ref_row2->Add(ref_path_ctrl_, 1, wxRIGHT, 5);
-    ref_row2->Add(load_ref_btn_, 0);
-    ref_box->Add(ref_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
+    load_ref_btn_ = new wxButton(ref_panel, CE_ID_REF_LOAD_BTN, "Load");
+    Style::ApplyNeumorphicStyle(load_ref_btn_);
+    ref_path_ctrl_ = new wxTextCtrl(ref_panel, wxID_ANY, "", wxDefaultPosition, wxSize(200, -1));
+    Style::ApplyNeumorphicStyle(ref_path_ctrl_);
+    ref_row2->Add(load_ref_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+    ref_row2->Add(ref_path_ctrl_, 1);
+    ref_box->Add(ref_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     wxBoxSizer* ref_camera_row = new wxBoxSizer(wxHORIZONTAL);
-    open_ref_camera_btn_ = new wxButton(ref_static_box, CE_ID_REF_OPEN_CAMERA_BTN, "Open Camera");
-    capture_ref_btn_ = new wxButton(ref_static_box, CE_ID_REF_CAPTURE_BTN, "Capture");
+    open_ref_camera_btn_ = new wxButton(ref_panel, CE_ID_REF_OPEN_CAMERA_BTN, "Open Camera");
+    Style::ApplyNeumorphicStyle(open_ref_camera_btn_);
+    capture_ref_btn_ = new wxButton(ref_panel, CE_ID_REF_CAPTURE_BTN, "Capture");
+    Style::ApplyNeumorphicStyle(capture_ref_btn_);
     capture_ref_btn_->Disable();
-    ref_camera_row->Add(open_ref_camera_btn_, 0, wxRIGHT, 5);
+    ref_camera_row->Add(open_ref_camera_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     ref_camera_row->Add(capture_ref_btn_, 0);
-    ref_box->Add(ref_camera_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-    main_sizer->Add(ref_box, 0, wxEXPAND | wxALL, 5);
+    ref_box->Add(ref_camera_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+    ref_panel->SetSizer(ref_box);
+    top_row->Add(ref_panel, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
+
+    NeumorphicPanel* roi_panel = new NeumorphicPanel(this, wxID_ANY);
+    wxBoxSizer* roi_box = new wxBoxSizer(wxVERTICAL);
+    
+    wxStaticText* roi_title = new wxStaticText(roi_panel, wxID_ANY, "ROI Settings");
+    Style::ApplyNeumorphicStyle(roi_title, true);
+    roi_box->Add(roi_title, 0, wxALL, Style::SPACING_MEDIUM);
+    
+    wxBoxSizer* roi_btn_row1 = new wxBoxSizer(wxHORIZONTAL);
+    draw_24_btn_ = new wxButton(roi_panel, CE_ID_DRAW_24_ROI_BTN, "Draw 24-Color");
+    Style::ApplyNeumorphicStyle(draw_24_btn_);
+    draw_140_btn_ = new wxButton(roi_panel, CE_ID_DRAW_140_ROI_BTN, "Draw 140-Color");
+    Style::ApplyNeumorphicStyle(draw_140_btn_);
+    roi_btn_row1->Add(draw_24_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+    roi_btn_row1->Add(draw_140_btn_, 0);
+    roi_box->Add(roi_btn_row1, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxBoxSizer* roi_btn_row2 = new wxBoxSizer(wxHORIZONTAL);
+    clear_roi_btn_ = new wxButton(roi_panel, CE_ID_CLEAR_ROI_BTN, "Clear ROI");
+    Style::ApplyNeumorphicStyle(clear_roi_btn_);
+    roi_btn_row2->Add(clear_roi_btn_, 0);
+    roi_box->Add(roi_btn_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    roi_count_text_ = new wxStaticText(roi_panel, wxID_ANY, "ROI Count: 0");
+    Style::ApplyNeumorphicStyle(roi_count_text_);
+    roi_box->Add(roi_count_text_, 0, wxALL, Style::SPACING_MEDIUM);
+    roi_panel->SetSizer(roi_box);
+    top_row->Add(roi_panel, 1, wxEXPAND);
+
+    main_sizer->Add(top_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, Style::SPACING_LARGE);
 
     status_text_ = new wxStaticText(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-    main_sizer->Add(status_text_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
+    Style::ApplyNeumorphicStyle(status_text_);
+    main_sizer->Add(status_text_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
+    NeumorphicPanel* image_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* image_box = new wxBoxSizer(wxHORIZONTAL);
+    
     wxBoxSizer* src_img_box = new wxBoxSizer(wxVERTICAL);
-    src_img_box->Add(new wxStaticText(this, wxID_ANY, "Source Image"), 0, wxALIGN_CENTER | wxBOTTOM, 5);
-    src_canvas_ = new ImageCanvas(this, wxID_ANY);
-    src_canvas_->SetMinSize(wxSize(400, 300));
+    wxStaticText* src_img_title = new wxStaticText(image_panel, wxID_ANY, "Source Image");
+    Style::ApplyNeumorphicStyle(src_img_title);
+    src_img_box->Add(src_img_title, 0, wxALIGN_CENTER | wxBOTTOM, Style::SPACING_MEDIUM);
+    src_canvas_ = new ImageCanvas(image_panel, wxID_ANY);
+    src_canvas_->SetMinSize(wxSize(350, 250));
     src_img_box->Add(src_canvas_, 1, wxEXPAND);
-    image_box->Add(src_img_box, 1, wxEXPAND | wxRIGHT, 10);
+    image_box->Add(src_img_box, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
 
     wxBoxSizer* ref_img_box = new wxBoxSizer(wxVERTICAL);
-    ref_img_box->Add(new wxStaticText(this, wxID_ANY, "Reference Image"), 0, wxALIGN_CENTER | wxBOTTOM, 5);
-    ref_canvas_ = new ImageCanvas(this, wxID_ANY);
-    ref_canvas_->SetMinSize(wxSize(400, 300));
+    wxStaticText* ref_img_title = new wxStaticText(image_panel, wxID_ANY, "Reference Image");
+    Style::ApplyNeumorphicStyle(ref_img_title);
+    ref_img_box->Add(ref_img_title, 0, wxALIGN_CENTER | wxBOTTOM, Style::SPACING_MEDIUM);
+    ref_canvas_ = new ImageCanvas(image_panel, wxID_ANY);
+    ref_canvas_->SetMinSize(wxSize(350, 250));
     ref_img_box->Add(ref_canvas_, 1, wxEXPAND);
     image_box->Add(ref_img_box, 1, wxEXPAND);
-    main_sizer->Add(image_box, 1, wxEXPAND | wxALL, 5);
+    image_panel->SetSizer(image_box);
+    main_sizer->Add(image_panel, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
 
-    wxStaticBox* roi_static_box = new wxStaticBox(this, wxID_ANY, "ROI Settings");
-    wxStaticBoxSizer* roi_box = new wxStaticBoxSizer(roi_static_box, wxVERTICAL);
-    wxBoxSizer* roi_btn_row = new wxBoxSizer(wxHORIZONTAL);
-    draw_24_btn_ = new wxButton(roi_static_box, CE_ID_DRAW_24_ROI_BTN, "Draw 24-Color ROI");
-    draw_140_btn_ = new wxButton(roi_static_box, CE_ID_DRAW_140_ROI_BTN, "Draw 140-Color ROI");
-    clear_roi_btn_ = new wxButton(roi_static_box, CE_ID_CLEAR_ROI_BTN, "Clear ROI");
-    roi_btn_row->Add(draw_24_btn_, 0, wxRIGHT, 5);
-    roi_btn_row->Add(draw_140_btn_, 0, wxRIGHT, 5);
-    roi_btn_row->Add(clear_roi_btn_, 0);
-    roi_box->Add(roi_btn_row, 0, wxEXPAND | wxALL, 5);
-
-    roi_count_text_ = new wxStaticText(roi_static_box, wxID_ANY, "ROI Count: 0");
-    roi_box->Add(roi_count_text_, 0, wxALL, 5);
-    main_sizer->Add(roi_box, 0, wxEXPAND | wxALL, 5);
-
-    wxStaticBox* color_static_box = new wxStaticBox(this, wxID_ANY, "Color Pairs");
-    wxStaticBoxSizer* color_box = new wxStaticBoxSizer(color_static_box, wxVERTICAL);
+    NeumorphicPanel* color_panel = new NeumorphicPanel(this, wxID_ANY);
+    wxBoxSizer* color_box = new wxBoxSizer(wxVERTICAL);
+    
+    wxStaticText* color_title = new wxStaticText(color_panel, wxID_ANY, "Color Pairs");
+    Style::ApplyNeumorphicStyle(color_title, true);
+    color_box->Add(color_title, 0, wxALL, Style::SPACING_MEDIUM);
+    
     wxBoxSizer* color_btn_row = new wxBoxSizer(wxHORIZONTAL);
-    add_row_btn_ = new wxButton(color_static_box, CE_ID_ADD_ROW_BTN, "+ Add Row");
-    import_colors_btn_ = new wxButton(color_static_box, CE_ID_IMPORT_COLORS_BTN, "Import Color File");
-    color_btn_row->Add(add_row_btn_, 0, wxRIGHT, 5);
+    add_row_btn_ = new wxButton(color_panel, CE_ID_ADD_ROW_BTN, "+ Add Row");
+    Style::ApplyNeumorphicStyle(add_row_btn_);
+    import_colors_btn_ = new wxButton(color_panel, CE_ID_IMPORT_COLORS_BTN, "Import Color File");
+    Style::ApplyNeumorphicStyle(import_colors_btn_);
+    color_btn_row->Add(add_row_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     color_btn_row->Add(import_colors_btn_, 0);
-    color_box->Add(color_btn_row, 0, wxEXPAND | wxALL, 5);
+    color_box->Add(color_btn_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
-    color_grid_ = new wxGrid(color_static_box, wxID_ANY);
+    color_grid_ = new wxGrid(color_panel, wxID_ANY);
     color_grid_->CreateGrid(0, 7);
     color_grid_->SetColLabelValue(0, "#");
     color_grid_->SetColLabelValue(1, "Src R");
@@ -134,23 +198,38 @@ ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     color_grid_->SetColLabelValue(5, "Ref G");
     color_grid_->SetColLabelValue(6, "Ref B");
     color_grid_->EnableEditing(false);
-    color_box->Add(color_grid_, 1, wxEXPAND | wxALL, 5);
-    main_sizer->Add(color_box, 1, wxEXPAND | wxALL, 5);
+    color_grid_->SetFont(Style::GetSansFont(8));
+    color_box->Add(color_grid_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+    color_panel->SetSizer(color_box);
+    main_sizer->Add(color_panel, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
 
-    wxStaticBox* calc_static_box = new wxStaticBox(this, wxID_ANY, "Calculation");
-    wxStaticBoxSizer* calc_box = new wxStaticBoxSizer(calc_static_box, wxVERTICAL);
+    NeumorphicPanel* calc_panel = new NeumorphicPanel(this, wxID_ANY);
+    wxBoxSizer* calc_box = new wxBoxSizer(wxVERTICAL);
+    
+    wxStaticText* calc_title = new wxStaticText(calc_panel, wxID_ANY, "Calculation");
+    Style::ApplyNeumorphicStyle(calc_title, true);
+    calc_box->Add(calc_title, 0, wxALL, Style::SPACING_MEDIUM);
+    
     wxBoxSizer* calc_row = new wxBoxSizer(wxHORIZONTAL);
-    srgb_checkbox_ = new wxCheckBox(calc_static_box, wxID_ANY, "sRGB Color Space");
-    calculate_btn_ = new wxButton(calc_static_box, CE_ID_CALCULATE_BTN, "Calculate");
-    calc_row->Add(srgb_checkbox_, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+    srgb_checkbox_ = new wxCheckBox(calc_panel, wxID_ANY, "sRGB Color Space");
+    srgb_checkbox_->SetFont(Style::GetSansFont(9));
+    srgb_checkbox_->SetForegroundColour(Style::NEU_TEXT_COLOR);
+    calculate_btn_ = new wxButton(calc_panel, CE_ID_CALCULATE_BTN, "Calculate");
+    Style::ApplyNeumorphicStyle(calculate_btn_);
+    calc_row->Add(srgb_checkbox_, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, Style::SPACING_MEDIUM);
     calc_row->Add(calculate_btn_, 0);
-    calc_box->Add(calc_row, 0, wxEXPAND | wxALL, 5);
+    calc_box->Add(calc_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     wxBoxSizer* result_box = new wxBoxSizer(wxHORIZONTAL);
 
-    wxStaticBox* error_static_box = new wxStaticBox(calc_static_box, wxID_ANY, "Color Error");
-    wxStaticBoxSizer* error_box = new wxStaticBoxSizer(error_static_box, wxVERTICAL);
-    error_grid_ = new wxGrid(error_static_box, wxID_ANY);
+    NeumorphicPanel* error_panel = new NeumorphicPanel(calc_panel, wxID_ANY);
+    wxBoxSizer* error_box = new wxBoxSizer(wxVERTICAL);
+    
+    wxStaticText* error_title = new wxStaticText(error_panel, wxID_ANY, "Color Error");
+    Style::ApplyNeumorphicStyle(error_title, true);
+    error_box->Add(error_title, 0, wxALL, Style::SPACING_SMALL);
+    
+    error_grid_ = new wxGrid(error_panel, wxID_ANY);
     error_grid_->CreateGrid(0, 5);
     error_grid_->SetColLabelValue(0, "#");
     error_grid_->SetColLabelValue(1, "DeltaE00");
@@ -158,21 +237,32 @@ ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     error_grid_->SetColLabelValue(3, "DeltaL");
     error_grid_->SetColLabelValue(4, "DeltaC");
     error_grid_->EnableEditing(false);
-    error_box->Add(error_grid_, 1, wxEXPAND | wxALL, 5);
-    result_box->Add(error_box, 1, wxEXPAND | wxRIGHT, 5);
+    error_grid_->SetFont(Style::GetSansFont(8));
+    error_box->Add(error_grid_, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    error_panel->SetSizer(error_box);
+    result_box->Add(error_panel, 1, wxEXPAND | wxRIGHT, Style::SPACING_MEDIUM);
 
-    wxStaticBox* stats_static_box = new wxStaticBox(calc_static_box, wxID_ANY, "Statistics");
-    wxStaticBoxSizer* stats_box = new wxStaticBoxSizer(stats_static_box, wxVERTICAL);
-    result_text_ = new wxStaticText(stats_static_box, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-    stats_box->Add(result_text_, 0, wxEXPAND | wxALL, 5);
+    NeumorphicPanel* stats_panel = new NeumorphicPanel(calc_panel, wxID_ANY);
+    wxBoxSizer* stats_box = new wxBoxSizer(wxVERTICAL);
+    
+    wxStaticText* stats_title = new wxStaticText(stats_panel, wxID_ANY, "Statistics");
+    Style::ApplyNeumorphicStyle(stats_title, true);
+    stats_box->Add(stats_title, 0, wxALL, Style::SPACING_SMALL);
+    
+    result_text_ = new wxStaticText(stats_panel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+    Style::ApplyNeumorphicStyle(result_text_);
+    stats_box->Add(result_text_, 0, wxEXPAND | wxALL, Style::SPACING_SMALL);
 
-    export_btn_ = new wxButton(stats_static_box, CE_ID_EXPORT_BTN, "Export Result");
+    export_btn_ = new wxButton(stats_panel, CE_ID_EXPORT_BTN, "Export Result");
+    Style::ApplyNeumorphicStyle(export_btn_);
     export_btn_->Disable();
-    stats_box->Add(export_btn_, 0, wxALIGN_CENTER | wxALL, 5);
-    result_box->Add(stats_box, 0, wxEXPAND);
+    stats_box->Add(export_btn_, 0, wxALIGN_CENTER | wxALL, Style::SPACING_SMALL);
+    stats_panel->SetSizer(stats_box);
+    result_box->Add(stats_panel, 0, wxEXPAND);
 
-    calc_box->Add(result_box, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-    main_sizer->Add(calc_box, 1, wxEXPAND | wxALL, 5);
+    calc_box->Add(result_box, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+    calc_panel->SetSizer(calc_box);
+    main_sizer->Add(calc_panel, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
 
     SetSizer(main_sizer);
 }
@@ -188,7 +278,7 @@ void ColorErrorPanel::UpdateStatus(const wxString& msg, bool is_error) {
     if (is_error) {
         status_text_->SetForegroundColour(*wxRED);
     } else {
-        status_text_->SetForegroundColour(*wxYELLOW);
+        status_text_->SetForegroundColour(*wxBLUE);
     }
 }
 
@@ -428,7 +518,16 @@ void ColorErrorPanel::OnDraw140ROI(wxCommandEvent& event) {
 
 void ColorErrorPanel::OnClearROI(wxCommandEvent& event) {
     rois_.clear();
+    src_colors_.clear();
+    ref_colors_.clear();
     roi_count_text_->SetLabel("ROI Count: 0");
+    if (!src_image_.empty()) {
+        src_canvas_->SetImage(src_image_);
+    }
+    if (!ref_image_.empty()) {
+        ref_canvas_->SetImage(ref_image_);
+    }
+    UpdateGrid();
     UpdateStatus("ROI cleared");
 }
 
@@ -479,7 +578,7 @@ void ColorErrorPanel::OnCalculate(wxCommandEvent& event) {
         double de = result_.pairs[i].deltaE00;
         error_grid_->SetCellValue(i, 1, wxString::Format("%.2f", de));
         if (de >= 6.0) error_grid_->SetCellTextColour(i, 1, *wxRED);
-        else if (de >= 3.0) error_grid_->SetCellTextColour(i, 1, *wxYELLOW);
+        else if (de >= 3.0) error_grid_->SetCellTextColour(i, 1, *wxBLUE);
         else error_grid_->SetCellTextColour(i, 1, *wxGREEN);
         error_grid_->SetCellValue(i, 2, wxString::Format("%.2f", result_.pairs[i].deltaE76));
         error_grid_->SetCellValue(i, 3, wxString::Format("%.2f", result_.pairs[i].deltaL));

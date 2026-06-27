@@ -36,6 +36,7 @@ set(WXUI_SOURCES
     src/wxui/main_app.cpp
     src/wxui/main_frame.cpp
     src/wxui/image_canvas.cpp
+    src/wxui/neumorphic_panel.cpp
     src/wxui/dead_pixel_panel.cpp
     src/wxui/flat_field_panel.cpp
     src/wxui/quick_color_calib_panel.cpp
@@ -62,6 +63,7 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/src/wxui
     ${OpenCV_INCLUDE_DIRS}
 )
 
