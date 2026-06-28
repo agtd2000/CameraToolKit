@@ -18,6 +18,8 @@ find_package(OpenMP)
 
 find_package(wxWidgets CONFIG REQUIRED COMPONENTS core base adv aui)
 
+find_package(tomlplusplus CONFIG REQUIRED)
+
 file(GLOB IMGUI_SOURCES
     third_party/imgui/*.cpp
     third_party/imgui/backends/imgui_impl_glfw.cpp
@@ -51,11 +53,13 @@ set(WXUI_SOURCES
     src/wxui/color_error_panel.cpp
     src/wxui/color_char_calib_panel.cpp
     src/wxui/spectral_calib_panel.cpp
+    src/wxui/pipeline_panel.cpp
     src/wxui/worker_thread.cpp
     src/utils/image_io.cpp
     src/utils/tone_mapping.cpp
     src/utils/logger.cpp
     src/utils/memory_pool.cpp
+    src/utils/session_config.cpp
 )
 
 set(RESOURCE_FILES
@@ -78,6 +82,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 target_link_libraries(${PROJECT_NAME} PRIVATE
     ${OpenCV_LIBS}
     wx::core wx::base wx::adv wx::aui
+    tomlplusplus::tomlplusplus
 )
 
 if(OpenMP_CXX_FOUND)

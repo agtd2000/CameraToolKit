@@ -2,15 +2,26 @@
 #include <sstream>
 #include <iomanip>
 #include <iostream>
+#include <sys/stat.h>
+#ifdef _WIN32
+#include <direct.h>
+#define MKDIR(path) _mkdir(path)
+#else
+#include <unistd.h>
+#define MKDIR(path) mkdir(path, 0755)
+#endif
 
 namespace mvtk {
 namespace utils {
 
 Logger::Logger() : min_level_(LogLevel::LOG_DEBUG), file_open_(false) {
+    // Ensure log/ directory exists in the current working directory
+    MKDIR("log");
+
     std::time_t now = std::time(nullptr);
     std::tm* local_time = std::localtime(&now);
     std::ostringstream oss;
-    oss << "cameratoolkit_" 
+    oss << "cameratoolkit_"
         << std::setw(4) << std::setfill('0') << local_time->tm_year + 1900
         << std::setw(2) << std::setfill('0') << local_time->tm_mon + 1
         << std::setw(2) << std::setfill('0') << local_time->tm_mday
@@ -19,7 +30,7 @@ Logger::Logger() : min_level_(LogLevel::LOG_DEBUG), file_open_(false) {
         << std::setw(2) << std::setfill('0') << local_time->tm_min
         << std::setw(2) << std::setfill('0') << local_time->tm_sec
         << ".log";
-    SetLogFile(oss.str());
+    SetLogFile(std::string("log/") + oss.str());
 }
 
 Logger::~Logger() {

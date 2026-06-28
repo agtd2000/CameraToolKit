@@ -6,6 +6,7 @@
 #include "wxui/color_error_panel.h"
 #include "wxui/color_char_calib_panel.h"
 #include "wxui/spectral_calib_panel.h"
+#include "wxui/pipeline_panel.h"
 #include "neumorphic_panel.h"
 #include "style_defs.h"
 #include "utils/logger.h"
@@ -69,6 +70,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     notebook_->AddPage(new ColorErrorPanel(notebook_), "Color Error");
     notebook_->AddPage(new ColorCharCalibPanel(notebook_), "Color Char");
     notebook_->AddPage(new SpectralCalibPanel(notebook_), "Spectral");
+    notebook_->AddPage(new PipelinePanel(notebook_), "Pipeline");
 
     NeumorphicPanel* left_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* left_sizer = new wxBoxSizer(wxVERTICAL);

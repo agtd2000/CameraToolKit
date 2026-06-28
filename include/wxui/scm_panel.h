@@ -51,11 +51,18 @@ private:
     wxTextCtrl* dark_exp_ctrl_;
     wxTextCtrl* bright_exp_ctrl_;
     wxTextCtrl* sensor_name_ctrl_;
-    wxTextCtrl* bits_ctrl_;
+    wxComboBox* bits_ctrl_;
     wxTextCtrl* temp_ctrl_;
     wxTextCtrl* frames_ctrl_;
     wxTextCtrl* roi_ctrl_;
     wxTextCtrl* result_text_;
+    // Sensor info controls (manufacturer / model / SN / bayer / resolution)
+    wxTextCtrl* manufacturer_ctrl_;
+    wxTextCtrl* model_ctrl_;
+    wxTextCtrl* sn_ctrl_;
+    wxComboBox* bayer_ctrl_;
+    wxTextCtrl* res_w_ctrl_;
+    wxTextCtrl* res_h_ctrl_;
 
     wxStaticText* dark_status_;
     wxStaticText* bright_status_;

@@ -9,6 +9,7 @@
 #include "utils/image_io.h"
 #include "utils/tone_mapping.h"
 #include "utils/logger.h"
+#include "utils/session_config.h"
 #include "algo/scm.h"
 
 namespace mvtk {
@@ -180,7 +181,7 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     Style::ApplyNeumorphicStyle(params_title, true);
     params_box->Add(params_title, 0, wxALL, Style::SPACING_MEDIUM);
 
-    wxGridSizer* grid = new wxGridSizer(2, 5, Style::SPACING_SMALL);
+    wxGridSizer* grid = new wxGridSizer(2, 11, Style::SPACING_SMALL);
 
     wxStaticText* sensor_name_label = new wxStaticText(params_panel, wxID_ANY, "Sensor Name:");
     Style::ApplyNeumorphicStyle(sensor_name_label);
@@ -189,12 +190,65 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     grid->Add(sensor_name_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
     grid->Add(sensor_name_ctrl_, 1, wxEXPAND);
 
+    // Manufacturer
+    wxStaticText* manufacturer_label = new wxStaticText(params_panel, wxID_ANY, "Manufacturer:");
+    Style::ApplyNeumorphicStyle(manufacturer_label);
+    manufacturer_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "");
+    Style::ApplyNeumorphicStyle(manufacturer_ctrl_);
+    grid->Add(manufacturer_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(manufacturer_ctrl_, 1, wxEXPAND);
+
+    // Model
+    wxStaticText* model_label = new wxStaticText(params_panel, wxID_ANY, "Model:");
+    Style::ApplyNeumorphicStyle(model_label);
+    model_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "");
+    Style::ApplyNeumorphicStyle(model_ctrl_);
+    grid->Add(model_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(model_ctrl_, 1, wxEXPAND);
+
+    // Serial Number
+    wxStaticText* sn_label = new wxStaticText(params_panel, wxID_ANY, "Serial Number:");
+    Style::ApplyNeumorphicStyle(sn_label);
+    sn_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "");
+    Style::ApplyNeumorphicStyle(sn_ctrl_);
+    grid->Add(sn_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(sn_ctrl_, 1, wxEXPAND);
+
     wxStaticText* bits_label = new wxStaticText(params_panel, wxID_ANY, "Bits:");
     Style::ApplyNeumorphicStyle(bits_label);
-    bits_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "12");
+    // Editable combo: presets for 8/10/12/16 bits, custom input allowed
+    bits_ctrl_ = new wxComboBox(params_panel, wxID_ANY, "12", wxDefaultPosition, wxDefaultSize,
+                                {"8", "10", "12", "16"});
+    bits_ctrl_->SetSelection(2);  // default "12"
     Style::ApplyNeumorphicStyle(bits_ctrl_);
     grid->Add(bits_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(bits_ctrl_, 0);
+    grid->Add(bits_ctrl_, 1, wxEXPAND);
+
+    // Bayer Pattern
+    wxStaticText* bayer_label = new wxStaticText(params_panel, wxID_ANY, "Bayer Pattern:");
+    Style::ApplyNeumorphicStyle(bayer_label);
+    bayer_ctrl_ = new wxComboBox(params_panel, wxID_ANY, "RGGB", wxDefaultPosition, wxDefaultSize,
+                                 {"RGGB", "BGGR", "GRBG", "GBRG"});
+    bayer_ctrl_->SetSelection(0);  // default "RGGB"
+    Style::ApplyNeumorphicStyle(bayer_ctrl_);
+    grid->Add(bayer_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(bayer_ctrl_, 1, wxEXPAND);
+
+    // Resolution Width
+    wxStaticText* res_w_label = new wxStaticText(params_panel, wxID_ANY, "Resolution W:");
+    Style::ApplyNeumorphicStyle(res_w_label);
+    res_w_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "0");
+    Style::ApplyNeumorphicStyle(res_w_ctrl_);
+    grid->Add(res_w_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(res_w_ctrl_, 1, wxEXPAND);
+
+    // Resolution Height
+    wxStaticText* res_h_label = new wxStaticText(params_panel, wxID_ANY, "Resolution H:");
+    Style::ApplyNeumorphicStyle(res_h_label);
+    res_h_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "0");
+    Style::ApplyNeumorphicStyle(res_h_ctrl_);
+    grid->Add(res_h_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(res_h_ctrl_, 1, wxEXPAND);
 
     wxStaticText* temp_label = new wxStaticText(params_panel, wxID_ANY, "Temp (C):");
     Style::ApplyNeumorphicStyle(temp_label);
@@ -261,6 +315,50 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
 
     SetSizer(main_sizer);
     main_sizer->Fit(this);
+
+    // ============ 从 TOML 加载上次的传感器信息 ============
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Load();
+    auto sensor_name = cfg.Get<std::string>("sensor.sensor_name");
+    if (sensor_name && !sensor_name->empty()) {
+        sensor_name_ctrl_->SetValue(wxString::FromUTF8(*sensor_name));
+    }
+    auto manufacturer = cfg.Get<std::string>("sensor.manufacturer");
+    if (manufacturer) {
+        manufacturer_ctrl_->SetValue(wxString::FromUTF8(*manufacturer));
+    }
+    auto model = cfg.Get<std::string>("sensor.model");
+    if (model) {
+        model_ctrl_->SetValue(wxString::FromUTF8(*model));
+    }
+    auto sn = cfg.Get<std::string>("sensor.serial_number");
+    if (sn) {
+        sn_ctrl_->SetValue(wxString::FromUTF8(*sn));
+    }
+    auto bayer = cfg.Get<std::string>("sensor.bayer_pattern");
+    if (bayer && !bayer->empty()) {
+        bayer_ctrl_->SetValue(wxString::FromUTF8(*bayer));
+    }
+    auto res_w = cfg.Get<int>("sensor.resolution_width");
+    if (res_w && *res_w > 0) {
+        res_w_ctrl_->SetValue(wxString::Format("%d", *res_w));
+    }
+    auto res_h = cfg.Get<int>("sensor.resolution_height");
+    if (res_h && *res_h > 0) {
+        res_h_ctrl_->SetValue(wxString::Format("%d", *res_h));
+    }
+    auto bits = cfg.Get<int>("sensor.bit_depth");
+    if (bits && *bits >= 1 && *bits <= 16) {
+        bits_ctrl_->SetValue(wxString::Format("%d", *bits));
+    }
+    auto temp = cfg.Get<double>("scm.test_temperature_c");
+    if (temp) {
+        temp_ctrl_->SetValue(wxString::Format("%.1f", *temp));
+    }
+    auto frames = cfg.Get<int>("scm.min_frame_count");
+    if (frames && *frames > 0) {
+        frames_ctrl_->SetValue(wxString::Format("%d", *frames));
+    }
 }
 
 void SCMPanel::OnLoadDark(wxCommandEvent& event) {
@@ -297,7 +395,8 @@ void SCMPanel::OnLoadDark(wxCommandEvent& event) {
     int loaded_count = 0;
     for (const wxString& filename : files) {
         wxString full_path = wxFileName(folder_path, filename).GetFullPath();
-        cv::Mat img = mvtk::utils::imreadUtf8(std::string(full_path.ToUTF8()));
+        // SCM 需要 Raw 数据，使用 IMREAD_UNCHANGED 保留 16-bit 位深和单通道
+        cv::Mat img = mvtk::utils::imreadUtf8(std::string(full_path.ToUTF8()), cv::IMREAD_UNCHANGED);
         if (!img.empty()) {
             dark_images_[exp_us].push_back(img);
             loaded_count++;
@@ -352,7 +451,8 @@ void SCMPanel::OnLoadBright(wxCommandEvent& event) {
     int loaded_count = 0;
     for (const wxString& filename : files) {
         wxString full_path = wxFileName(folder_path, filename).GetFullPath();
-        cv::Mat img = mvtk::utils::imreadUtf8(std::string(full_path.ToUTF8()));
+        // SCM 需要 Raw 数据，使用 IMREAD_UNCHANGED 保留 16-bit 位深和单通道
+        cv::Mat img = mvtk::utils::imreadUtf8(std::string(full_path.ToUTF8()), cv::IMREAD_UNCHANGED);
         if (!img.empty()) {
             bright_images_[exp_us].push_back(img);
             loaded_count++;
@@ -388,7 +488,28 @@ void SCMPanel::OnEvaluate(wxCommandEvent& event) {
     }
 
     params_.sensor_name = std::string(sensor_name_ctrl_->GetValue().ToUTF8());
-    params_.sensor_bits = wxAtoi(bits_ctrl_->GetValue());
+
+    // 位深校验：支持 8/10/12/16 位预设及自定义值（限定 1-16 位）
+    long bits_val = 0;
+    if (!bits_ctrl_->GetValue().ToLong(&bits_val) || bits_val < 1 || bits_val > 16) {
+        wxMessageBox("Sensor bits must be an integer between 1 and 16!\n"
+                     "Common values: 8, 10, 12, 16.",
+                     "Invalid Bits", wxOK | wxICON_WARNING);
+        return;
+    }
+    params_.sensor_bits = static_cast<int>(bits_val);
+
+    // Read sensor identity / spec fields
+    params_.manufacturer = std::string(manufacturer_ctrl_->GetValue().ToUTF8());
+    params_.model = std::string(model_ctrl_->GetValue().ToUTF8());
+    params_.serial_number = std::string(sn_ctrl_->GetValue().ToUTF8());
+    params_.bayer_pattern = std::string(bayer_ctrl_->GetValue().ToUTF8());
+    long res_w = 0, res_h = 0;
+    res_w_ctrl_->GetValue().ToLong(&res_w);
+    res_h_ctrl_->GetValue().ToLong(&res_h);
+    params_.resolution_width = static_cast<int>(res_w > 0 ? res_w : 0);
+    params_.resolution_height = static_cast<int>(res_h > 0 ? res_h : 0);
+
     params_.temperature_c = wxAtof(temp_ctrl_->GetValue());
     params_.min_frame_count = wxAtoi(frames_ctrl_->GetValue());
 
@@ -407,11 +528,84 @@ void SCMPanel::OnEvaluate(wxCommandEvent& event) {
     std::string report = SCMEvaluator::generateReport(result);
     result_text_->SetValue(wxString::FromUTF8(report));
 
+    // ============ 写入 TOML 会话配置 ============
+    auto& cfg = utils::SessionConfig::GetInstance();
+    // 确保已加载（若未加载则使用默认路径）
+    cfg.Load();
+
+    // 1. 写入传感器信息（包含厂商/型号/SN/Bayer/分辨率）
+    cfg.SetSensorInfo(params_.manufacturer,
+                      params_.model,
+                      params_.serial_number,
+                      params_.sensor_bits,
+                      static_cast<int>((1 << params_.sensor_bits) - 1),
+                      params_.bayer_pattern,
+                      params_.resolution_width,
+                      params_.resolution_height);
+    cfg.Set("sensor.sensor_name", params_.sensor_name);
+    cfg.Set("sensor.temperature_c", params_.temperature_c);
+
+    // 2. 写入 SCM 测试参数
+    cfg.Set("scm.test_temperature_c", params_.temperature_c);
+    cfg.Set("scm.min_frame_count", params_.min_frame_count);
+    cfg.Set("scm.saturation_threshold", params_.saturation_threshold);
+    cfg.Set("scm.roi_x", params_.roi.x);
+    cfg.Set("scm.roi_y", params_.roi.y);
+    cfg.Set("scm.roi_width", params_.roi.width);
+    cfg.Set("scm.roi_height", params_.roi.height);
+
+    // 3. 写入 SCM 核心指标
+    utils::SessionConfig::SCMResults scm_r;
+    scm_r.system_gain_e_per_dn = result.system_gain_e_per_dn;
+    scm_r.system_gain_dn_per_e = result.system_gain_dn_per_e;
+    scm_r.dark_noise_e = result.dark_noise_e;
+    scm_r.dark_noise_dn = result.dark_noise_dn;
+    scm_r.dark_signal_dn = result.dark_signal_dn;
+    scm_r.dark_current_e_per_sec = result.dark_current_e_per_sec;
+    scm_r.full_well_capacity_e = result.full_well_capacity_e;
+    scm_r.full_well_capacity_dn = result.full_well_capacity_dn;
+    scm_r.dynamic_range_db = result.dynamic_range_db;
+    scm_r.dynamic_range_bits = result.dynamic_range_bits;
+    scm_r.snr_at_50_percent_db = result.snr_at_50_percent;
+    scm_r.peak_snr_db = result.peak_snr_db;
+    scm_r.is_valid = result.is_valid;
+    scm_r.is_snr_sufficient_for_ccm = result.is_snr_sufficient_for_ccm;
+    scm_r.recommended_ccm_exposure_us = result.recommended_ccm_exposure_us;
+    scm_r.recommended_lsc_exposure_us = result.recommended_lsc_exposure_us;
+    scm_r.evaluation_message = result.message;
+    cfg.SetSCMResults(scm_r);
+
+    // 4. 写入 SNR 其它指标（调试用）
+    cfg.Set("scm.snr_at_10_percent_db", result.snr_at_10_percent);
+    cfg.Set("scm.snr_at_90_percent_db", result.snr_at_90_percent);
+    cfg.Set("scm.is_uniformity_sufficient_for_lsc", result.is_uniformity_sufficient_for_lsc);
+    cfg.Set("scm.dark_current_e_per_sec_per_mm2", result.dark_current_e_per_sec_per_mm2);
+
+    // 5. 写入曝光时间序列和 PTC 数据点（便于调试）
+    cfg.SetArray("scm.exposure_times_us", result.exposure_times_us);
+    cfg.SetArray("scm.dark_means", result.dark_means);
+    cfg.SetArray("scm.dark_variances", result.dark_variances);
+    cfg.SetArray("scm.bright_means", result.bright_means);
+    cfg.SetArray("scm.bright_variances", result.bright_variances);
+
+    // 6. 记录标定历史
+    cfg.AddCalibrationHistory(
+        "SCM",
+        "Sensor characterization evaluation (" + params_.sensor_name + ")",
+        result.is_valid,
+        0.0,
+        "exposure_groups=" + std::to_string(result.exposure_times_us.size()) +
+        ", frames=" + std::to_string(params_.min_frame_count));
+
+    // 7. 保存
+    cfg.Save();
+
     if (result.is_valid) {
-        wxMessageBox("SCM evaluation completed successfully!",
+        wxMessageBox("SCM evaluation completed successfully!\n\nResults saved to pipeline_session.toml",
                      "Success", wxOK | wxICON_INFORMATION);
     } else {
-        wxMessageBox("Evaluation invalid: " + wxString::FromUTF8(result.message),
+        wxMessageBox("Evaluation invalid: " + wxString::FromUTF8(result.message) +
+                     "\n\nResults saved to pipeline_session.toml",
                      "Warning", wxOK | wxICON_WARNING);
     }
 }

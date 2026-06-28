@@ -3,6 +3,7 @@
 #include "style_defs.h"
 #include "algo/white_balance.h"
 #include "utils/image_io.h"
+#include "utils/session_config.h"
 #include <wx/grid.h>
 
 namespace mvtk {
@@ -587,11 +588,41 @@ void ColorErrorPanel::OnCalculate(wxCommandEvent& event) {
 
     export_btn_->Enable();
     UpdateStatus(wxString::Format("Calculation completed: %zu color pairs", src_colors_.size()));
+
+    // Save calculation results to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("color_error.use_srgb", params_.use_srgb);
+    cfg.Set("color_error.color_count", static_cast<int>(src_colors_.size()));
+    cfg.Set("color_error.delta_e00_mean", result_.mean_deltaE00);
+    cfg.Set("color_error.delta_e00_max", result_.max_deltaE00);
+    cfg.Set("color_error.delta_e00_min", result_.min_deltaE00);
+    // Compute mean DeltaE76, DeltaL, DeltaC from pairs
+    double sum_e76 = 0.0, sum_l = 0.0, sum_c = 0.0;
+    for (const auto& p : result_.pairs) {
+        sum_e76 += p.deltaE76;
+        sum_l += p.deltaL;
+        sum_c += p.deltaC;
+    }
+    size_t n = result_.pairs.size();
+    cfg.Set("color_error.delta_e76_mean", n > 0 ? sum_e76 / n : 0.0);
+    cfg.Set("color_error.delta_l_mean", n > 0 ? sum_l / n : 0.0);
+    cfg.Set("color_error.delta_c_mean", n > 0 ? sum_c / n : 0.0);
+    cfg.Set("color_error.executed", true);
+    cfg.AddCalibrationHistory("ColorError", "Color error calculation", true, 0.0,
+                              "pairs=" + std::to_string(n) +
+                              ",mean_de=" + std::to_string(result_.mean_deltaE00));
+    cfg.Save();
 }
 
 void ColorErrorPanel::OnExport(wxCommandEvent& event) {
-    ColorErrorCalculator::exportResult(result_, "color_error_result.csv");
-    UpdateStatus("Result exported to color_error_result.csv");
+    std::string export_path = "config/color_error_result.csv";
+    ColorErrorCalculator::exportResult(result_, export_path);
+    UpdateStatus("Result exported to " + wxString(export_path));
+
+    // Save export path to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("color_error.csv_export_path", export_path);
+    cfg.Save();
 }
 
 }

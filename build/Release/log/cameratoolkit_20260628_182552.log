@@ -1,0 +1,47 @@
+========== Log Started ==========
+Timestamp: 2026-06-28 18:25:52
+==================================
+[2026-06-28 18:25:52] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-28 18:25:52] [WARN] SessionConfig: config file not found, using empty config: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-28 18:25:52] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-28 18:25:52] [WARN] SessionConfig: config file not found, using empty config: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-28 18:25:53] [WARN] SessionConfig: config file not found, using empty config: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-28 18:25:53] [INFO] Ready. Please load an input image.
+[2026-06-28 18:25:53] [INFO] MainFrame initialized successfully
+[2026-06-28 18:26:27] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\CameraToolKit\images\dark\exp_1000us
+[2026-06-28 18:26:29] [DEBUG] [DATA] ImageInfo = Loaded 50 dark field images from folder
+[2026-06-28 18:26:30] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\CameraToolKit\images\bright\exp_1000us
+[2026-06-28 18:26:31] [DEBUG] [DATA] ImageInfo = Loaded 50 bright field images from folder
+[2026-06-28 18:26:43] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\CameraToolKit\images\dark\exp_2000us
+[2026-06-28 18:26:44] [DEBUG] [DATA] ImageInfo = Loaded 50 dark field images from folder
+[2026-06-28 18:26:45] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\CameraToolKit\images\bright\exp_2000us
+[2026-06-28 18:26:45] [DEBUG] [DATA] ImageInfo = Loaded 50 bright field images from folder
+[2026-06-28 18:26:57] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\CameraToolKit\images\dark\exp_4000us
+[2026-06-28 18:26:57] [DEBUG] [DATA] ImageInfo = Loaded 50 dark field images from folder
+[2026-06-28 18:26:59] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\CameraToolKit\images\bright\exp_4000us
+[2026-06-28 18:26:59] [DEBUG] [DATA] ImageInfo = Loaded 50 bright field images from folder
+[2026-06-28 18:27:39] [WARN] SessionConfig: config file not found, using empty config: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-28 18:27:39] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-28 18:30:05] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\flat.BMP
+[2026-06-28 18:30:05] [DEBUG] [DATA] ImageInfo = Size: 2048x2048
+[2026-06-28 18:30:53] [INFO] [OPERATION] Load Flat Image - Path: E:\Projects\Study\CameraToolKit\build\images\flat.BMP
+[2026-06-28 18:30:53] [DEBUG] [DATA] ImageInfo = Size: 2048x2048
+[2026-06-28 18:31:49] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\CameraToolKit\build\images\colorchecker.bmp
+[2026-06-28 18:31:49] [DEBUG] [DATA] ImageInfo = Size: 2048x2048, Channels: 3, Depth: 0
+[2026-06-28 18:32:16] [INFO] [OPERATION] Detect Color Checker - Starting auto detection...
+[2026-06-28 18:32:16] [DEBUG] [DATA] ROIResult = Detected 24 ROIs (Auto)
+[2026-06-28 18:32:16] [DEBUG] [DATA] BrightnessCheck = Value: 0.267555, Range: [0.150000, 0.650000], Status: OK
+[2026-06-28 18:32:31] [ERROR] [ERROR-RefROIDetection] No reference image loaded
+[2026-06-28 18:32:37] [INFO] [OPERATION] Load Reference Image - Path: E:\Projects\Study\CameraToolKit\build\images\colorchecker.bmp
+[2026-06-28 18:32:37] [DEBUG] [DATA] RefImageInfo = Size: 2048x2048
+[2026-06-28 18:32:39] [INFO] [OPERATION] Detect Reference Color Checker - Starting auto detection...
+[2026-06-28 18:32:39] [DEBUG] [DATA] RefROIResult = Detected 24 ROIs (Auto)
+[2026-06-28 18:32:43] [INFO] [OPERATION] Calibrate - Mode: Standard, ROIs: 24, WB Method: 0, CCM Method: 0, Stat Method: 1
+[2026-06-28 18:32:43] [DEBUG] [DATA] WhiteBalance = R Gain: 0.887727, G Gain: 1.000000, B Gain: 1.097338
+[2026-06-28 18:32:43] [DEBUG] [DATA] CCMMatrix = [1.048654,-0.018360,0.083928] [0.112873,0.776444,0.141215] [0.124371,-0.053173,0.864115]
+[2026-06-28 18:32:43] [DEBUG] [DATA] DeltaE00 = Mean: 3.227843, Max: 14.492643
+[2026-06-28 18:32:43] [INFO] [OPERATION] Calibration - Completed successfully
+[2026-06-28 18:33:00] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\CameraToolKit\build\images\colorchecker.bmp
+[2026-06-28 18:33:00] [DEBUG] [DATA] ImageInfo = Size: 2048x2048
+[2026-06-28 18:33:37] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\colorchecker.bmp
+[2026-06-28 18:33:37] [DEBUG] [DATA] LightSource = Name: D65, ColorTemp: 6500.000000, Image: 2048x2048

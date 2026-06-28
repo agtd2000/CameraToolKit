@@ -1,0 +1,458 @@
+# CameraToolKit 校正流程记录文件
+# Correction Pipeline Session Record
+# 此文件记录一次完整校正会话的所有关键信息
+# 格式遵循 TOML 1.0 规范
+
+# ============================================================================
+# [meta] 文件元信息
+# ============================================================================
+[meta]
+file_format_version = "1.0.0"           # 文件格式版本
+tool_name = "CameraToolKit"             # 工具名称
+tool_version = "1.0.0"                  # 工具版本
+created_at = "2026-06-28T10:00:00+08:00" # 创建时间（ISO 8601）
+last_modified = "2026-06-28T10:00:00+08:00" # 最后修改时间
+operator = ""                           # 操作员姓名（可选）
+session_id = "session_20260628_001"     # 会话唯一 ID
+description = "Pipeline 校正会话记录"   # 会话描述
+
+# ============================================================================
+# [sensor] 传感器信息
+# ============================================================================
+[sensor]
+manufacturer = ""                       # 传感器厂商（如 Sony, ON Semiconductor, Gpixel）
+model = ""                              # 传感器型号（如 IMX264, AR0521）
+serial_number = ""                      # 传感器序列号
+sensor_name = "Unknown"                 # SCM 评估时填写的传感器名称
+sensor_type = "CMOS"                    # 传感器类型（CMOS / CCD）
+bit_depth = 16                          # 传感器位深（8/10/12/16）
+max_digital_value = 65535               # 最大数字值（DN）
+bayer_pattern = "RGGB"                  # Bayer 排列（RGGB / BGGR / GRBG / GBRG）
+resolution_width = 0                    # 有效分辨率宽度（像素）
+resolution_height = 0                   # 有效分辨率高度（像素）
+pixel_size_um = 0.0                     # 像素尺寸（微米）
+active_area_width = 0                   # 有效区域宽度（像素）
+active_area_height = 0                  # 有效区域高度（像素）
+shutter_type = "Global"                 # 快门类型（Global / Rolling）
+readout_mode = ""                       # 读出模式
+temperature_c = 25.0                    # 测试温度（℃）
+
+# ============================================================================
+# [scm] SCM 传感器特性评估结果
+# 基于 EMVA 1288 标准的核心指标
+# ============================================================================
+[scm]
+# 评估参数
+test_temperature_c = 25.0               # 测试温度（℃）
+min_frame_count = 50                    # 每曝光点最小帧数
+saturation_threshold = 0.95             # 饱和度阈值
+roi_x = 0                               # ROI 起始 X
+roi_y = 0                               # ROI 起始 Y
+roi_width = 0                           # ROI 宽度（0 表示全图）
+roi_height = 0                          # ROI 高度（0 表示全图）
+
+# 核心指标
+system_gain_e_per_dn = 0.5              # 系统增益（e-/DN）
+system_gain_dn_per_e = 2.0              # 系统增益（DN/e-）
+dark_noise_e = 15.0                     # 暗噪声（e-）
+dark_noise_dn = 30.0                    # 暗噪声（DN）
+dark_signal_dn = 100.0                  # 暗信号（DN）
+dark_current_e_per_sec = 1000.0         # 暗电流（e-/s）
+dark_current_e_per_sec_per_mm2 = 0.0    # 暗电流密度（e-/s/mm²）
+
+# 动态范围指标
+full_well_capacity_e = 30000.0          # 满阱容量（e-）
+full_well_capacity_dn = 60000.0         # 满阱容量（DN）
+dynamic_range_db = 66.0                 # 动态范围（dB）
+dynamic_range_bits = 11.0               # 动态范围（bit）
+
+# SNR 指标
+snr_at_10_percent_db = 38.0             # 10% 信号 SNR（dB）
+snr_at_50_percent_db = 42.0             # 50% 信号 SNR（dB）
+snr_at_90_percent_db = 40.0             # 90% 信号 SNR（dB）
+peak_snr_db = 43.0                      # 峰值 SNR（dB）
+
+# 评估结论
+is_valid = true                         # 评估是否有效
+is_snr_sufficient_for_ccm = true        # SNR 是否满足 CCM 标定（>=20dB）
+is_uniformity_sufficient_for_lsc = true # 均匀性是否满足 LSC 标定
+recommended_ccm_exposure_us = 2000.0    # 推荐 CCM 标定曝光（us）
+recommended_lsc_exposure_us = 2000.0    # 推荐 LSC 标定曝光（us）
+evaluation_message = ""                 # 评估消息/警告
+
+# PTC 数据点（光子传递曲线）
+# 每个数据点包含：曝光时间、均值、方差、信号量
+[[scm.ptc_points]]
+exposure_time_us = 1000.0
+mean_dn = 10100.0
+variance_dn2 = 4950.0
+signal_e = 5000.0
+
+[[scm.ptc_points]]
+exposure_time_us = 2000.0
+mean_dn = 20100.0
+variance_dn2 = 9950.0
+signal_e = 10000.0
+
+[[scm.ptc_points]]
+exposure_time_us = 4000.0
+mean_dn = 40100.0
+variance_dn2 = 19950.0
+signal_e = 20000.0
+
+# 测试用曝光时间序列
+scm.exposure_times_us = [1000.0, 2000.0, 4000.0]
+
+# ============================================================================
+# [pipeline] Pipeline 链式处理配置
+# ============================================================================
+[pipeline]
+total_nodes = 8                         # 节点总数
+enabled_nodes = 6                       # 启用节点数
+input_image_path = ""                   # 输入图像路径
+input_width = 0                         # 输入图像宽度
+input_height = 0                        # 输入图像高度
+input_channels = 1                      # 输入图像通道数
+input_bit_depth = 16                    # 输入图像位深
+denoise_position = "POST_LSC"           # 降噪位置（PRE_LSC / POST_LSC / BOTH）
+
+# ============================================================================
+# 各 Pipeline 节点的配置和执行状态
+# ============================================================================
+
+# ---- 节点 0：OB 扣除 ----
+[pipeline.nodes.ob]
+name = "OB"
+display_name = "节点0: OB扣除"
+enabled = true                          # 是否启用
+order = 0                               # 执行顺序
+description = "光学黑/黑电平扣除，输出绝对线性空间"
+# SCM 输入数据
+scm_inputs = ["dark_signal_dn", "dark_current_e_per_sec", "system_gain_dn_per_e"]
+# 节点参数
+black_level_dn = 100.0                  # 黑电平偏置（DN）
+use_dark_current_compensation = true    # 是否启用暗电流漂移补偿
+dark_current_e_per_s = 1000.0           # 暗电流（e-/s）
+system_gain_dn_per_e = 2.0              # 系统增益（DN/e-）
+exposure_time_us = 1000.0               # 曝光时间（us）
+# 执行结果
+executed = false                        # 是否已执行
+processing_time_ms = 0.0                # 处理耗时（毫秒）
+output_mean_dn = 0.0                    # 输出图像均值（DN）
+output_std_dn = 0.0                     # 输出图像标准差（DN）
+
+# ---- 节点 1：DPC 坏点校正 ----
+[pipeline.nodes.dpc]
+name = "DPC"
+display_name = "节点1: DPC坏点校正"
+enabled = true
+order = 1
+description = "统计学阈值检测坏点（5σ），邻域插值修复"
+scm_inputs = ["dark_noise_dn"]
+# 节点参数
+threshold_sigma = 5.0                   # 阈值倍数（σ）
+dark_noise_dn = 30.0                    # 暗噪声（DN）
+absolute_threshold_dn = 150.0           # 绝对阈值（DN）= threshold_sigma × dark_noise_dn
+kernel_size = 3                         # 邻域核大小（3 或 5）
+# 执行结果
+executed = false
+processing_time_ms = 0.0
+dead_pixels_detected = 0                # 检测到的坏点数
+dead_pixels_corrected = 0               # 已修复的坏点数
+
+# ---- 节点 2：LSC 平场校正 ----
+[pipeline.nodes.lsc]
+name = "LSC"
+display_name = "节点2: LSC平场校正"
+enabled = false
+order = 2
+description = "镜头阴影校正，消除渐晕效应"
+scm_inputs = ["full_well_capacity_dn", "recommended_lsc_exposure_us"]
+# 节点参数
+gain_map_path = ""                      # 增益图文件路径
+dark_frame_path = ""                    # 暗场图像路径
+calib_mode = "CENTER"                   # 标定基准（CENTER / BRIGHTEST / TARGET_LUMA）
+target_brightness = 0.0                 # 目标亮度（仅 TARGET_LUMA 模式）
+edge_fill = 2                           # 边缘填充系数
+smooth_kernel = 64                      # 平滑核大小
+channel_mode = "INDEPENDENT"            # 通道模式（INDEPENDENT / UNIFIED）
+# 执行结果
+executed = false
+processing_time_ms = 0.0
+center_brightness_before = 0.0          # 校正前中心亮度
+edge_brightness_before = 0.0            # 校正前边缘亮度
+uniformity_before = 0.0                 # 校正前均匀性
+uniformity_after = 0.0                  # 校正后均匀性
+
+# ---- 节点 3：去噪 ----
+[pipeline.nodes.denoise]
+name = "Denoise"
+display_name = "节点3: 去噪"
+enabled = true
+order = 3
+description = "基于噪声方差模型降噪"
+scm_inputs = ["system_gain_dn_per_e", "dark_noise_dn"]
+# 节点参数
+sigma = 1.0                             # 降噪强度
+# 噪声方差模型：σ²(I) = dark_noise² + system_gain × I
+noise_model_dark_noise_dn = 30.0        # 暗噪声（DN）
+noise_model_system_gain_dn_per_e = 2.0  # 系统增益（DN/e-）
+# 执行结果
+executed = false
+processing_time_ms = 0.0
+noise_level_before_db = 0.0             # 降噪前噪声水平（dB）
+noise_level_after_db = 0.0              # 降噪后噪声水平（dB）
+nsr = 0.0                               # 噪声抑制比（NSR）
+
+# ---- 节点 4：去马赛克 ----
+[pipeline.nodes.demosaicing]
+name = "Demosaicing"
+display_name = "节点4: 去马赛克"
+enabled = true
+order = 4
+description = "Bayer 模式插值为 RGB"
+scm_inputs = []
+# 节点参数
+bayer_pattern = "BG"                    # Bayer 排列（BG / GB / RG / GR）
+# 执行结果
+executed = false
+processing_time_ms = 0.0
+output_channels = 3                     # 输出通道数
+
+# ---- 节点 5：白平衡 ----
+[pipeline.nodes.white_balance]
+name = "WhiteBalance"
+display_name = "节点5: 白平衡"
+enabled = false
+order = 5
+description = "RGB 通道增益应用"
+scm_inputs = []
+# 节点参数
+r_gain = 1.0                            # R 通道增益
+g_gain = 1.0                            # G 通道增益
+b_gain = 1.0                            # B 通道增益
+color_temperature_k = 6500.0            # 色温（K）
+# 执行结果
+executed = false
+processing_time_ms = 0.0
+
+# ---- 节点 6：CCM 色彩校正矩阵 ----
+[pipeline.nodes.ccm]
+name = "CCM"
+display_name = "节点6: CCM色彩转换"
+enabled = false
+order = 6
+description = "3x3 色彩校正矩阵"
+scm_inputs = ["snr_at_50_percent_db", "recommended_ccm_exposure_us"]
+# 节点参数
+# 3x3 CCM 矩阵（行主序）
+ccm_matrix = [
+    [1.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0],
+    [0.0, 0.0, 1.0]
+]
+offset_r = 0.0                          # R 通道偏置
+offset_g = 0.0                          # G 通道偏置
+offset_b = 0.0                          # B 通道偏置
+# 防溢出保护：Clamp 上限 = full_well_capacity_dn - black_level_dn
+clamp_max_dn = 62158.7                  # Clamp 上限（DN）
+# 执行结果
+executed = false
+processing_time_ms = 0.0
+delta_e00_mean = 0.0                    # 校正后平均 DeltaE00
+delta_e00_max = 0.0                     # 校正后最大 DeltaE00
+
+# ---- 节点 7：Gamma / Tone Mapping ----
+[pipeline.nodes.gamma]
+name = "Gamma"
+display_name = "节点7: Gamma/ToneMapping"
+enabled = true
+order = 7
+description = "高位深映射到 8-bit 显示"
+scm_inputs = ["dynamic_range_bits", "full_well_capacity_dn"]
+# 节点参数
+gamma_value = 2.2                       # Gamma 值
+input_min_dn = 0.0                      # 输入最小值（DN）
+input_max_dn = 62158.7                  # 输入最大值（DN）= 满阱 - OB
+tone_mapping_mode = "PERCENTILE"        # Tone Mapping 模式
+# 执行结果
+executed = false
+processing_time_ms = 0.0
+output_bit_depth = 8                    # 输出位深
+
+# ============================================================================
+# [output] 最终输出结果
+# ============================================================================
+[output]
+output_image_path = ""                  # 输出图像路径
+output_width = 0                        # 输出宽度
+output_height = 0                       # 输出高度
+output_channels = 3                     # 输出通道数
+output_bit_depth = 8                    # 输出位深
+total_processing_time_ms = 0.0          # 总处理耗时（毫秒）
+
+# 输出图像统计
+output_mean_r = 0.0                     # R 通道均值
+output_mean_g = 0.0                     # G 通道均值
+output_mean_b = 0.0                     # B 通道均值
+output_std_r = 0.0                      # R 通道标准差
+output_std_g = 0.0                      # G 通道标准差
+output_std_b = 0.0                      # B 通道标准差
+
+# 质量评估
+final_delta_e00_mean = 0.0              # 最终平均 DeltaE00
+final_delta_e00_max = 0.0               # 最终最大 DeltaE00
+final_snr_db = 0.0                      # 最终信噪比（dB）
+final_uniformity = 0.0                  # 最终均匀性
+
+# ============================================================================
+# [calibration_history] 标定历史记录
+# 记录此次会话中执行的所有标定操作
+# ============================================================================
+
+# 历史标定记录示例（每次标定添加一条）
+[[calibration_history]]
+timestamp = "2026-06-28T10:30:00+08:00"
+type = "SCM"                            # 标定类型（SCM / LSC / WB / CCM）
+description = "传感器特性评估"
+success = true
+duration_ms = 0.0
+notes = "3 组曝光时间（1000/2000/4000 us），每组 50 帧"
+
+# ============================================================================
+# [quality_check] 质量检查
+# ============================================================================
+[quality_check]
+# 合格标准
+delta_e00_mean_threshold = 3.0          # 平均 DeltaE00 阈值
+delta_e00_max_threshold = 6.0           # 最大 DeltaE00 阈值
+dead_pixel_detection_rate_threshold = 0.99  # 坏点检测率阈值
+lsc_uniformity_prnu_threshold = 0.02    # LSC PRNU 阈值
+noise_nsr_threshold = 0.3               # 噪声 NSR 阈值
+demosaic_ssim_threshold = 0.95          # 去马赛克 SSIM 阈值
+
+# 实际检查结果
+overall_passed = false                  # 总体是否合格
+checks = []                             # 各项检查结果列表
+
+# ============================================================================
+# [dead_pixel] DPC Defective Pixel Detection & Correction
+# ============================================================================
+[dead_pixel]
+# Detection parameters
+detect_type = 1                         # 0=Hot, 1=Dead, 2=Both
+threshold = 50                          # Detection threshold
+avg_brightness_min = 0                  # Min avg brightness
+avg_brightness_max = 255                # Max avg brightness
+kernel_size = 3                         # Neighborhood kernel size
+# Correction parameters
+correct_method = 0                      # 0=Mean, 1=Median, 2=Bilinear
+# Execution results
+executed = false
+dead_pixels_detected = 0                # Detected dead pixel count
+dead_pixels_corrected = 0               # Corrected dead pixel count
+csv_export_path = "config/dead_pixels.csv"  # CSV export path
+last_run_at = ""                        # Last run timestamp
+
+# ============================================================================
+# [flat_field] LSC Flat Field Correction
+# ============================================================================
+[flat_field]
+# Calibration parameters
+calib_mode = 0                          # 0=CENTER, 1=BRIGHTEST, 2=TARGET_LUMA
+edge_fill = 2                           # Edge fill factor
+smooth_kernel = 64                      # Smooth kernel size
+target_brightness = 0.0                 # Target brightness (TARGET_LUMA mode)
+channel_mode = 0                        # 0=INDEPENDENT, 1=UNIFIED
+use_dark_frame = false                  # Whether dark frame is used
+# Execution results
+executed = false
+center_brightness_before = 0.0          # Center brightness before correction
+edge_brightness_before = 0.0            # Edge brightness before correction
+uniformity_before = 0.0                 # Uniformity before correction
+uniformity_after = 0.0                  # Uniformity after correction
+gain_map_min = 0.0                      # Gain map min value
+gain_map_max = 0.0                      # Gain map max value
+gain_map_path = "config/gain_map.dat"   # Gain map file path
+last_run_at = ""
+
+# ============================================================================
+# [quick_color_calib] Quick Color Calibration (WB + CCM)
+# ============================================================================
+[quick_color_calib]
+# Calibration parameters
+calib_mode = 0                          # 0=Standard, 1=Reference
+wb_method = 0                           # WB method enum
+ccm_method = 0                          # CCM method enum
+stat_method = 0                         # RGB stat method enum
+roi_count = 0                           # ROI count used
+# WB results
+wb_r_gain = 1.0                         # R channel gain
+wb_g_gain = 1.0                         # G channel gain
+wb_b_gain = 1.0                         # B channel gain
+# CCM results (3x3 row-major)
+ccm_matrix = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+# DeltaE results
+delta_e00_mean = 0.0                    # Mean DeltaE00
+delta_e00_max = 0.0                     # Max DeltaE00
+delta_e00_list = []                     # Per-patch DeltaE00 list
+# Execution results
+executed = false
+last_run_at = ""
+
+# ============================================================================
+# [color_error] Color Error Calculation
+# ============================================================================
+[color_error]
+# Parameters
+use_srgb = false                        # Whether to use sRGB gamma
+color_count = 0                         # Color pair count
+# Results
+delta_e00_mean = 0.0                    # Mean DeltaE00
+delta_e00_max = 0.0                     # Max DeltaE00
+delta_e00_min = 0.0                     # Min DeltaE00
+delta_e76_mean = 0.0                    # Mean DeltaE76
+delta_l_mean = 0.0                      # Mean DeltaL
+delta_c_mean = 0.0                      # Mean DeltaC
+# Execution results
+executed = false
+csv_export_path = "config/color_error_result.csv"
+last_run_at = ""
+
+# ============================================================================
+# [color_char_calib] Color Characterization Calibration (multi-light WB+CCM)
+# ============================================================================
+[color_char_calib]
+# Calibration parameters
+wb_method = 0                           # WB method enum
+ccm_method = 0                          # CCM method enum
+standard_color = 0                      # Standard color chart index
+quantize = false                        # Whether to quantize
+wb_quant = 256                          # WB quantization levels
+ccm_quant = 1024                        # CCM quantization levels
+light_source_count = 0                  # Light source count
+# Results (first light source as representative)
+wb_r_gain_first = 1.0
+wb_g_gain_first = 1.0
+wb_b_gain_first = 1.0
+ccm_matrix_first = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+# Execution results
+executed = false
+export_path = "config/color_char_calib.txt"
+last_run_at = ""
+
+# ============================================================================
+# [spectral_calib] Spectral Calibration
+# ============================================================================
+[spectral_calib]
+# Parameters
+calib_mode = ""                         # Calibration mode string
+complexity = ""                         # Complexity level string
+field_width_mm = 0.0                    # Field width (mm)
+field_height_mm = 0.0                   # Field height (mm)
+light_source_count = 0                  # Light source count
+# Execution results
+executed = false
+step = 0                                # Current step
+export_path = "config/spectral_calib.dat"
+last_run_at = ""

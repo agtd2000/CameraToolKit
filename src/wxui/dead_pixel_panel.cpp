@@ -2,6 +2,7 @@
 #include "neumorphic_panel.h"
 #include "style_defs.h"
 #include "utils/image_io.h"
+#include "utils/session_config.h"
 #include <wx/grid.h>
 
 namespace mvtk {
@@ -365,6 +366,19 @@ void DeadPixelPanel::OnDetect(wxCommandEvent& event) {
     src_canvas_->SetImage(vis_image_);
     UpdateGrid();
     UpdateStatus(wxString::Format("Detected %zu dead pixels", dead_pixels_.size()));
+
+    // Save detection results to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("dead_pixel.detect_type", static_cast<int>(detect_params_.type));
+    cfg.Set("dead_pixel.threshold", detect_params_.threshold);
+    cfg.Set("dead_pixel.avg_brightness_min", detect_params_.avg_brightness_min);
+    cfg.Set("dead_pixel.avg_brightness_max", detect_params_.avg_brightness_max);
+    cfg.Set("dead_pixel.kernel_size", detect_params_.kernel_size);
+    cfg.Set("dead_pixel.executed", true);
+    cfg.Set("dead_pixel.dead_pixels_detected", static_cast<int>(dead_pixels_.size()));
+    cfg.AddCalibrationHistory("DPC", "Defective pixel detection", true, 0.0,
+                              "detected=" + std::to_string(dead_pixels_.size()));
+    cfg.Save();
 }
 
 void DeadPixelPanel::OnCorrect(wxCommandEvent& event) {
@@ -381,11 +395,25 @@ void DeadPixelPanel::OnCorrect(wxCommandEvent& event) {
     corrected_image_ = DeadPixelDetector::correct(src_image_, dead_pixels_, correct_params_);
     result_canvas_->SetImage(corrected_image_);
     UpdateStatus("Correction completed");
+
+    // Save correction results to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("dead_pixel.correct_method", correct_params_.method);
+    cfg.Set("dead_pixel.dead_pixels_corrected", static_cast<int>(dead_pixels_.size()));
+    cfg.AddCalibrationHistory("DPC", "Defective pixel correction", true, 0.0,
+                              "corrected=" + std::to_string(dead_pixels_.size()));
+    cfg.Save();
 }
 
 void DeadPixelPanel::OnExport(wxCommandEvent& event) {
-    DeadPixelDetector::exportCSV(dead_pixels_, csv_path_);
-    UpdateStatus("Dead pixels exported to " + wxString(csv_path_));
+    std::string export_path = "config/dead_pixels.csv";
+    DeadPixelDetector::exportCSV(dead_pixels_, export_path);
+    UpdateStatus("Dead pixels exported to " + wxString(export_path));
+
+    // Save export path to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("dead_pixel.csv_export_path", export_path);
+    cfg.Save();
 }
 
 void DeadPixelPanel::OnImport(wxCommandEvent& event) {

@@ -2,6 +2,7 @@
 #include "neumorphic_panel.h"
 #include "style_defs.h"
 #include "utils/image_io.h"
+#include "utils/session_config.h"
 #include "algo/roi.h"
 #include <wx/grid.h>
 #include <opencv2/imgproc.hpp>
@@ -978,6 +979,36 @@ void QuickColorCalibPanel::OnCalibrate(wxCommandEvent& event) {
     UpdateStepButtons();
     notebook_->SetSelection(3);
     UpdateCanvasImages();
+
+    // Save calibration results to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("quick_color_calib.calib_mode", calib_mode_);
+    cfg.Set("quick_color_calib.wb_method", static_cast<int>(wb_method_));
+    cfg.Set("quick_color_calib.ccm_method", static_cast<int>(ccm_method_));
+    cfg.Set("quick_color_calib.stat_method", static_cast<int>(stat_method_));
+    cfg.Set("quick_color_calib.roi_count", static_cast<int>(rois_.size()));
+    cfg.Set("quick_color_calib.wb_r_gain", calib_result_.wb_params.r_gain);
+    cfg.Set("quick_color_calib.wb_g_gain", calib_result_.wb_params.g_gain);
+    cfg.Set("quick_color_calib.wb_b_gain", calib_result_.wb_params.b_gain);
+    // CCM 3x3 matrix flattened row-major
+    cfg.SetArray("quick_color_calib.ccm_matrix", std::vector<double>{
+        calib_result_.ccm_params.ccm(0, 0), calib_result_.ccm_params.ccm(0, 1), calib_result_.ccm_params.ccm(0, 2),
+        calib_result_.ccm_params.ccm(1, 0), calib_result_.ccm_params.ccm(1, 1), calib_result_.ccm_params.ccm(1, 2),
+        calib_result_.ccm_params.ccm(2, 0), calib_result_.ccm_params.ccm(2, 1), calib_result_.ccm_params.ccm(2, 2)
+    });
+    // DeltaE results
+    cfg.Set("quick_color_calib.delta_e00_mean", calib_result_.mean_deltaE00);
+    double max_de = 0.0;
+    if (!calib_result_.deltaE00.empty()) {
+        max_de = *std::max_element(calib_result_.deltaE00.begin(), calib_result_.deltaE00.end());
+    }
+    cfg.Set("quick_color_calib.delta_e00_max", max_de);
+    cfg.SetArray("quick_color_calib.delta_e00_list", calib_result_.deltaE00);
+    cfg.Set("quick_color_calib.executed", true);
+    cfg.AddCalibrationHistory("QuickColorCalib", "Quick color calibration (WB+CCM)", true, 0.0,
+                              "mean_de=" + std::to_string(calib_result_.mean_deltaE00) +
+                              ",max_de=" + std::to_string(max_de));
+    cfg.Save();
 }
 
 void QuickColorCalibPanel::OnBack(wxCommandEvent& event) {

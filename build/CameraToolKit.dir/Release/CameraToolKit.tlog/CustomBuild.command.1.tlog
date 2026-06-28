@@ -1,6 +1,6 @@
-^E:\PROJECTS\STUDY\MVTOOLKIT\CMAKELISTS.TXT
+^E:\PROJECTS\STUDY\CAMERATOOLKIT\CMAKELISTS.TXT
 setlocal
-"D:\Program Files\CMake\bin\cmake.exe" -SE:/Projects/Study/MvToolKit -BE:/Projects/Study/MvToolKit/build --check-stamp-file E:/Projects/Study/MvToolKit/build/CMakeFiles/generate.stamp
+"D:\Program Files\CMake\bin\cmake.exe" -SE:/Projects/Study/CameraToolKit -BE:/Projects/Study/CameraToolKit/build --check-stamp-file E:/Projects/Study/CameraToolKit/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

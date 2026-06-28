@@ -12,7 +12,7 @@
 namespace mvtk {
 namespace utils {
 
-cv::Mat imreadUtf8(const std::string& filename) {
+cv::Mat imreadUtf8(const std::string& filename, int flags) {
 #ifdef _WIN32
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     std::wstring wfilename = converter.from_bytes(filename);
@@ -38,9 +38,9 @@ cv::Mat imreadUtf8(const std::string& filename) {
 
     CloseHandle(hFile);
 
-    return cv::imdecode(buffer, cv::IMREAD_COLOR);
+    return cv::imdecode(buffer, flags);
 #else
-    return cv::imread(filename);
+    return cv::imread(filename, flags);
 #endif
 }
 

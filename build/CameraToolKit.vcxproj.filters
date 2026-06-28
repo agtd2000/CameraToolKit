@@ -1,105 +1,111 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\main.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\scm.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\scm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\dead_pixel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\dead_pixel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\flat_field.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\flat_field.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\white_balance.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\white_balance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\ccm.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\ccm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\color_error.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\color_error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\spectral.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\spectral.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\quick_color_calib.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\quick_color_calib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\roi.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\roi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\gamma.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\gamma.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\clut.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\clut.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\algo\image_node.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\algo\image_node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\main_app.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\main_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\main_frame.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\main_frame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\image_canvas.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\image_canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\neumorphic_panel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\neumorphic_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\scm_panel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\scm_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\dead_pixel_panel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\dead_pixel_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\flat_field_panel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\flat_field_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\quick_color_calib_panel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\quick_color_calib_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\color_error_panel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\color_error_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\color_char_calib_panel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\color_char_calib_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\spectral_calib_panel.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\spectral_calib_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\wxui\worker_thread.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\pipeline_panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\utils\image_io.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\wxui\worker_thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\utils\tone_mapping.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\utils\image_io.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\utils\logger.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\utils\tone_mapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Projects\Study\MvToolKit\src\utils\memory_pool.cpp">
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\utils\logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\utils\memory_pool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\Study\CameraToolKit\src\utils\session_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\Projects\Study\MvToolKit\CMakeLists.txt" />
+    <CustomBuild Include="E:\Projects\Study\CameraToolKit\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="E:\Projects\Study\MvToolKit\src\logo\app_icon.rc">
+    <ResourceCompile Include="E:\Projects\Study\CameraToolKit\src\logo\app_icon.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{51907F03-36E0-3257-97DE-43A5EF0ADF50}</UniqueIdentifier>
+      <UniqueIdentifier>{DAFEC305-FB0C-3BA3-B5A6-9628BE51E381}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

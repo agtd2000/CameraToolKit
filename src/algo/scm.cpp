@@ -38,48 +38,112 @@ void SCMEvaluator::computeMeanVariance(const std::vector<cv::Mat>& images,
     int rows = actual_roi.height;
     int cols = actual_roi.width;
     int channels = first_img.channels();
-    size_t total_pixels = static_cast<size_t>(rows) * cols * channels;
     int num_frames = static_cast<int>(images.size());
 
-    std::vector<double> frame_means(num_frames, 0.0);
+    // EMVA 1288 标准时间方差统计：
+    //   对每个像素位置计算多帧时间均值和时间方差，
+    //   然后所有像素取平均。这样可消除 PRNU/暗电流非均匀性等
+    //   固定模式噪声 (FPN)，仅保留时间噪声 (读出噪声 + 散粒噪声)，
+    //   使 PTC 曲线能正确拟合系统增益。
+    //
+    // 公式：var(x,y) = (N*Σx² - (Σx)²) / (N*(N-1))
+    //       mean(x,y) = Σx / N
+
+    if (channels == 1) {
+        // 单通道：直接累加
+        cv::Mat sum_img = cv::Mat::zeros(rows, cols, CV_64F);
+        cv::Mat sqsum_img = cv::Mat::zeros(rows, cols, CV_64F);
 
 #ifdef _OPENMP
 #pragma omp parallel for schedule(static)
 #endif
-    for (int f = 0; f < num_frames; ++f) {
-        cv::Mat img_f;
-        images[f].convertTo(img_f, CV_64F);
-        cv::Mat region = img_f(actual_roi);
+        for (int f = 0; f < num_frames; ++f) {
+            cv::Mat img_f;
+            images[f].convertTo(img_f, CV_64F);
+            cv::Mat region = img_f(actual_roi);
 
-        double sum = 0.0;
-        if (channels == 1) {
-            for (int y = 0; y < rows; ++y) {
-                const double* row = region.ptr<double>(y);
-                for (int x = 0; x < cols; ++x) {
-                    sum += row[x];
-                }
-            }
-        } else {
-            for (int y = 0; y < rows; ++y) {
-                const cv::Vec3d* row = region.ptr<cv::Vec3d>(y);
-                for (int x = 0; x < cols; ++x) {
-                    sum += (row[x][0] + row[x][1] + row[x][2]) / 3.0;
-                }
+#ifdef _OPENMP
+#pragma omp critical
+#endif
+            {
+                sum_img += region;
+                cv::Mat sq;
+                cv::multiply(region, region, sq);
+                sqsum_img += sq;
             }
         }
-        frame_means[f] = sum / (rows * cols);
-    }
 
-    out_mean = 0.0;
-    for (double m : frame_means) out_mean += m;
-    out_mean /= num_frames;
+        // 每像素时间均值
+        cv::Mat mean_img = sum_img / num_frames;
 
-    out_variance = 0.0;
-    for (double m : frame_means) {
-        double diff = m - out_mean;
-        out_variance += diff * diff;
+        // 每像素时间方差：var = (N*Σx² - (Σx)²) / (N*(N-1))
+        cv::Mat sq_sum_img;
+        cv::multiply(sum_img, sum_img, sq_sum_img);
+        cv::Mat var_img = (sqsum_img * num_frames - sq_sum_img) / (num_frames * (num_frames - 1.0));
+
+        // 全 ROI 平均
+        cv::Scalar mean_s = cv::mean(mean_img);
+        cv::Scalar var_s = cv::mean(var_img);
+        out_mean = mean_s[0];
+        out_variance = var_s[0];
+    } else {
+        // 多通道：转灰度后处理（与单通道等价）
+        cv::Mat sum_img = cv::Mat::zeros(rows, cols, CV_64F);
+        cv::Mat sqsum_img = cv::Mat::zeros(rows, cols, CV_64F);
+
+#ifdef _OPENMP
+#pragma omp parallel for schedule(static)
+#endif
+        for (int f = 0; f < num_frames; ++f) {
+            cv::Mat img_f;
+            images[f].convertTo(img_f, CV_64F);
+            cv::Mat region = img_f(actual_roi);
+
+            // 转灰度（通道平均）
+            cv::Mat gray;
+            if (channels == 3) {
+                gray = cv::Mat(rows, cols, CV_64F);
+                for (int y = 0; y < rows; ++y) {
+                    const cv::Vec3d* src_row = region.ptr<cv::Vec3d>(y);
+                    double* dst_row = gray.ptr<double>(y);
+                    for (int x = 0; x < cols; ++x) {
+                        dst_row[x] = (src_row[x][0] + src_row[x][1] + src_row[x][2]) / 3.0;
+                    }
+                }
+            } else if (channels == 4) {
+                gray = cv::Mat(rows, cols, CV_64F);
+                for (int y = 0; y < rows; ++y) {
+                    const cv::Vec4d* src_row = region.ptr<cv::Vec4d>(y);
+                    double* dst_row = gray.ptr<double>(y);
+                    for (int x = 0; x < cols; ++x) {
+                        dst_row[x] = (src_row[x][0] + src_row[x][1] + src_row[x][2]) / 3.0;
+                    }
+                }
+            } else {
+                gray = region.clone();
+            }
+
+#ifdef _OPENMP
+#pragma omp critical
+#endif
+            {
+                sum_img += gray;
+                cv::Mat sq;
+                cv::multiply(gray, gray, sq);
+                sqsum_img += sq;
+            }
+        }
+
+        cv::Mat mean_img = sum_img / num_frames;
+        cv::Mat sq_sum_img;
+        cv::multiply(sum_img, sum_img, sq_sum_img);
+        cv::Mat var_img = (sqsum_img * num_frames - sq_sum_img) / (num_frames * (num_frames - 1.0));
+
+        cv::Scalar mean_s = cv::mean(mean_img);
+        cv::Scalar var_s = cv::mean(var_img);
+        out_mean = mean_s[0];
+        out_variance = var_s[0];
     }
-    out_variance /= (num_frames - 1);
 }
 
 void SCMEvaluator::linearFit(const std::vector<double>& x,
@@ -170,7 +234,8 @@ std::vector<PTCDataPoint> SCMEvaluator::computePTC(
 }
 
 double SCMEvaluator::computeSystemGain(const std::vector<PTCDataPoint>& ptc_points) {
-    if (ptc_points.size() < 3) return 1.0;
+    // PTC 线性拟合至少需要 2 个点
+    if (ptc_points.size() < 2) return 1.0;
 
     std::vector<double> means, vars;
     for (const auto& pt : ptc_points) {
@@ -180,11 +245,12 @@ double SCMEvaluator::computeSystemGain(const std::vector<PTCDataPoint>& ptc_poin
         }
     }
 
-    if (means.size() < 3) return 1.0;
+    if (means.size() < 2) return 1.0;
 
     double slope, intercept, r2;
     linearFit(means, vars, slope, intercept, r2);
 
+    // 若线性拟合不佳，改用逐点斜率平均
     if (slope < 0 || r2 < 0.9) {
         double avg_slope = 0.0;
         int count = 0;
@@ -260,22 +326,34 @@ double SCMEvaluator::computeFullWellCapacity(
     double system_gain,
     double max_dn) {
 
-    if (ptc_points.empty()) return 0.0;
+    if (ptc_points.empty() || system_gain <= 0) return 0.0;
 
-    double last_mean = ptc_points.back().mean;
-    double last_var = ptc_points.back().variance;
+    // EMVA 1288: 满阱容量 = 95% 满量程（传感器未饱和时的标准估计）
+    // 当 PTC 曲线未显示明显饱和点时，用 max_dn 的 95% 作为满阱估计
+    double fwc_dn = max_dn * 0.95;
+    double fwc_e = fwc_dn * system_gain;
 
-    double ptc_slope = 1.0 / system_gain;
-    double ideal_var = last_mean * ptc_slope;
+    // 若 PTC 点足够多，尝试从曲线检测饱和点
+    if (ptc_points.size() >= 3) {
+        // 找方差最大的点（饱和前方差峰值）
+        size_t peak_idx = 0;
+        double peak_var = 0.0;
+        for (size_t i = 0; i < ptc_points.size(); ++i) {
+            if (ptc_points[i].variance > peak_var) {
+                peak_var = ptc_points[i].variance;
+                peak_idx = i;
+            }
+        }
 
-    double saturation_ratio = ideal_var / last_var;
-
-    double fwc_dn = last_mean * saturation_ratio;
-    if (fwc_dn > max_dn * 0.95) {
-        fwc_dn = max_dn * 0.95;
+        // 若峰值点不是最后一个点，说明出现饱和（方差开始下降）
+        if (peak_idx < ptc_points.size() - 1) {
+            fwc_dn = ptc_points[peak_idx].mean;
+            fwc_e = fwc_dn * system_gain;
+        }
+        // 否则无饱和，保持 95% max_dn
     }
 
-    return fwc_dn * system_gain;
+    return fwc_e;
 }
 
 double SCMEvaluator::computeDynamicRange(double full_well_capacity_e, double dark_noise_e) {
@@ -396,9 +474,9 @@ SCMResult SCMEvaluator::evaluate(
                        result.dynamic_range_db > 0);
 
     if (result.is_valid) {
-        result.message = "EMVA 1288 评估完成";
+        result.message = "EMVA 1288 evaluation completed";
     } else {
-        result.message = "评估无效：数据不足或计算异常";
+        result.message = "Evaluation invalid: insufficient data or computation error";
     }
 
     result.is_snr_sufficient_for_ccm = (result.snr_at_50_percent >= 20.0);
@@ -417,44 +495,44 @@ std::string SCMEvaluator::generateReport(const SCMResult& result) {
     std::ostringstream oss;
 
     oss << "============================================\n";
-    oss << "EMVA 1288 相机性能评估报告\n";
+    oss << "EMVA 1288 Camera Performance Evaluation Report\n";
     oss << "============================================\n\n";
 
-    oss << "【基本信息】\n";
-    oss << "传感器名称: " << result.sensor_name << "\n";
-    oss << "测试温度: " << result.temperature_c << " ℃\n";
-    oss << "传感器位深: " << result.sensor_bits << " bit\n";
-    oss << "最大数字值: " << result.max_digital_value << " DN\n";
+    oss << "[Basic Info]\n";
+    oss << "Sensor Name: " << result.sensor_name << "\n";
+    oss << "Temperature: " << result.temperature_c << " C\n";
+    oss << "Sensor Bits: " << result.sensor_bits << " bit\n";
+    oss << "Max Digital Value: " << result.max_digital_value << " DN\n";
     oss << "\n";
 
-    oss << "【核心指标】\n";
-    oss << "系统增益: " << result.system_gain_e_per_dn << " e-/DN ("
+    oss << "[Core Metrics]\n";
+    oss << "System Gain: " << result.system_gain_e_per_dn << " e-/DN ("
         << result.system_gain_dn_per_e << " DN/e-)\n";
-    oss << "暗噪声: " << result.dark_noise_e << " e- ("
+    oss << "Dark Noise: " << result.dark_noise_e << " e- ("
         << result.dark_noise_dn << " DN)\n";
-    oss << "暗信号: " << result.dark_signal_dn << " DN\n";
-    oss << "暗电流: " << result.dark_current_e_per_sec << " e-/s\n";
+    oss << "Dark Signal: " << result.dark_signal_dn << " DN\n";
+    oss << "Dark Current: " << result.dark_current_e_per_sec << " e-/s\n";
     oss << "\n";
 
-    oss << "【动态范围指标】\n";
-    oss << "满阱容量: " << result.full_well_capacity_e << " e- ("
+    oss << "[Dynamic Range Metrics]\n";
+    oss << "Full Well Capacity: " << result.full_well_capacity_e << " e- ("
         << result.full_well_capacity_dn << " DN)\n";
-    oss << "动态范围: " << result.dynamic_range_db << " dB ("
+    oss << "Dynamic Range: " << result.dynamic_range_db << " dB ("
         << result.dynamic_range_bits << " bit)\n";
     oss << "\n";
 
-    oss << "【SNR指标】\n";
-    oss << "10%信号SNR: " << result.snr_at_10_percent << " dB\n";
-    oss << "50%信号SNR: " << result.snr_at_50_percent << " dB\n";
-    oss << "90%信号SNR: " << result.snr_at_90_percent << " dB\n";
-    oss << "峰值SNR: " << result.peak_snr_db << " dB\n";
+    oss << "[SNR Metrics]\n";
+    oss << "SNR @ 10% signal: " << result.snr_at_10_percent << " dB\n";
+    oss << "SNR @ 50% signal: " << result.snr_at_50_percent << " dB\n";
+    oss << "SNR @ 90% signal: " << result.snr_at_90_percent << " dB\n";
+    oss << "Peak SNR: " << result.peak_snr_db << " dB\n";
     oss << "\n";
 
-    oss << "【评估结论】\n";
-    oss << "评估有效性: " << (result.is_valid ? "有效" : "无效") << " (系统增益>0且满阱容量>0且动态范围>0)\n";
-    oss << "SNR满足CCM标定: " << (result.is_snr_sufficient_for_ccm ? "是" : "否") << " (50%信号SNR >= 20dB)\n";
-    oss << "推荐CCM标定曝光: " << result.recommended_ccm_exposure_us << " us\n";
-    oss << "推荐LSC标定曝光: " << result.recommended_lsc_exposure_us << " us\n";
+    oss << "[Evaluation Conclusion]\n";
+    oss << "Validity: " << (result.is_valid ? "Valid" : "Invalid") << " (system gain>0 & full well>0 & DR>0)\n";
+    oss << "SNR sufficient for CCM: " << (result.is_snr_sufficient_for_ccm ? "Yes" : "No") << " (50% signal SNR >= 20dB)\n";
+    oss << "Recommended CCM exposure: " << result.recommended_ccm_exposure_us << " us\n";
+    oss << "Recommended LSC exposure: " << result.recommended_lsc_exposure_us << " us\n";
     oss << "\n";
 
     oss << "============================================\n";

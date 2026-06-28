@@ -247,7 +247,7 @@ LinearityCheckResult ColorCorrectionMatrix::checkLinearity(
     result.suggested_max_luma = 0.0;
     
     if (src_colors.size() != ref_colors.size() || src_colors.size() < 3) {
-        result.message = "颜色样本数量不足，至少需要3个颜色样本";
+        result.message = "Insufficient color samples, at least 3 color samples required";
         return result;
     }
     
@@ -282,12 +282,12 @@ LinearityCheckResult ColorCorrectionMatrix::checkLinearity(
     result.is_linear = (result.avg_r2 >= min_r2_threshold);
     
     if (result.is_linear) {
-        result.message = "传感器线性度验证通过";
+        result.message = "Sensor linearity verification passed";
     } else {
-        result.message = "传感器线性度验证失败：R通道R²=" + std::to_string(result.r_channel_r2) +
-                         ", G通道R²=" + std::to_string(result.g_channel_r2) +
-                         ", B通道R²=" + std::to_string(result.b_channel_r2) +
-                         "。建议调整曝光设置，确保色卡亮度落在相机线性响应区内。";
+        result.message = "Sensor linearity verification failed: R channel R^2=" + std::to_string(result.r_channel_r2) +
+                         ", G channel R^2=" + std::to_string(result.g_channel_r2) +
+                         ", B channel R^2=" + std::to_string(result.b_channel_r2) +
+                         ". Please adjust exposure settings to ensure color chart brightness falls within the camera's linear response region.";
     }
     
     double min_luma = ref_luma_values.front();

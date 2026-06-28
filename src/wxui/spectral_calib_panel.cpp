@@ -1,6 +1,7 @@
 #include "wxui/spectral_calib_panel.h"
 #include "neumorphic_panel.h"
 #include "style_defs.h"
+#include "utils/session_config.h"
 #include <opencv2/imgproc.hpp>
 
 namespace mvtk {
@@ -379,6 +380,11 @@ void SpectralCalibPanel::OnAddLight(wxCommandEvent& event) {
     light_sources_.push_back(ls);
     UpdateLightList();
     UpdateStatus(wxString::Format("Added light source: %s", ls.name.c_str()));
+
+    // Save light source count to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("spectral_calib.light_source_count", static_cast<int>(light_sources_.size()));
+    cfg.Save();
 }
 
 void SpectralCalibPanel::OnComputeRegion(wxCommandEvent& event) {
@@ -389,6 +395,12 @@ void SpectralCalibPanel::OnComputeRegion(wxCommandEvent& event) {
     float field_w = sensor_w * distance / focal;
     float field_h = sensor_h * distance / focal;
     UpdateStatus(wxString::Format("Calib Region: %.2fmm x %.2fmm", field_w * 1000, field_h * 1000));
+
+    // Save region info to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("spectral_calib.field_width_mm", field_w * 1000.0);
+    cfg.Set("spectral_calib.field_height_mm", field_h * 1000.0);
+    cfg.Save();
 }
 
 void SpectralCalibPanel::OnDataSourceChanged(wxCommandEvent& event) {
@@ -443,15 +455,27 @@ void SpectralCalibPanel::OnPreview(wxCommandEvent& event) {
 }
 
 void SpectralCalibPanel::OnExport(wxCommandEvent& event) {
-    wxFileDialog dialog(this, "Export Calibration", "", "spectral_calib.dat", "*.dat", wxFD_SAVE);
-    if (dialog.ShowModal() == wxID_OK) {
-        std::ofstream ofs(dialog.GetPath().ToStdString());
-        ofs << "[SpectralCalibration]\n";
-        ofs << "Mode=" << calib_mode_combo_->GetValue().ToStdString() << "\n";
-        ofs << "Complexity=" << complexity_combo_->GetValue().ToStdString() << "\n";
-        ofs.close();
-        UpdateStatus("Calibration exported");
+    std::string export_path = "config/spectral_calib.dat";
+    std::ofstream ofs(export_path);
+    if (!ofs) {
+        UpdateStatus("Failed to open export file", true);
+        return;
     }
+    ofs << "[SpectralCalibration]\n";
+    ofs << "Mode=" << calib_mode_combo_->GetValue().ToStdString() << "\n";
+    ofs << "Complexity=" << complexity_combo_->GetValue().ToStdString() << "\n";
+    ofs.close();
+    UpdateStatus("Calibration exported to " + wxString(export_path));
+
+    // Save export info to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("spectral_calib.calib_mode", calib_mode_combo_->GetValue().ToStdString());
+    cfg.Set("spectral_calib.complexity", complexity_combo_->GetValue().ToStdString());
+    cfg.Set("spectral_calib.export_path", export_path);
+    cfg.Set("spectral_calib.executed", true);
+    cfg.AddCalibrationHistory("SpectralCalib", "Spectral calibration export", true, 0.0,
+                              "mode=" + calib_mode_combo_->GetValue().ToStdString());
+    cfg.Save();
 }
 
 void SpectralCalibPanel::OnBack(wxCommandEvent& event) {

@@ -8,6 +8,9 @@
         "string": "cpp",
         "cstdio": "cpp",
         "iostream": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "chrono": "cpp",
+        "ctime": "cpp",
+        "iomanip": "cpp"
     }
 }

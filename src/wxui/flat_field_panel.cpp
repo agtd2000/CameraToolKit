@@ -2,6 +2,7 @@
 #include "neumorphic_panel.h"
 #include "style_defs.h"
 #include "utils/image_io.h"
+#include "utils/session_config.h"
 
 namespace mvtk {
 namespace wxui {
@@ -425,6 +426,24 @@ void FlatFieldPanel::OnCalibrate(wxCommandEvent& event) {
         calib_result_.edge_brightness,
         min_g, max_g));
     UpdateStatus("Calibration completed");
+
+    // Save calibration results to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("flat_field.calib_mode", static_cast<int>(calib_params_.mode));
+    cfg.Set("flat_field.edge_fill", calib_params_.edge_fill);
+    cfg.Set("flat_field.smooth_kernel", calib_params_.smooth_kernel);
+    cfg.Set("flat_field.target_brightness", calib_params_.target_brightness);
+    cfg.Set("flat_field.channel_mode", calib_params_.channel_mode);
+    cfg.Set("flat_field.use_dark_frame", use_dark_ && !dark_image_.empty());
+    cfg.Set("flat_field.executed", true);
+    cfg.Set("flat_field.center_brightness_before", calib_result_.center_brightness);
+    cfg.Set("flat_field.edge_brightness_before", calib_result_.edge_brightness);
+    cfg.Set("flat_field.uniformity_before", calib_result_.uniformity);
+    cfg.Set("flat_field.gain_map_min", min_g);
+    cfg.Set("flat_field.gain_map_max", max_g);
+    cfg.AddCalibrationHistory("LSC", "Flat field calibration", true, 0.0,
+                              "uniformity=" + std::to_string(calib_result_.uniformity));
+    cfg.Save();
 }
 
 void FlatFieldPanel::OnApply(wxCommandEvent& event) {
@@ -439,6 +458,14 @@ void FlatFieldPanel::OnApply(wxCommandEvent& event) {
     corrected_image_ = FlatFieldCorrector::apply(src_image_, calib_result_.gain_map, calib_params_.edge_fill);
     result_canvas_->SetImage(corrected_image_);
     UpdateStatus("Correction applied");
+
+    // Compute post-correction uniformity and save to TOML
+    cv::Scalar mean, stddev;
+    cv::meanStdDev(corrected_image_, mean, stddev);
+    double uniformity_after = (mean[0] > 0) ? (1.0 - stddev[0] / mean[0]) : 0.0;
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("flat_field.uniformity_after", uniformity_after);
+    cfg.Save();
 }
 
 void FlatFieldPanel::OnExportGain(wxCommandEvent& event) {
@@ -446,14 +473,24 @@ void FlatFieldPanel::OnExportGain(wxCommandEvent& event) {
         UpdateStatus("Please calibrate first", true);
         return;
     }
-    FlatFieldCorrector::exportGainMap(calib_result_.gain_map, "gain_map.dat");
-    UpdateStatus("Gain map exported");
+    std::string export_path = "config/gain_map.dat";
+    FlatFieldCorrector::exportGainMap(calib_result_.gain_map, export_path);
+    UpdateStatus("Gain map exported to " + wxString(export_path));
+
+    // Save export path to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("flat_field.gain_map_path", export_path);
+    cfg.Save();
 }
 
 void FlatFieldPanel::OnImportGain(wxCommandEvent& event) {
-    calib_result_.gain_map = FlatFieldCorrector::importGainMap("gain_map.dat");
+    std::string import_path = "config/gain_map.dat";
+    calib_result_.gain_map = FlatFieldCorrector::importGainMap(import_path);
     if (!calib_result_.gain_map.empty()) {
-        UpdateStatus("Gain map imported");
+        UpdateStatus("Gain map imported from " + wxString(import_path));
+        auto& cfg = utils::SessionConfig::GetInstance();
+        cfg.Set("flat_field.gain_map_path", import_path);
+        cfg.Save();
     } else {
         UpdateStatus("Failed to import gain map", true);
     }

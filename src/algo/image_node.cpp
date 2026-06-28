@@ -156,6 +156,134 @@ void CorrectionPipeline::SetPipelineOrder(const std::vector<std::string>& order)
     nodes_ = new_order;
 }
 
+// ===================== OBNode 实现 =====================
+OBNode::OBNode()
+    : enabled_(true),
+      black_level_dn_(100.0),
+      use_dark_current_compensation_(false),
+      dark_current_e_per_s_(0.0),
+      system_gain_dn_per_e_(1.0),
+      exposure_s_(0.0) {}
+
+cv::Mat OBNode::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool OBNode::ProcessInPlace(cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return true;
+    }
+
+    // 计算总偏置：黑电平 + 暗电流漂移补偿
+    double offset = black_level_dn_;
+    if (use_dark_current_compensation_) {
+        offset += dark_current_e_per_s_ * system_gain_dn_per_e_ * exposure_s_;
+    }
+
+    // 全图逐像素减去偏置，并裁剪到 [0, max]
+    cv::Mat float_img;
+    input.convertTo(float_img, CV_32F);
+    float_img -= static_cast<float>(offset);
+
+    // 裁剪到非负
+    cv::max(float_img, 0.0f, float_img);
+
+    // 转回原类型
+    if (input.depth() == CV_16U) {
+        float_img.convertTo(input, CV_16U);
+    } else if (input.depth() == CV_8U) {
+        float_img.convertTo(input, CV_8U);
+    } else {
+        float_img.copyTo(input);
+    }
+
+    return true;
+}
+
+void OBNode::SetBlackLevel(double black_level_dn) {
+    black_level_dn_ = black_level_dn;
+}
+
+void OBNode::SetDarkCurrentCompensation(double dark_current_e_per_s,
+                                         double system_gain_dn_per_e,
+                                         double exposure_s) {
+    dark_current_e_per_s_ = dark_current_e_per_s;
+    system_gain_dn_per_e_ = system_gain_dn_per_e;
+    exposure_s_ = exposure_s;
+    use_dark_current_compensation_ = (dark_current_e_per_s > 0.0 && exposure_s > 0.0);
+}
+
+// ===================== DPCNode 实现 =====================
+DPCNode::DPCNode()
+    : enabled_(true),
+      threshold_sigma_(5.0),
+      dark_noise_dn_(30.0),
+      kernel_size_(3) {}
+
+cv::Mat DPCNode::Process(const cv::Mat& input) {
+    cv::Mat result = input.clone();
+    ProcessInPlace(result);
+    return result;
+}
+
+bool DPCNode::ProcessInPlace(cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return true;
+    }
+    DetectAndCorrect(input);
+    return true;
+}
+
+void DPCNode::SetThresholdSigma(double sigma) {
+    threshold_sigma_ = sigma > 0.0 ? sigma : 5.0;
+}
+
+void DPCNode::SetDarkNoise(double dark_noise_dn) {
+    dark_noise_dn_ = dark_noise_dn > 0.0 ? dark_noise_dn : 30.0;
+}
+
+void DPCNode::SetKernelSize(int kernel_size) {
+    kernel_size_ = (kernel_size == 3 || kernel_size == 5) ? kernel_size : 3;
+}
+
+void DPCNode::DetectAndCorrect(cv::Mat& img) const {
+    // 绝对阈值 = sigma * dark_noise
+    const double threshold = threshold_sigma_ * dark_noise_dn_;
+    const int k = kernel_size_ / 2;  // 邻域半径
+
+    // 转为浮点处理
+    cv::Mat float_img;
+    img.convertTo(float_img, CV_32F);
+
+    // 计算邻域均值（排除中心像素）
+    cv::Mat mean_img;
+    cv::boxFilter(float_img, mean_img, CV_32F, cv::Size(kernel_size_, kernel_size_),
+                  cv::Point(-1, -1), true, cv::BORDER_REPLICATE);
+
+    // 检测坏点：与邻域均值差值超过阈值
+    cv::Mat diff = cv::abs(float_img - mean_img);
+    cv::Mat mask = diff > threshold;
+
+    // 修复：用邻域均值替换坏点
+    float_img.copyTo(mean_img, ~mask);  // 非坏点保留原值
+    // 坏点位置用 mean_img 的值（邻域均值）
+
+    // 合成结果：坏点位置用均值，非坏点用原值
+    cv::Mat result = float_img.clone();
+    mean_img.copyTo(result, mask);
+
+    // 转回原类型
+    if (img.depth() == CV_16U) {
+        result.convertTo(img, CV_16U);
+    } else if (img.depth() == CV_8U) {
+        result.convertTo(img, CV_8U);
+    } else {
+        result.copyTo(img);
+    }
+}
+
 LSCNode::LSCNode() : enabled_(true) {}
 
 cv::Mat LSCNode::Process(const cv::Mat& input) {
@@ -281,6 +409,55 @@ void InterpolationNode::SetType(InterpolationType type) {
 
 void InterpolationNode::SetOutputSize(const cv::Size& size) {
     output_size_ = size;
+}
+
+// ===================== DemosaicingNode 实现 =====================
+DemosaicingNode::DemosaicingNode()
+    : enabled_(true), pattern_(BayerPattern::BG) {}
+
+cv::Mat DemosaicingNode::Process(const cv::Mat& input) {
+    if (!enabled_ || input.empty()) {
+        return input.clone();
+    }
+
+    // 仅对单通道图像做去马赛克
+    if (input.channels() != 1) {
+        return input.clone();
+    }
+
+    cv::Mat output;
+    int code = cv::COLOR_BayerBG2BGR;
+    switch (pattern_) {
+        case BayerPattern::BG: code = cv::COLOR_BayerBG2BGR; break;
+        case BayerPattern::GB: code = cv::COLOR_BayerGB2BGR; break;
+        case BayerPattern::RG: code = cv::COLOR_BayerRG2BGR; break;
+        case BayerPattern::GR: code = cv::COLOR_BayerGR2BGR; break;
+    }
+
+    // OpenCV 的 demosaicing 要求 8-bit 或 16-bit
+    if (input.depth() == CV_8U || input.depth() == CV_16U) {
+        cv::cvtColor(input, output, code);
+    } else {
+        // 其它类型先转 16U 再处理
+        cv::Mat tmp;
+        input.convertTo(tmp, CV_16U);
+        cv::cvtColor(tmp, output, code);
+    }
+    return output;
+}
+
+bool DemosaicingNode::ProcessInPlace(cv::Mat& input) {
+    // 去马赛克会改变通道数（1→3），不能原地修改，需要替换
+    cv::Mat output = Process(input);
+    if (!output.empty()) {
+        output.copyTo(input);
+        return true;
+    }
+    return false;
+}
+
+void DemosaicingNode::SetPattern(BayerPattern pattern) {
+    pattern_ = pattern;
 }
 
 WhiteBalanceNode::WhiteBalanceNode() : enabled_(true), gains_(1.0f, 1.0f, 1.0f) {}

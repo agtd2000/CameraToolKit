@@ -1,0 +1,54 @@
+[[history.calibration]]
+description = 'Sensor characterization evaluation (SI0)'
+duration_ms = 0.0
+notes = 'exposure_groups=3, frames=50'
+success = true
+timestamp = '2026-06-28T18:27:39+0800'
+type = 'SCM'
+
+[scm]
+bright_means = [ 10101.61162376303, 20103.60133873698, 40107.871675912116 ]
+bright_variances = [ 20905.119575222227, 40913.73767338633, 80901.83704186676 ]
+dark_current_e_per_sec = 2002.7258556546044
+dark_current_e_per_sec_per_mm2 = 9.6564504089e-312
+dark_means = [ 101.49841848958327, 103.50602473958237, 107.5075721354161 ]
+dark_noise_dn = 29.98477611113423
+dark_noise_e = 14.994072426410595
+dark_signal_dn = 99.49764479166652
+dark_variances = [ 899.0867984348461, 899.1380176977098, 899.8727570657904 ]
+dynamic_range_bits = 11.020917271219526
+dynamic_range_db = 66.34592197274154
+evaluation_message = 'EMVA 1288 evaluation completed'
+exposure_times_us = [ 1000.0, 2000.0, 4000.0 ]
+full_well_capacity_dn = 62258.25
+full_well_capacity_e = 31132.622307456204
+is_snr_sufficient_for_ccm = true
+is_uniformity_sufficient_for_lsc = true
+is_valid = true
+min_frame_count = 50
+peak_snr_db = 42.96173724940079
+recommended_ccm_exposure_us = 2000.0
+recommended_lsc_exposure_us = 2000.0
+roi_height = 0
+roi_width = 0
+roi_x = 0
+roi_y = 0
+saturation_threshold = 0.95
+snr_at_10_percent_db = 39.90195518167908
+snr_at_50_percent_db = 42.96173724940079
+snr_at_90_percent_db = 42.96173724940079
+system_gain_dn_per_e = 1.9997753284370545
+system_gain_e_per_dn = 0.5000561742011091
+test_temperature_c = 25.0
+
+[sensor]
+bayer_pattern = 'RGGB'
+bit_depth = 16
+manufacturer = 'S'
+max_digital_value = 65535
+model = 'I0'
+resolution_height = 480
+resolution_width = 640
+sensor_name = 'SI0'
+serial_number = 'SN0'
+temperature_c = 25.0

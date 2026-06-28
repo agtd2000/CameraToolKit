@@ -50,6 +50,13 @@ struct SCMParams {
     double temperature_c = 25.0;         ///< 传感器温度(℃)
     std::string sensor_name;             ///< 传感器名称
     int sensor_bits = 12;                ///< 传感器位深
+    // 传感器身份与规格信息（写入 TOML [sensor] 段，便于追溯）
+    std::string manufacturer;            ///< 厂商（如 Sony, ON Semi, Gpixel）
+    std::string model;                   ///< 型号（如 IMX264, AR0521）
+    std::string serial_number;           ///< 序列号 (SN)
+    std::string bayer_pattern;           ///< Bayer 排列 (BG/GB/RG/GR)
+    int resolution_width = 0;            ///< 有效分辨率宽度（像素）
+    int resolution_height = 0;           ///< 有效分辨率高度（像素）
 };
 
 /**

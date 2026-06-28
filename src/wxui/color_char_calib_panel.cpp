@@ -3,6 +3,7 @@
 #include "style_defs.h"
 #include "algo/quick_color_calib.h"
 #include "utils/image_io.h"
+#include "utils/session_config.h"
 #include <fstream>
 
 namespace mvtk {
@@ -502,10 +503,38 @@ void ColorCharCalibPanel::OnCalibrate(wxCommandEvent& event) {
     step_ = 2;
     UpdateStepButtons();
     notebook_->SetSelection(step_);
+
+    // Save calibration results to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("color_char_calib.wb_method", static_cast<int>(wb_method_));
+    cfg.Set("color_char_calib.ccm_method", static_cast<int>(ccm_method_));
+    cfg.Set("color_char_calib.standard_color", standard_color_);
+    cfg.Set("color_char_calib.quantize", quantize_);
+    cfg.Set("color_char_calib.wb_quant", wb_quant_);
+    cfg.Set("color_char_calib.ccm_quant", ccm_quant_);
+    cfg.Set("color_char_calib.light_source_count", static_cast<int>(light_sources_.size()));
+    // Save first light source results as representative
+    if (!wb_results_.empty()) {
+        cfg.Set("color_char_calib.wb_r_gain_first", wb_results_[0].r_gain);
+        cfg.Set("color_char_calib.wb_g_gain_first", wb_results_[0].g_gain);
+        cfg.Set("color_char_calib.wb_b_gain_first", wb_results_[0].b_gain);
+    }
+    if (!ccm_results_.empty()) {
+        cfg.SetArray("color_char_calib.ccm_matrix_first", std::vector<double>{
+            ccm_results_[0].ccm(0, 0), ccm_results_[0].ccm(0, 1), ccm_results_[0].ccm(0, 2),
+            ccm_results_[0].ccm(1, 0), ccm_results_[0].ccm(1, 1), ccm_results_[0].ccm(1, 2),
+            ccm_results_[0].ccm(2, 0), ccm_results_[0].ccm(2, 1), ccm_results_[0].ccm(2, 2)
+        });
+    }
+    cfg.Set("color_char_calib.executed", true);
+    cfg.AddCalibrationHistory("ColorCharCalib", "Color characterization calibration", true, 0.0,
+                              "light_sources=" + std::to_string(light_sources_.size()));
+    cfg.Save();
 }
 
 void ColorCharCalibPanel::OnExport(wxCommandEvent& event) {
-    std::ofstream ofs("color_char_calib.dat");
+    std::string export_path = "config/color_char_calib.txt";
+    std::ofstream ofs(export_path);
     if (!ofs) {
         UpdateStatus("Failed to open export file", true);
         return;
@@ -524,7 +553,12 @@ void ColorCharCalibPanel::OnExport(wxCommandEvent& event) {
     }
 
     ofs.close();
-    UpdateStatus("Calibration data exported");
+    UpdateStatus("Calibration data exported to " + wxString(export_path));
+
+    // Save export path to TOML
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Set("color_char_calib.export_path", export_path);
+    cfg.Save();
 }
 
 void ColorCharCalibPanel::OnBack(wxCommandEvent& event) {
