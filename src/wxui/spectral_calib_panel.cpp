@@ -2,6 +2,7 @@
 #include "neumorphic_panel.h"
 #include "style_defs.h"
 #include "utils/session_config.h"
+#include <wx/filename.h>
 #include <opencv2/imgproc.hpp>
 
 namespace mvtk {
@@ -89,13 +90,38 @@ SpectralCalibPanel::SpectralCalibPanel(wxWindow* parent) : wxPanel(parent, wxID_
     Style::ApplyNeumorphicStyle(factory_title, true);
     factory_box->Add(factory_title, 0, wxALL, Style::SPACING_MEDIUM);
     wxBoxSizer* factory_row = new wxBoxSizer(wxHORIZONTAL);
-    import_factory_btn_ = new wxButton(factory_panel, SP_ID_IMPORT_FACTORY_BTN, "Import");
+    import_factory_btn_ = new wxButton(factory_panel, SP_ID_IMPORT_FACTORY_BTN, "Load");
     Style::ApplyNeumorphicStyle(import_factory_btn_);
     factory_path_ctrl_ = new wxTextCtrl(factory_panel, wxID_ANY, "", wxDefaultPosition, wxSize(200, -1));
     Style::ApplyNeumorphicStyle(factory_path_ctrl_);
     factory_row->Add(import_factory_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     factory_row->Add(factory_path_ctrl_, 1);
     factory_box->Add(factory_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* factory_info_header = new wxStaticText(factory_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(factory_info_header, true);
+    factory_info_header->SetFont(Style::GetSansFont(9));
+    factory_box->Add(factory_info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* factory_info_title = new wxStaticText(factory_panel, wxID_ANY, "◆ Factory Calibration:");
+    Style::ApplyNeumorphicStyle(factory_info_title);
+    factory_info_title->SetFont(Style::GetSansFont(8));
+    factory_box->Add(factory_info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* factory_info_item1 = new wxStaticText(factory_panel, wxID_ANY, "- Format: .dat factory calibration file");
+    factory_info_item1->SetFont(Style::GetSansFont(8));
+    factory_info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    factory_box->Add(factory_info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* factory_info_item2 = new wxStaticText(factory_panel, wxID_ANY, "- Contains spectral sensitivity data");
+    factory_info_item2->SetFont(Style::GetSansFont(8));
+    factory_info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    factory_box->Add(factory_info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* factory_info_item3 = new wxStaticText(factory_panel, wxID_ANY, "- Provided by sensor manufacturer");
+    factory_info_item3->SetFont(Style::GetSansFont(8));
+    factory_info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    factory_box->Add(factory_info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
     factory_panel->SetSizer(factory_box);
     page0_top_row->Add(factory_panel, 1, wxEXPAND);
 
@@ -114,20 +140,23 @@ SpectralCalibPanel::SpectralCalibPanel(wxWindow* parent) : wxPanel(parent, wxID_
     light_list_->SetFont(Style::GetSansFont(9));
     user_box->Add(light_list_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
-    wxGridSizer* light_grid = new wxGridSizer(2, 2, Style::SPACING_SMALL);
+    wxBoxSizer* name_row = new wxBoxSizer(wxHORIZONTAL);
     wxStaticText* name_label = new wxStaticText(user_panel, wxID_ANY, "New Light Name:");
     Style::ApplyNeumorphicStyle(name_label);
-    light_grid->Add(name_label, 0, wxALIGN_CENTER_VERTICAL);
+    name_row->Add(name_label, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, Style::SPACING_SMALL);
     new_light_name_ctrl_ = new wxTextCtrl(user_panel, wxID_ANY, "A");
     Style::ApplyNeumorphicStyle(new_light_name_ctrl_);
-    light_grid->Add(new_light_name_ctrl_, 1);
+    name_row->Add(new_light_name_ctrl_, 1);
+    user_box->Add(name_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxBoxSizer* temp_row = new wxBoxSizer(wxHORIZONTAL);
     wxStaticText* temp_label = new wxStaticText(user_panel, wxID_ANY, "Color Temperature:");
     Style::ApplyNeumorphicStyle(temp_label);
-    light_grid->Add(temp_label, 0, wxALIGN_CENTER_VERTICAL);
+    temp_row->Add(temp_label, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, Style::SPACING_SMALL);
     new_light_temp_slider_ = new wxSlider(user_panel, wxID_ANY, 29, 20, 100);
     Style::ApplyNeumorphicStyle(new_light_temp_slider_);
-    light_grid->Add(new_light_temp_slider_, 1);
-    user_box->Add(light_grid, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+    temp_row->Add(new_light_temp_slider_, 1);
+    user_box->Add(temp_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     add_light_btn_ = new wxButton(user_panel, SP_ID_ADD_LIGHT_BTN, "Add Light Source");
     Style::ApplyNeumorphicStyle(add_light_btn_);
@@ -229,6 +258,31 @@ SpectralCalibPanel::SpectralCalibPanel(wxWindow* parent) : wxPanel(parent, wxID_
     curve_row->Add(load_curve_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     curve_row->Add(curve_path_ctrl_, 1);
     capture_box->Add(curve_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* curve_info_header = new wxStaticText(capture_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(curve_info_header, true);
+    curve_info_header->SetFont(Style::GetSansFont(9));
+    capture_box->Add(curve_info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* curve_info_title = new wxStaticText(capture_panel, wxID_ANY, "◆ Spectral Curve:");
+    Style::ApplyNeumorphicStyle(curve_info_title);
+    curve_info_title->SetFont(Style::GetSansFont(8));
+    capture_box->Add(curve_info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* curve_info_item1 = new wxStaticText(capture_panel, wxID_ANY, "- Format: .csv spectral curve file");
+    curve_info_item1->SetFont(Style::GetSansFont(8));
+    curve_info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    capture_box->Add(curve_info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* curve_info_item2 = new wxStaticText(capture_panel, wxID_ANY, "- Wavelength vs sensitivity data");
+    curve_info_item2->SetFont(Style::GetSansFont(8));
+    curve_info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    capture_box->Add(curve_info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* curve_info_item3 = new wxStaticText(capture_panel, wxID_ANY, "- CSV: wavelength, R, G, B columns");
+    curve_info_item3->SetFont(Style::GetSansFont(8));
+    curve_info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    capture_box->Add(curve_info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     wxBoxSizer* img_box = new wxBoxSizer(wxVERTICAL);
     wxStaticText* img_title = new wxStaticText(capture_panel, wxID_ANY, "Captured Image");
@@ -366,11 +420,16 @@ void SpectralCalibPanel::OnComplexityChanged(wxCommandEvent& event) {
 }
 
 void SpectralCalibPanel::OnImportFactory(wxCommandEvent& event) {
-    wxFileDialog dialog(this, "Import Factory Calibration", "", "", "*.dat", wxFD_OPEN);
-    if (dialog.ShowModal() == wxID_OK) {
-        factory_path_ctrl_->SetValue(dialog.GetPath());
-        UpdateStatus("Factory calibration imported");
+    wxString path = factory_path_ctrl_->GetValue().Trim();
+    if (path.IsEmpty()) {
+        UpdateStatus("Please enter a file path first", true);
+        return;
     }
+    if (!wxFileName::FileExists(path)) {
+        UpdateStatus("File not found: " + path, true);
+        return;
+    }
+    UpdateStatus("Factory calibration imported");
 }
 
 void SpectralCalibPanel::OnAddLight(wxCommandEvent& event) {
@@ -443,11 +502,16 @@ void SpectralCalibPanel::OnCloseCamera(wxCommandEvent& event) {
 }
 
 void SpectralCalibPanel::OnLoadCurve(wxCommandEvent& event) {
-    wxFileDialog dialog(this, "Load Spectral Curve", "", "", "*.csv", wxFD_OPEN);
-    if (dialog.ShowModal() == wxID_OK) {
-        curve_path_ctrl_->SetValue(dialog.GetPath());
-        UpdateStatus("Spectral curve loaded");
+    wxString path = curve_path_ctrl_->GetValue().Trim();
+    if (path.IsEmpty()) {
+        UpdateStatus("Please enter a file path first", true);
+        return;
     }
+    if (!wxFileName::FileExists(path)) {
+        UpdateStatus("File not found: " + path, true);
+        return;
+    }
+    UpdateStatus("Spectral curve loaded");
 }
 
 void SpectralCalibPanel::OnPreview(wxCommandEvent& event) {

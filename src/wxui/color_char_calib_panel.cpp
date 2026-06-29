@@ -52,6 +52,9 @@ ColorCharCalibPanel::ColorCharCalibPanel(wxWindow* parent) : wxPanel(parent, wxI
     NeumorphicPanel* page0 = new NeumorphicPanel(notebook_);
     wxBoxSizer* page0_sizer = new wxBoxSizer(wxVERTICAL);
 
+    // Step 1 row: Light Sources List (left) and Image Preview (right) - 1:1 split
+    wxBoxSizer* step1_row = new wxBoxSizer(wxHORIZONTAL);
+
     NeumorphicPanel* list_panel = new NeumorphicPanel(page0);
     wxBoxSizer* list_box = new wxBoxSizer(wxVERTICAL);
     wxStaticText* list_title = new wxStaticText(list_panel, wxID_ANY, "Light Sources List");
@@ -61,8 +64,23 @@ ColorCharCalibPanel::ColorCharCalibPanel(wxWindow* parent) : wxPanel(parent, wxI
     light_list_->SetFont(Style::GetSansFont(9));
     list_box->Add(light_list_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     list_panel->SetSizer(list_box);
-    page0_sizer->Add(list_panel, 0, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
+    step1_row->Add(list_panel, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
 
+    NeumorphicPanel* img_panel = new NeumorphicPanel(page0);
+    wxBoxSizer* img_box = new wxBoxSizer(wxVERTICAL);
+    wxStaticText* img_title = new wxStaticText(img_panel, wxID_ANY, "Image Preview");
+    Style::ApplyNeumorphicStyle(img_title, true);
+    img_box->Add(img_title, 0, wxALL, Style::SPACING_MEDIUM);
+    image_canvas_ = new ImageCanvas(img_panel, wxID_ANY);
+    image_canvas_->SetMinSize(wxSize(400, 300));
+    img_box->Add(image_canvas_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    img_panel->SetSizer(img_box);
+    step1_row->Add(img_panel, 1, wxEXPAND);
+
+    page0_sizer->Add(step1_row, 1, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
+
+    // Light Source Info panel (below the row)
     NeumorphicPanel* info_panel = new NeumorphicPanel(page0);
     wxBoxSizer* info_box = new wxBoxSizer(wxVERTICAL);
     wxStaticText* info_title = new wxStaticText(info_panel, wxID_ANY, "Current Light Source Info");
@@ -71,17 +89,8 @@ ColorCharCalibPanel::ColorCharCalibPanel(wxWindow* parent) : wxPanel(parent, wxI
     light_info_text_ = new wxStaticText(info_panel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
     Style::ApplyNeumorphicStyle(light_info_text_);
     info_box->Add(light_info_text_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
-
-    wxBoxSizer* img_preview_box = new wxBoxSizer(wxVERTICAL);
-    wxStaticText* img_title = new wxStaticText(info_panel, wxID_ANY, "Image Preview");
-    Style::ApplyNeumorphicStyle(img_title);
-    img_preview_box->Add(img_title, 0, wxALIGN_CENTER | wxBOTTOM, Style::SPACING_MEDIUM);
-    image_canvas_ = new ImageCanvas(info_panel, wxID_ANY);
-    image_canvas_->SetMinSize(wxSize(400, 300));
-    img_preview_box->Add(image_canvas_, 1, wxEXPAND);
-    info_box->Add(img_preview_box, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     info_panel->SetSizer(info_box);
-    page0_sizer->Add(info_panel, 1, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
+    page0_sizer->Add(info_panel, 0, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
 
     NeumorphicPanel* add_panel = new NeumorphicPanel(page0);
     wxBoxSizer* add_box = new wxBoxSizer(wxVERTICAL);
@@ -115,13 +124,39 @@ ColorCharCalibPanel::ColorCharCalibPanel(wxWindow* parent) : wxPanel(parent, wxI
     add_box->Add(source_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     wxBoxSizer* load_row = new wxBoxSizer(wxHORIZONTAL);
-    load_img_btn_ = new wxButton(add_panel, CC_ID_LOAD_IMG_BTN, "Load Image");
+    load_img_btn_ = new wxButton(add_panel, CC_ID_LOAD_IMG_BTN, "Load");
     Style::ApplyNeumorphicStyle(load_img_btn_);
     img_path_ctrl_ = new wxTextCtrl(add_panel, wxID_ANY, "", wxDefaultPosition, wxSize(300, -1));
     Style::ApplyNeumorphicStyle(img_path_ctrl_);
     load_row->Add(load_img_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     load_row->Add(img_path_ctrl_, 1);
     add_box->Add(load_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    // Image Requirements Info
+    wxStaticText* img_info_title = new wxStaticText(add_panel, wxID_ANY, "◆ Image Requirements:");
+    img_info_title->SetFont(Style::GetSansFont(8));
+    img_info_title->SetForegroundColour(wxColour(128, 128, 128));
+    add_box->Add(img_info_title, 0, wxLEFT | wxRIGHT | wxTOP, Style::SPACING_SMALL);
+
+    wxStaticText* img_info1 = new wxStaticText(add_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    img_info1->SetFont(Style::GetSansFont(8));
+    img_info1->SetForegroundColour(wxColour(128, 128, 128));
+    add_box->Add(img_info1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* img_info2 = new wxStaticText(add_panel, wxID_ANY, "- Color Chart should occupy >50% of image area");
+    img_info2->SetFont(Style::GetSansFont(8));
+    img_info2->SetForegroundColour(wxColour(128, 128, 128));
+    add_box->Add(img_info2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* img_info3 = new wxStaticText(add_panel, wxID_ANY, "- Even illumination, no shadows or reflections");
+    img_info3->SetFont(Style::GetSansFont(8));
+    img_info3->SetForegroundColour(wxColour(128, 128, 128));
+    add_box->Add(img_info3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* img_info4 = new wxStaticText(add_panel, wxID_ANY, "- Recommended: X-Rite ColorChecker or SpyderCHECKR");
+    img_info4->SetFont(Style::GetSansFont(8));
+    img_info4->SetForegroundColour(wxColour(128, 128, 128));
+    add_box->Add(img_info4, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     wxBoxSizer* camera_row = new wxBoxSizer(wxHORIZONTAL);
     open_camera_btn_ = new wxButton(add_panel, CC_ID_OPEN_CAMERA_BTN, "Open Camera");

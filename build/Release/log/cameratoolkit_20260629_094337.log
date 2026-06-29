@@ -1,0 +1,79 @@
+========== Log Started ==========
+Timestamp: 2026-06-29 09:43:37
+==================================
+[2026-06-29 09:43:37] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:43:37] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:43:37] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-29 09:43:37] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:43:37] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:43:37] [INFO] Ready. Please load an input image.
+[2026-06-29 09:43:37] [INFO] MainFrame initialized successfully
+[2026-06-29 09:44:11] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\CameraToolKit\images\dark\exp_1000us
+[2026-06-29 09:44:12] [DEBUG] [DATA] ImageInfo = Loaded 50 dark field images from folder
+[2026-06-29 09:44:12] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\CameraToolKit\images\bright\exp_1000us
+[2026-06-29 09:44:14] [DEBUG] [DATA] ImageInfo = Loaded 50 bright field images from folder
+[2026-06-29 09:44:29] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\CameraToolKit\images\dark\exp_2000us
+[2026-06-29 09:44:29] [DEBUG] [DATA] ImageInfo = Loaded 50 dark field images from folder
+[2026-06-29 09:44:31] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\CameraToolKit\images\bright\exp_2000us
+[2026-06-29 09:44:31] [DEBUG] [DATA] ImageInfo = Loaded 50 bright field images from folder
+[2026-06-29 09:44:42] [INFO] [OPERATION] Load Dark Images - Folder: E:\Projects\Study\CameraToolKit\images\dark\exp_4000us
+[2026-06-29 09:44:43] [DEBUG] [DATA] ImageInfo = Loaded 50 dark field images from folder
+[2026-06-29 09:44:43] [INFO] [OPERATION] Load Bright Images - Folder: E:\Projects\Study\CameraToolKit\images\bright\exp_4000us
+[2026-06-29 09:44:44] [DEBUG] [DATA] ImageInfo = Loaded 50 bright field images from folder
+[2026-06-29 09:45:04] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:45:04] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:45:28] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\flat.BMP
+[2026-06-29 09:45:28] [DEBUG] [DATA] ImageInfo = Size: 2048x2048
+[2026-06-29 09:45:37] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:45:46] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:45:53] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:45:59] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:46:05] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:46:35] [INFO] [OPERATION] Load Flat Image - Path: E:\Projects\Study\CameraToolKit\build\images\flat.BMP
+[2026-06-29 09:46:35] [DEBUG] [DATA] ImageInfo = Size: 2048x2048
+[2026-06-29 09:46:44] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:46:51] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:46:58] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:47:05] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:47:19] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:47:47] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\CameraToolKit\build\images\colorchecker.bmp
+[2026-06-29 09:47:47] [DEBUG] [DATA] ImageInfo = Size: 2048x2048, Channels: 3, Depth: 0
+[2026-06-29 09:48:02] [INFO] [OPERATION] Detect Color Checker - Starting auto detection...
+[2026-06-29 09:48:02] [DEBUG] [DATA] ROIResult = Detected 24 ROIs (Auto)
+[2026-06-29 09:48:02] [DEBUG] [DATA] BrightnessCheck = Value: 0.267555, Range: [0.155000, 0.650000], Status: OK
+[2026-06-29 09:48:14] [INFO] [OPERATION] Load Reference Image - Path: E:\Projects\Study\CameraToolKit\build\images\colorchecker.bmp
+[2026-06-29 09:48:14] [DEBUG] [DATA] RefImageInfo = Size: 2048x2048
+[2026-06-29 09:48:16] [INFO] [OPERATION] Detect Reference Color Checker - Starting auto detection...
+[2026-06-29 09:48:16] [DEBUG] [DATA] RefROIResult = Detected 24 ROIs (Auto)
+[2026-06-29 09:48:33] [INFO] [OPERATION] Calibrate - Mode: Standard, ROIs: 24, WB Method: 1, CCM Method: 1, Stat Method: 1
+[2026-06-29 09:48:33] [DEBUG] [DATA] WhiteBalance = R Gain: 1.009228, G Gain: 1.000000, B Gain: 1.057034
+[2026-06-29 09:48:33] [DEBUG] [DATA] CCMMatrix = [0.922435,-0.018566,0.087243] [0.099632,0.776003,0.146545] [0.110871,-0.055594,0.897213]
+[2026-06-29 09:48:33] [DEBUG] [DATA] DeltaE00 = Mean: 3.223744, Max: 14.492643
+[2026-06-29 09:48:33] [INFO] [OPERATION] Calibration - Completed successfully
+[2026-06-29 09:48:33] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:48:57] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\CameraToolKit\build\images\colorchecker.bmp
+[2026-06-29 09:48:57] [DEBUG] [DATA] ImageInfo = Size: 2048x2048
+[2026-06-29 09:49:08] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:49:12] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:49:26] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\colorchecker.bmp
+[2026-06-29 09:49:26] [DEBUG] [DATA] LightSource = Name: D65, ColorTemp: 6500.000000, Image: 2048x2048
+[2026-06-29 09:49:42] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:49:51] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:51:29] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:54:25] [ERROR] Please load an input image first
+[2026-06-29 09:54:30] [ERROR] Please load an input image first
+[2026-06-29 09:54:31] [INFO] No step to go back to
+[2026-06-29 09:54:35] [INFO] No image to reset
+[2026-06-29 09:54:37] [ERROR] No output to save
+[2026-06-29 09:54:39] [INFO] No image to reset
+[2026-06-29 09:54:50] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:54:50] [INFO] Node OB disabled
+[2026-06-29 09:54:51] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:54:51] [INFO] Node OB enabled
+[2026-06-29 09:54:52] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:54:52] [INFO] Node OB disabled
+[2026-06-29 09:54:53] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 09:54:53] [INFO] Node OB enabled
+[2026-06-29 09:55:30] [INFO] [OPERATION] Tone Mapping Changed - Linear
+[2026-06-29 09:55:33] [INFO] [OPERATION] Tone Mapping Changed - Gamma
+[2026-06-29 09:55:40] [INFO] [OPERATION] Tone Mapping Changed - Linear

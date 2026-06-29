@@ -1,0 +1,30 @@
+========== Log Started ==========
+Timestamp: 2026-06-29 10:02:26
+==================================
+[2026-06-29 10:02:26] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 10:02:26] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 10:02:26] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-29 10:02:26] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 10:02:26] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 10:02:26] [INFO] Ready. Please load an input image.
+[2026-06-29 10:02:26] [INFO] MainFrame initialized successfully
+[2026-06-29 10:02:56] [INFO] Image loaded: 2048x2048, 3 channels, 8-bit
+[2026-06-29 10:02:56] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 10:03:01] [INFO] Pipeline step [OB] processed
+[2026-06-29 10:03:01] [INFO] Pipeline step [DPC] processed
+[2026-06-29 10:03:03] [INFO] Pipeline step [Denoise] processed
+[2026-06-29 10:03:03] [INFO] Pipeline step [Demosaicing] processed
+[2026-06-29 10:03:03] [INFO] Pipeline step [Gamma] processed
+[2026-06-29 10:03:04] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 10:03:04] [INFO] Pipeline done: 5 nodes processed, results saved to TOML
+[2026-06-29 10:03:20] [INFO] Pipeline step [OB] processed
+[2026-06-29 10:03:20] [INFO] Completed node [0] OB
+[2026-06-29 10:03:30] [INFO] Pipeline step [DPC] processed
+[2026-06-29 10:03:30] [INFO] Completed node [1] DPC
+[2026-06-29 10:03:38] [INFO] Pipeline step [Denoise] processed
+[2026-06-29 10:03:38] [INFO] Completed node [3] Denoise
+[2026-06-29 10:03:43] [INFO] Pipeline step [Demosaicing] processed
+[2026-06-29 10:03:43] [INFO] Completed node [4] Demosaicing
+[2026-06-29 10:03:47] [INFO] Pipeline step [Gamma] processed
+[2026-06-29 10:03:47] [INFO] Completed node [7] Gamma
+[2026-06-29 10:03:54] [INFO] Reached end of pipeline

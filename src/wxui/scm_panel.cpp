@@ -34,7 +34,9 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
 
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
-    wxBoxSizer* top_row = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* main_row = new wxBoxSizer(wxHORIZONTAL);
+
+    wxBoxSizer* left_col = new wxBoxSizer(wxVERTICAL);
 
     NeumorphicPanel* dark_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* dark_box = new wxBoxSizer(wxVERTICAL);
@@ -52,21 +54,12 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     dark_row1->Add(dark_path_ctrl_, 1);
     dark_box->Add(dark_row1, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
-    wxBoxSizer* dark_row2 = new wxBoxSizer(wxHORIZONTAL);
-    wxStaticText* dark_exp_label = new wxStaticText(dark_panel, wxID_ANY, "Exposure (us):");
-    Style::ApplyNeumorphicStyle(dark_exp_label);
-    dark_exp_ctrl_ = new wxTextCtrl(dark_panel, wxID_ANY, "1000", wxDefaultPosition, wxSize(80, -1));
-    Style::ApplyNeumorphicStyle(dark_exp_ctrl_);
-    dark_row2->Add(dark_exp_label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, Style::SPACING_SMALL);
-    dark_row2->Add(dark_exp_ctrl_, 0);
-    dark_box->Add(dark_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
-
     dark_status_ = new wxStaticText(dark_panel, wxID_ANY, "0 frames loaded");
     Style::ApplyNeumorphicStyle(dark_status_);
     dark_box->Add(dark_status_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     dark_panel->SetSizer(dark_box);
-    top_row->Add(dark_panel, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
+    left_col->Add(dark_panel, 0, wxEXPAND | wxBOTTOM, Style::SPACING_LARGE);
 
     NeumorphicPanel* bright_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* bright_box = new wxBoxSizer(wxVERTICAL);
@@ -84,25 +77,36 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     bright_row1->Add(bright_path_ctrl_, 1);
     bright_box->Add(bright_row1, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
-    wxBoxSizer* bright_row2 = new wxBoxSizer(wxHORIZONTAL);
-    wxStaticText* bright_exp_label = new wxStaticText(bright_panel, wxID_ANY, "Exposure (us):");
-    Style::ApplyNeumorphicStyle(bright_exp_label);
-    bright_exp_ctrl_ = new wxTextCtrl(bright_panel, wxID_ANY, "1000", wxDefaultPosition, wxSize(80, -1));
-    Style::ApplyNeumorphicStyle(bright_exp_ctrl_);
-    bright_row2->Add(bright_exp_label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, Style::SPACING_SMALL);
-    bright_row2->Add(bright_exp_ctrl_, 0);
-    bright_box->Add(bright_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
-
     bright_status_ = new wxStaticText(bright_panel, wxID_ANY, "0 frames loaded");
     Style::ApplyNeumorphicStyle(bright_status_);
     bright_box->Add(bright_status_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     bright_panel->SetSizer(bright_box);
-    top_row->Add(bright_panel, 1, wxEXPAND);
+    left_col->Add(bright_panel, 0, wxEXPAND | wxBOTTOM, Style::SPACING_LARGE);
 
-    main_sizer->Add(top_row, 0, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
+    NeumorphicPanel* exp_panel = new NeumorphicPanel(this, wxID_ANY);
+    wxBoxSizer* exp_box = new wxBoxSizer(wxVERTICAL);
 
-    wxBoxSizer* middle_row = new wxBoxSizer(wxHORIZONTAL);
+    wxStaticText* exp_title = new wxStaticText(exp_panel, wxID_ANY, "Exposure Settings");
+    Style::ApplyNeumorphicStyle(exp_title, true);
+    exp_box->Add(exp_title, 0, wxALL, Style::SPACING_MEDIUM);
+
+    wxBoxSizer* exp_row1 = new wxBoxSizer(wxHORIZONTAL);
+    wxStaticText* exp_label = new wxStaticText(exp_panel, wxID_ANY, "Exposure (us):");
+    Style::ApplyNeumorphicStyle(exp_label);
+    exp_ctrl_ = new wxTextCtrl(exp_panel, wxID_ANY, "1000", wxDefaultPosition, wxSize(100, -1));
+    Style::ApplyNeumorphicStyle(exp_ctrl_);
+    exp_row1->Add(exp_label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, Style::SPACING_SMALL);
+    exp_row1->Add(exp_ctrl_, 0);
+    exp_box->Add(exp_row1, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* exp_note = new wxStaticText(exp_panel, wxID_ANY, "Note: Same exposure for dark and bright frames");
+    exp_note->SetFont(Style::GetSansFont(8));
+    exp_note->SetForegroundColour(wxColour(128, 128, 128));
+    exp_box->Add(exp_note, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    exp_panel->SetSizer(exp_box);
+    left_col->Add(exp_panel, 0, wxEXPAND | wxBOTTOM, Style::SPACING_LARGE);
 
     NeumorphicPanel* info_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* info_box = new wxBoxSizer(wxVERTICAL);
@@ -172,7 +176,11 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     info_box->Add(info_common_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     info_panel->SetSizer(info_box);
-    middle_row->Add(info_panel, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
+    left_col->Add(info_panel, 1, wxEXPAND);
+
+    main_row->Add(left_col, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
+
+    wxBoxSizer* right_col = new wxBoxSizer(wxVERTICAL);
 
     NeumorphicPanel* params_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* params_box = new wxBoxSizer(wxVERTICAL);
@@ -187,89 +195,82 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     Style::ApplyNeumorphicStyle(sensor_name_label);
     sensor_name_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "Unknown");
     Style::ApplyNeumorphicStyle(sensor_name_ctrl_);
-    grid->Add(sensor_name_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(sensor_name_ctrl_, 1, wxEXPAND);
+    grid->Add(sensor_name_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(sensor_name_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
-    // Manufacturer
     wxStaticText* manufacturer_label = new wxStaticText(params_panel, wxID_ANY, "Manufacturer:");
     Style::ApplyNeumorphicStyle(manufacturer_label);
     manufacturer_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "");
     Style::ApplyNeumorphicStyle(manufacturer_ctrl_);
-    grid->Add(manufacturer_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(manufacturer_ctrl_, 1, wxEXPAND);
+    grid->Add(manufacturer_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(manufacturer_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
-    // Model
     wxStaticText* model_label = new wxStaticText(params_panel, wxID_ANY, "Model:");
     Style::ApplyNeumorphicStyle(model_label);
     model_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "");
     Style::ApplyNeumorphicStyle(model_ctrl_);
-    grid->Add(model_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(model_ctrl_, 1, wxEXPAND);
+    grid->Add(model_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(model_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
-    // Serial Number
     wxStaticText* sn_label = new wxStaticText(params_panel, wxID_ANY, "Serial Number:");
     Style::ApplyNeumorphicStyle(sn_label);
     sn_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "");
     Style::ApplyNeumorphicStyle(sn_ctrl_);
-    grid->Add(sn_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(sn_ctrl_, 1, wxEXPAND);
+    grid->Add(sn_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(sn_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
     wxStaticText* bits_label = new wxStaticText(params_panel, wxID_ANY, "Bits:");
     Style::ApplyNeumorphicStyle(bits_label);
-    // Editable combo: presets for 8/10/12/16 bits, custom input allowed
     bits_ctrl_ = new wxComboBox(params_panel, wxID_ANY, "12", wxDefaultPosition, wxDefaultSize,
                                 {"8", "10", "12", "16"});
-    bits_ctrl_->SetSelection(2);  // default "12"
+    bits_ctrl_->SetSelection(2);
     Style::ApplyNeumorphicStyle(bits_ctrl_);
-    grid->Add(bits_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(bits_ctrl_, 1, wxEXPAND);
+    grid->Add(bits_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(bits_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
-    // Bayer Pattern
     wxStaticText* bayer_label = new wxStaticText(params_panel, wxID_ANY, "Bayer Pattern:");
     Style::ApplyNeumorphicStyle(bayer_label);
     bayer_ctrl_ = new wxComboBox(params_panel, wxID_ANY, "RGGB", wxDefaultPosition, wxDefaultSize,
                                  {"RGGB", "BGGR", "GRBG", "GBRG"});
-    bayer_ctrl_->SetSelection(0);  // default "RGGB"
+    bayer_ctrl_->SetSelection(0);
     Style::ApplyNeumorphicStyle(bayer_ctrl_);
-    grid->Add(bayer_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(bayer_ctrl_, 1, wxEXPAND);
+    grid->Add(bayer_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(bayer_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
-    // Resolution Width
     wxStaticText* res_w_label = new wxStaticText(params_panel, wxID_ANY, "Resolution W:");
     Style::ApplyNeumorphicStyle(res_w_label);
     res_w_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "0");
     Style::ApplyNeumorphicStyle(res_w_ctrl_);
-    grid->Add(res_w_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(res_w_ctrl_, 1, wxEXPAND);
+    grid->Add(res_w_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(res_w_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
-    // Resolution Height
     wxStaticText* res_h_label = new wxStaticText(params_panel, wxID_ANY, "Resolution H:");
     Style::ApplyNeumorphicStyle(res_h_label);
     res_h_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "0");
     Style::ApplyNeumorphicStyle(res_h_ctrl_);
-    grid->Add(res_h_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(res_h_ctrl_, 1, wxEXPAND);
+    grid->Add(res_h_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(res_h_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
     wxStaticText* temp_label = new wxStaticText(params_panel, wxID_ANY, "Temp (C):");
     Style::ApplyNeumorphicStyle(temp_label);
     temp_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "25");
     Style::ApplyNeumorphicStyle(temp_ctrl_);
-    grid->Add(temp_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(temp_ctrl_, 0);
+    grid->Add(temp_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(temp_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
     wxStaticText* frames_label = new wxStaticText(params_panel, wxID_ANY, "Min Frames:");
     Style::ApplyNeumorphicStyle(frames_label);
     frames_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "50");
     Style::ApplyNeumorphicStyle(frames_ctrl_);
-    grid->Add(frames_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(frames_ctrl_, 0);
+    grid->Add(frames_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(frames_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
     wxStaticText* roi_label = new wxStaticText(params_panel, wxID_ANY, "ROI (x,y,w,h):");
     Style::ApplyNeumorphicStyle(roi_label);
     roi_ctrl_ = new wxTextCtrl(params_panel, wxID_ANY, "0,0,0,0");
     Style::ApplyNeumorphicStyle(roi_ctrl_);
-    grid->Add(roi_label, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-    grid->Add(roi_ctrl_, 1, wxEXPAND);
+    grid->Add(roi_label, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+    grid->Add(roi_ctrl_, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
     params_box->Add(grid, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
@@ -283,9 +284,11 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     params_box->Add(btn_row, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     params_panel->SetSizer(params_box);
-    middle_row->Add(params_panel, 1, wxEXPAND);
+    right_col->Add(params_panel, 1, wxEXPAND);
 
-    main_sizer->Add(middle_row, 0, wxEXPAND | wxLEFT | wxRIGHT, Style::SPACING_MEDIUM);
+    main_row->Add(right_col, 1, wxEXPAND);
+
+    main_sizer->Add(main_row, 1, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
 
     NeumorphicPanel* result_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* result_box = new wxBoxSizer(wxVERTICAL);
@@ -295,7 +298,7 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     result_box->Add(result_title, 0, wxALL, Style::SPACING_MEDIUM);
 
     result_text_ = new wxTextCtrl(result_panel, wxID_ANY, "",
-                                   wxDefaultPosition, wxSize(-1, 200),
+                                   wxDefaultPosition, wxSize(-1, 300),
                                    wxTE_MULTILINE | wxTE_READONLY | wxTE_RICH);
     result_text_->SetFont(Style::GetSansFont(9));
     result_text_->SetBackgroundColour(wxColour(255, 255, 255));
@@ -311,7 +314,7 @@ SCMPanel::SCMPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     result_box->Add(export_row, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     result_panel->SetSizer(result_box);
-    main_sizer->Add(result_panel, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+    main_sizer->Add(result_panel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     SetSizer(main_sizer);
     main_sizer->Fit(this);
@@ -376,7 +379,7 @@ void SCMPanel::OnLoadDark(wxCommandEvent& event) {
     }
 
     MV_LOG_OPERATION("Load Dark Images", "Folder: " + folder_path.ToStdString());
-    double exp_us = wxAtof(dark_exp_ctrl_->GetValue());
+    double exp_us = wxAtof(exp_ctrl_->GetValue());
 
     wxArrayString files;
     wxDir dir(folder_path);
@@ -432,7 +435,7 @@ void SCMPanel::OnLoadBright(wxCommandEvent& event) {
     }
 
     MV_LOG_OPERATION("Load Bright Images", "Folder: " + folder_path.ToStdString());
-    double exp_us = wxAtof(bright_exp_ctrl_->GetValue());
+    double exp_us = wxAtof(exp_ctrl_->GetValue());
 
     wxArrayString files;
     wxDir dir(folder_path);

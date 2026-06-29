@@ -1,0 +1,83 @@
+========== Log Started ==========
+Timestamp: 2026-06-29 13:08:48
+==================================
+[2026-06-29 13:08:48] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:08:48] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:08:48] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-29 13:08:48] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:08:48] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:08:48] [INFO] Ready. Please load an input image.
+[2026-06-29 13:08:49] [INFO] MainFrame initialized successfully
+[2026-06-29 13:10:11] [INFO] Image loaded: 2048x2048, 3 channels, 8-bit
+[2026-06-29 13:10:11] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:10:18] [INFO] Pipeline step [OB] processed
+[2026-06-29 13:10:18] [INFO] Completed node [0] OB
+[2026-06-29 13:10:27] [INFO] Pipeline step [DPC] processed
+[2026-06-29 13:10:27] [INFO] Completed node [1] DPC
+[2026-06-29 13:10:32] [INFO] Pipeline step [Denoise] processed
+[2026-06-29 13:10:32] [INFO] Completed node [3] Denoise
+[2026-06-29 13:10:44] [INFO] Pipeline step [Demosaicing] processed
+[2026-06-29 13:10:44] [INFO] Completed node [4] Demosaicing
+[2026-06-29 13:10:53] [INFO] Pipeline step [Gamma] processed
+[2026-06-29 13:10:53] [INFO] Completed node [7] Gamma
+[2026-06-29 13:11:00] [INFO] Reached end of pipeline
+[2026-06-29 13:11:11] [INFO] Image loaded: 2048x2048, 3 channels, 8-bit
+[2026-06-29 13:11:11] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:11:13] [INFO] Pipeline step [OB] processed
+[2026-06-29 13:11:13] [INFO] Completed node [0] OB
+[2026-06-29 13:11:16] [INFO] Pipeline step [DPC] processed
+[2026-06-29 13:11:16] [INFO] Completed node [1] DPC
+[2026-06-29 13:11:23] [INFO] Pipeline step [Denoise] processed
+[2026-06-29 13:11:23] [INFO] Completed node [3] Denoise
+[2026-06-29 13:11:27] [INFO] Pipeline step [Demosaicing] processed
+[2026-06-29 13:11:27] [INFO] Completed node [4] Demosaicing
+[2026-06-29 13:11:31] [INFO] Pipeline step [Gamma] processed
+[2026-06-29 13:11:31] [INFO] Completed node [7] Gamma
+[2026-06-29 13:11:43] [INFO] Reached end of pipeline
+[2026-06-29 13:12:00] [INFO] Image loaded: 2048x2048, 3 channels, 8-bit
+[2026-06-29 13:12:00] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:12:04] [INFO] [OPERATION] Denoise Position Changed - Both
+[2026-06-29 13:12:06] [INFO] Image loaded: 2048x2048, 3 channels, 8-bit
+[2026-06-29 13:12:06] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:12:11] [INFO] Pipeline step [OB] processed
+[2026-06-29 13:12:11] [INFO] Completed node [0] OB
+[2026-06-29 13:12:12] [INFO] Pipeline step [DPC] processed
+[2026-06-29 13:12:12] [INFO] Completed node [1] DPC
+[2026-06-29 13:12:15] [INFO] Pipeline step [Denoise] processed
+[2026-06-29 13:12:15] [INFO] Completed node [3] Denoise
+[2026-06-29 13:12:27] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:12:27] [INFO] Node LSC enabled
+[2026-06-29 13:12:32] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:12:32] [INFO] Node WhiteBalance enabled
+[2026-06-29 13:12:35] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:12:35] [INFO] Node CCM enabled
+[2026-06-29 13:12:38] [INFO] Image loaded: 2048x2048, 3 channels, 8-bit
+[2026-06-29 13:12:38] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:12:39] [INFO] Pipeline step [OB] processed
+[2026-06-29 13:12:39] [INFO] Completed node [0] OB
+[2026-06-29 13:12:41] [INFO] Pipeline step [DPC] processed
+[2026-06-29 13:12:41] [INFO] Completed node [1] DPC
+[2026-06-29 13:12:45] [INFO] Pipeline step [LSC] processed
+[2026-06-29 13:12:45] [INFO] Completed node [2] LSC
+[2026-06-29 13:12:50] [INFO] Pipeline step [Denoise] processed
+[2026-06-29 13:12:50] [INFO] Completed node [3] Denoise
+[2026-06-29 13:12:51] [INFO] Pipeline step [Demosaicing] processed
+[2026-06-29 13:12:52] [INFO] Completed node [4] Demosaicing
+[2026-06-29 13:12:53] [INFO] Pipeline step [WhiteBalance] processed
+[2026-06-29 13:12:53] [INFO] Completed node [5] WhiteBalance
+[2026-06-29 13:12:56] [INFO] Pipeline step [CCM] processed
+[2026-06-29 13:12:56] [INFO] Completed node [6] CCM
+[2026-06-29 13:12:57] [INFO] Pipeline step [Gamma] processed
+[2026-06-29 13:12:57] [INFO] Completed node [7] Gamma
+[2026-06-29 13:12:59] [INFO] Reached end of pipeline
+[2026-06-29 13:13:08] [INFO] Image loaded: 2048x2048, 3 channels, 8-bit
+[2026-06-29 13:13:08] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:13:09] [INFO] Pipeline step [OB] processed
+[2026-06-29 13:13:09] [INFO] Completed node [0] OB
+[2026-06-29 13:13:24] [INFO] Pipeline step [DPC] processed
+[2026-06-29 13:13:25] [INFO] Completed node [1] DPC
+[2026-06-29 13:13:31] [INFO] Pipeline step [LSC] processed
+[2026-06-29 13:13:31] [INFO] Completed node [2] LSC
+[2026-06-29 13:13:39] [INFO] Pipeline step [Denoise] processed
+[2026-06-29 13:13:39] [INFO] Completed node [3] Denoise
+[2026-06-29 13:14:08] [INFO] [OPERATION] Close - Application closing

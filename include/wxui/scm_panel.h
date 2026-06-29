@@ -48,8 +48,7 @@ private:
 
     wxTextCtrl* dark_path_ctrl_;
     wxTextCtrl* bright_path_ctrl_;
-    wxTextCtrl* dark_exp_ctrl_;
-    wxTextCtrl* bright_exp_ctrl_;
+    wxTextCtrl* exp_ctrl_;
     wxTextCtrl* sensor_name_ctrl_;
     wxComboBox* bits_ctrl_;
     wxTextCtrl* temp_ctrl_;

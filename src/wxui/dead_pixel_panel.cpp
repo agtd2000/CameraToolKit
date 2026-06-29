@@ -61,6 +61,31 @@ DeadPixelPanel::DeadPixelPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     image_row2->Add(path_ctrl_, 1);
     image_box->Add(image_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
+    wxStaticText* info_header = new wxStaticText(image_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(info_header, true);
+    info_header->SetFont(Style::GetSansFont(9));
+    image_box->Add(info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* info_title = new wxStaticText(image_panel, wxID_ANY, "◆ Input Image:");
+    Style::ApplyNeumorphicStyle(info_title);
+    info_title->SetFont(Style::GetSansFont(8));
+    image_box->Add(info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* info_item1 = new wxStaticText(image_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    info_item1->SetFont(Style::GetSansFont(8));
+    info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    image_box->Add(info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* info_item2 = new wxStaticText(image_panel, wxID_ANY, "- Dark field image preferred");
+    info_item2->SetFont(Style::GetSansFont(8));
+    info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    image_box->Add(info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* info_item3 = new wxStaticText(image_panel, wxID_ANY, "- Avoid saturated areas");
+    info_item3->SetFont(Style::GetSansFont(8));
+    info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    image_box->Add(info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
     wxBoxSizer* camera_row = new wxBoxSizer(wxHORIZONTAL);
     open_camera_btn_ = new wxButton(image_panel, DP_ID_OPEN_CAMERA_BTN, "Open Camera");
     Style::ApplyNeumorphicStyle(open_camera_btn_);

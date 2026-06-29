@@ -12,6 +12,7 @@ namespace utils {
 
 namespace {
 constexpr const char* DEFAULT_CONFIG_PATH = "config/pipeline_session.toml";
+constexpr const char* HISTORY_CONFIG_PATH = "config/pipeline_session_history.toml";
 
 std::string CurrentTimestamp() {
     auto now = std::chrono::system_clock::now();
@@ -45,9 +46,6 @@ void SessionConfig::EnsureLoaded() {
 
 bool SessionConfig::Load(const std::string& filepath) {
     std::lock_guard<std::mutex> lock(mutex_);
-    // If filepath is empty and we already have a resolved filepath_, keep it.
-    // This prevents callers that invoke Load() without arguments from
-    // resetting the path back to the relative DEFAULT_CONFIG_PATH.
     if (!filepath.empty()) {
         filepath_ = filepath;
     } else if (filepath_.empty()) {
@@ -58,13 +56,32 @@ bool SessionConfig::Load(const std::string& filepath) {
         if (!ifs.is_open()) {
             MV_LOG_WARN("SessionConfig: config file not found, using empty config: " + filepath_);
             root_ = std::make_unique<toml::table>();
-            loaded_ = true;
-            return true;
+        } else {
+            std::ostringstream oss;
+            oss << ifs.rdbuf();
+            auto result = toml::parse(oss.str());
+            root_ = std::make_unique<toml::table>(std::move(result));
         }
-        std::ostringstream oss;
-        oss << ifs.rdbuf();
-        auto result = toml::parse(oss.str());
-        root_ = std::make_unique<toml::table>(std::move(result));
+
+        // Load history from separate file
+        std::ifstream history_ifs(HISTORY_CONFIG_PATH);
+        if (history_ifs.is_open()) {
+            try {
+                std::ostringstream history_oss;
+                history_oss << history_ifs.rdbuf();
+                auto history_result = toml::parse(history_oss.str());
+                auto history_calibration = history_result.at_path("history.calibration");
+                if (history_calibration && history_calibration.is_array()) {
+                    std::string leaf;
+                    auto& parent = EnsureNestedTable("history.calibration", leaf);
+                    parent.insert_or_assign(leaf, std::move(*history_calibration.as_array()));
+                }
+                MV_LOG_INFO("SessionConfig: loaded history from " + std::string(HISTORY_CONFIG_PATH));
+            } catch (const std::exception&) {
+                MV_LOG_WARN("SessionConfig: failed to load history file");
+            }
+        }
+
         loaded_ = true;
         MV_LOG_INFO("SessionConfig: loaded config file " + filepath_);
         return true;
@@ -87,12 +104,35 @@ bool SessionConfig::SaveAs(const std::string& filepath) {
         return false;
     }
     try {
+        // Save history.calibration to separate file
+        auto history_node = root_->at_path("history.calibration");
+        if (history_node && history_node.is_array()) {
+            toml::table history_table;
+            toml::array history_copy = *history_node.as_array();
+            history_table.insert("history", toml::table{ {"calibration", std::move(history_copy)} });
+            std::ofstream history_ofs(HISTORY_CONFIG_PATH);
+            if (history_ofs.is_open()) {
+                history_ofs << toml::toml_formatter{ history_table };
+                MV_LOG_INFO("SessionConfig: history saved to " + std::string(HISTORY_CONFIG_PATH));
+            }
+        }
+
+        // Create a copy of root_ without history.calibration for main config file
+        toml::table save_table = *root_;
+        auto history_table_node = save_table.at_path("history");
+        if (history_table_node && history_table_node.is_table()) {
+            history_table_node.as_table()->erase("calibration");
+            if (history_table_node.as_table()->empty()) {
+                save_table.erase("history");
+            }
+        }
+
         std::ofstream ofs(filepath);
         if (!ofs.is_open()) {
             MV_LOG_ERROR("SessionConfig: cannot open file for writing: " + filepath);
             return false;
         }
-        ofs << toml::toml_formatter{ *root_ };
+        ofs << toml::toml_formatter{ save_table };
         filepath_ = filepath;
         MV_LOG_INFO("SessionConfig: saved to " + filepath);
         return true;

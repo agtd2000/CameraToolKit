@@ -1,4 +1,5 @@
 #include "wxui/pipeline_panel.h"
+#include "neumorphic_panel.h"
 #include "style_defs.h"
 #include "utils/image_io.h"
 #include "utils/session_config.h"
@@ -148,87 +149,38 @@ void PipelinePanel::InitializePipeline() {
 void PipelinePanel::BuildUI() {
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
-    // ============ Top toolbar ============
-    wxPanel* toolbar = new wxPanel(this, wxID_ANY);
-    toolbar->SetBackgroundColour(Style::NEU_BG_COLOR);
-    wxBoxSizer* toolbar_sizer = new wxBoxSizer(wxHORIZONTAL);
+    // ============ Top row: Two Neumorphic panels (1:1) ============
+    wxBoxSizer* top_row = new wxBoxSizer(wxHORIZONTAL);
 
-    auto make_btn = [this, toolbar](const wxString& label, int id) {
-        wxButton* btn = new wxButton(toolbar, id, label);
-        Style::ApplyNeumorphicStyle(btn);
-        return btn;
-    };
-
-    wxStaticText* path_label = new wxStaticText(toolbar, wxID_ANY, "Input:");
-    Style::ApplyNeumorphicStyle(path_label);
-    toolbar_sizer->Add(path_label, 0, wxALL | wxALIGN_CENTER_VERTICAL, Style::SPACING_SMALL);
-
-    path_ctrl_ = new wxTextCtrl(toolbar, wxID_ANY, "", wxDefaultPosition, wxSize(300, -1));
-    Style::ApplyNeumorphicStyle(path_ctrl_);
-    toolbar_sizer->Add(path_ctrl_, 1, wxALL | wxALIGN_CENTER_VERTICAL, Style::SPACING_SMALL);
-
-    load_btn_ = make_btn("Load", PIPELINE_ID_LOAD_INPUT_BTN);
-    toolbar_sizer->Add(load_btn_, 0, wxALL, Style::SPACING_SMALL);
-
-    run_all_btn_ = make_btn("Run All", PIPELINE_ID_RUN_ALL_BTN);
-    toolbar_sizer->Add(run_all_btn_, 0, wxALL, Style::SPACING_SMALL);
-
-    run_step_btn_ = make_btn("Step", PIPELINE_ID_RUN_STEP_BTN);
-    toolbar_sizer->Add(run_step_btn_, 0, wxALL, Style::SPACING_SMALL);
-
-    prev_step_btn_ = make_btn("Prev", PIPELINE_ID_PREV_STEP_BTN);
-    toolbar_sizer->Add(prev_step_btn_, 0, wxALL, Style::SPACING_SMALL);
-
-    reset_btn_ = make_btn("Reset", PIPELINE_ID_RESET_BTN);
-    toolbar_sizer->Add(reset_btn_, 0, wxALL, Style::SPACING_SMALL);
-
-    save_btn_ = make_btn("Save Output", PIPELINE_ID_SAVE_OUTPUT_BTN);
-    toolbar_sizer->Add(save_btn_, 0, wxALL, Style::SPACING_SMALL);
-
-    toolbar->SetSizer(toolbar_sizer);
-    main_sizer->Add(toolbar, 0, wxEXPAND | wxALL, Style::SPACING_SMALL);
-
-    // ============ Middle three-column area ============
-    wxPanel* middle_panel = new wxPanel(this, wxID_ANY);
-    middle_panel->SetBackgroundColour(Style::NEU_BG_COLOR);
-    wxBoxSizer* middle_sizer = new wxBoxSizer(wxHORIZONTAL);
-
-    // Left column: node list
-    wxPanel* left_panel = new wxPanel(middle_panel, wxID_ANY);
-    left_panel->SetBackgroundColour(Style::NEU_BG_COLOR);
+    // Left panel: Pipeline Nodes + Node Parameters
+    NeumorphicPanel* left_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* left_sizer = new wxBoxSizer(wxVERTICAL);
 
-    wxStaticText* list_title = new wxStaticText(left_panel, wxID_ANY, "Pipeline Nodes");
-    Style::ApplyNeumorphicStyle(list_title, true);
-    left_sizer->Add(list_title, 0, wxALL, Style::SPACING_SMALL);
+    // Pipeline Nodes section
+    wxStaticText* nodes_title = new wxStaticText(left_panel, wxID_ANY, "Pipeline Nodes");
+    Style::ApplyNeumorphicStyle(nodes_title, true);
+    left_sizer->Add(nodes_title, 0, wxALL, Style::SPACING_MEDIUM);
 
     node_list_ = new wxListBox(left_panel, wxID_ANY, wxDefaultPosition, wxSize(200, 200));
     Style::ApplyNeumorphicStyle(node_list_);
-    left_sizer->Add(node_list_, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    left_sizer->Add(node_list_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     enable_chk_ = new wxCheckBox(left_panel, wxID_ANY, "Enable this node");
     Style::ApplyNeumorphicStyle(enable_chk_);
-    left_sizer->Add(enable_chk_, 0, wxALL, Style::SPACING_SMALL);
+    left_sizer->Add(enable_chk_, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     info_text_ = new wxTextCtrl(left_panel, wxID_ANY, "",
-                                wxDefaultPosition, wxSize(200, 100),
+                                wxDefaultPosition, wxSize(200, 80),
                                 wxTE_MULTILINE | wxTE_READONLY | wxTE_WORDWRAP);
     Style::ApplyNeumorphicStyle(info_text_);
-    left_sizer->Add(info_text_, 0, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    left_sizer->Add(info_text_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
-    left_panel->SetSizer(left_sizer);
-    middle_sizer->Add(left_panel, 0, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    // Node Parameters section (at the bottom of left panel)
+    wxStaticText* params_title = new wxStaticText(left_panel, wxID_ANY, "Node Parameters");
+    Style::ApplyNeumorphicStyle(params_title, true);
+    left_sizer->Add(params_title, 0, wxALL, Style::SPACING_MEDIUM);
 
-    // Center column: node parameter configuration
-    wxPanel* center_panel = new wxPanel(middle_panel, wxID_ANY);
-    center_panel->SetBackgroundColour(Style::NEU_BG_COLOR);
-    wxBoxSizer* center_sizer = new wxBoxSizer(wxVERTICAL);
-
-    wxStaticText* config_title = new wxStaticText(center_panel, wxID_ANY, "Node Parameters");
-    Style::ApplyNeumorphicStyle(config_title, true);
-    center_sizer->Add(config_title, 0, wxALL, Style::SPACING_SMALL);
-
-    config_panel_ = new wxPanel(center_panel, wxID_ANY);
+    config_panel_ = new wxPanel(left_panel, wxID_ANY);
     config_panel_->SetBackgroundColour(Style::NEU_BG_COLOR);
     wxFlexGridSizer* config_grid = new wxFlexGridSizer(3, 2, 5, 5);
 
@@ -255,64 +207,131 @@ void PipelinePanel::BuildUI() {
 
     config_grid->AddGrowableCol(1, 1);
     config_panel_->SetSizer(config_grid);
-    center_sizer->Add(config_panel_, 0, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    left_sizer->Add(config_panel_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
-    wxButton* apply_btn = new wxButton(center_panel, PIPELINE_ID_APPLY_CONFIG_BTN, "Apply");
+    wxButton* apply_btn = new wxButton(left_panel, PIPELINE_ID_APPLY_CONFIG_BTN, "Apply");
     Style::ApplyNeumorphicStyle(apply_btn);
-    center_sizer->Add(apply_btn, 0, wxALL, Style::SPACING_SMALL);
+    left_sizer->Add(apply_btn, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
-    wxStaticText* hint = new wxStaticText(center_panel, wxID_ANY,
-        "Hints:\n"
-        "* OB: P1=Black Level (DN), P2=Dark Current (e-/s), P3=Exposure (us)\n"
-        "* DPC: P1=Threshold Sigma, P2=Dark Noise (DN), P3=Kernel Size (3/5)\n"
-        "* Denoise: P1=Sigma Strength\n"
-        "* Demosaicing: P1=Pattern (BG/GB/RG/GR)\n"
-        "* WB: P1=R Gain, P2=G Gain, P3=B Gain\n"
-        "* CCM: P1=Gamma\n"
-        "* Gamma: P1=Gamma Value, P2=Input Min, P3=Input Max");
-    hint->SetFont(Style::GetSansFont(8));
-    hint->SetForegroundColour(Style::NEU_TEXT_LIGHT);
-    center_sizer->Add(hint, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    left_panel->SetSizer(left_sizer);
+    top_row->Add(left_panel, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
 
-    center_panel->SetSizer(center_sizer);
-    middle_sizer->Add(center_panel, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
-
-    // Right column: image preview (input + output stacked vertically)
-    wxPanel* right_panel = new wxPanel(middle_panel, wxID_ANY);
-    right_panel->SetBackgroundColour(Style::NEU_BG_COLOR);
+    // Right panel: Control + Info
+    NeumorphicPanel* right_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* right_sizer = new wxBoxSizer(wxVERTICAL);
 
-    wxStaticText* input_title = new wxStaticText(right_panel, wxID_ANY, "Input Image");
-    Style::ApplyNeumorphicStyle(input_title, true);
-    right_sizer->Add(input_title, 0, wxALL, Style::SPACING_SMALL);
+    wxStaticText* control_title = new wxStaticText(right_panel, wxID_ANY, "Control");
+    Style::ApplyNeumorphicStyle(control_title, true);
+    right_sizer->Add(control_title, 0, wxALL, Style::SPACING_MEDIUM);
 
-    input_canvas_ = new ImageCanvas(right_panel, wxID_ANY);
-    input_canvas_->SetMinSize(wxSize(320, 240));
-    right_sizer->Add(input_canvas_, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    auto make_btn = [this, right_panel](const wxString& label, int id) {
+        wxButton* btn = new wxButton(right_panel, id, label);
+        Style::ApplyNeumorphicStyle(btn);
+        return btn;
+    };
 
-    wxStaticText* output_title = new wxStaticText(right_panel, wxID_ANY, "Current Node Output");
-    Style::ApplyNeumorphicStyle(output_title, true);
-    right_sizer->Add(output_title, 0, wxALL, Style::SPACING_SMALL);
+    // Load row
+    wxBoxSizer* load_row = new wxBoxSizer(wxHORIZONTAL);
+    load_btn_ = make_btn("Load", PIPELINE_ID_LOAD_INPUT_BTN);
+    load_row->Add(load_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+    path_ctrl_ = new wxTextCtrl(right_panel, wxID_ANY, "", wxDefaultPosition, wxSize(200, -1));
+    Style::ApplyNeumorphicStyle(path_ctrl_);
+    load_row->Add(path_ctrl_, 1);
+    right_sizer->Add(load_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
-    output_canvas_ = new ImageCanvas(right_panel, wxID_ANY);
-    output_canvas_->SetMinSize(wxSize(320, 240));
-    right_sizer->Add(output_canvas_, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    // All action buttons in one row
+    wxBoxSizer* btn_row = new wxBoxSizer(wxHORIZONTAL);
+    run_all_btn_ = make_btn("Run All", PIPELINE_ID_RUN_ALL_BTN);
+    btn_row->Add(run_all_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+
+    run_step_btn_ = make_btn("Step", PIPELINE_ID_RUN_STEP_BTN);
+    btn_row->Add(run_step_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+
+    prev_step_btn_ = make_btn("Prev", PIPELINE_ID_PREV_STEP_BTN);
+    btn_row->Add(prev_step_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+
+    reset_btn_ = make_btn("Reset", PIPELINE_ID_RESET_BTN);
+    btn_row->Add(reset_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+
+    save_btn_ = make_btn("Save Output", PIPELINE_ID_SAVE_OUTPUT_BTN);
+    btn_row->Add(save_btn_, 0);
+
+    right_sizer->Add(btn_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    // Info section
+    wxStaticText* input_header = new wxStaticText(right_panel, wxID_ANY, "◆ Input Image:");
+    Style::ApplyNeumorphicStyle(input_header);
+    input_header->SetFont(Style::GetSansFont(8));
+    right_sizer->Add(input_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* info_item1 = new wxStaticText(right_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    info_item1->SetFont(Style::GetSansFont(8));
+    info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    right_sizer->Add(info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* info_item2 = new wxStaticText(right_panel, wxID_ANY, "- Raw Bayer format recommended");
+    info_item2->SetFont(Style::GetSansFont(8));
+    info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    right_sizer->Add(info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* info_item3 = new wxStaticText(right_panel, wxID_ANY, "- 16-bit depth for better dynamic range");
+    info_item3->SetFont(Style::GetSansFont(8));
+    info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    right_sizer->Add(info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* node_header = new wxStaticText(right_panel, wxID_ANY, "◆ Node Hints:");
+    Style::ApplyNeumorphicStyle(node_header);
+    node_header->SetFont(Style::GetSansFont(8));
+    right_sizer->Add(node_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* hint_text = new wxStaticText(right_panel, wxID_ANY,
+        "* OB: Black Level, Dark Current, Exposure\n"
+        "* DPC: Threshold Sigma, Dark Noise, Kernel\n"
+        "* Denoise: Sigma Strength\n"
+        "* Demosaicing: Bayer Pattern\n"
+        "* WB: R/G/B Gain\n"
+        "* CCM: Gamma\n"
+        "* Gamma: Value, Input Range");
+    hint_text->SetFont(Style::GetSansFont(8));
+    hint_text->SetForegroundColour(wxColour(128, 128, 128));
+    right_sizer->Add(hint_text, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     right_panel->SetSizer(right_sizer);
-    middle_sizer->Add(right_panel, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    top_row->Add(right_panel, 1, wxEXPAND);
 
-    middle_panel->SetSizer(middle_sizer);
-    main_sizer->Add(middle_panel, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    main_sizer->Add(top_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, Style::SPACING_LARGE);
 
-    // ============ Bottom status bar ============
-    wxPanel* status_panel = new wxPanel(this, wxID_ANY);
-    status_panel->SetBackgroundColour(Style::NEU_BG_COLOR);
-    wxBoxSizer* status_sizer = new wxBoxSizer(wxHORIZONTAL);
-    status_label_ = new wxStaticText(status_panel, wxID_ANY, "Status: Ready");
+    // Status text
+    status_label_ = new wxStaticText(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
     Style::ApplyNeumorphicStyle(status_label_);
-    status_sizer->Add(status_label_, 1, wxEXPAND | wxALL, Style::SPACING_SMALL);
-    status_panel->SetSizer(status_sizer);
-    main_sizer->Add(status_panel, 0, wxEXPAND | wxALL, Style::SPACING_SMALL);
+    main_sizer->Add(status_label_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    // ============ Bottom row: Two images side by side ============
+    NeumorphicPanel* images_panel = new NeumorphicPanel(this, wxID_ANY);
+    wxBoxSizer* images_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+    // Input Image
+    wxBoxSizer* input_img_box = new wxBoxSizer(wxVERTICAL);
+    wxStaticText* input_title = new wxStaticText(images_panel, wxID_ANY, "Input Image");
+    Style::ApplyNeumorphicStyle(input_title);
+    input_img_box->Add(input_title, 0, wxALIGN_CENTER | wxBOTTOM, Style::SPACING_MEDIUM);
+    input_canvas_ = new ImageCanvas(images_panel, wxID_ANY);
+    input_canvas_->SetMinSize(wxSize(350, 250));
+    input_img_box->Add(input_canvas_, 1, wxEXPAND);
+    images_sizer->Add(input_img_box, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
+
+    // Current Output
+    wxBoxSizer* output_img_box = new wxBoxSizer(wxVERTICAL);
+    wxStaticText* output_title = new wxStaticText(images_panel, wxID_ANY, "Current Output");
+    Style::ApplyNeumorphicStyle(output_title);
+    output_img_box->Add(output_title, 0, wxALIGN_CENTER | wxBOTTOM, Style::SPACING_MEDIUM);
+    output_canvas_ = new ImageCanvas(images_panel, wxID_ANY);
+    output_canvas_->SetMinSize(wxSize(350, 250));
+    output_img_box->Add(output_canvas_, 1, wxEXPAND);
+    images_sizer->Add(output_img_box, 1, wxEXPAND);
+
+    images_panel->SetSizer(images_sizer);
+    main_sizer->Add(images_panel, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
 
     SetSizer(main_sizer);
 }
@@ -412,12 +431,15 @@ void PipelinePanel::UpdateStatus(const wxString& msg, bool is_error) {
 }
 
 void PipelinePanel::OnLoadInput(wxCommandEvent& event) {
-    wxString filter = "Image Files (*.png;*.jpg;*.bmp;*.tif;*.tiff)|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff|All Files (*.*)|*.*";
-    wxFileDialog dlg(this, "Select Input Image", "", "", filter, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-    if (dlg.ShowModal() == wxID_CANCEL) return;
-
-    wxString path = dlg.GetPath();
-    path_ctrl_->SetValue(path);
+    wxString path = path_ctrl_->GetValue().Trim();
+    if (path.IsEmpty()) {
+        UpdateStatus("Please enter a file path first", true);
+        return;
+    }
+    if (!wxFileName::FileExists(path)) {
+        UpdateStatus("File not found: " + path, true);
+        return;
+    }
 
     // Use IMREAD_UNCHANGED to preserve 16-bit data
     std::string utf8_path = std::string(path.ToUTF8());

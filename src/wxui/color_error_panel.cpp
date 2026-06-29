@@ -62,6 +62,31 @@ ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     src_row2->Add(src_path_ctrl_, 1);
     src_box->Add(src_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
+    wxStaticText* src_info_header = new wxStaticText(src_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(src_info_header, true);
+    src_info_header->SetFont(Style::GetSansFont(9));
+    src_box->Add(src_info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* src_info_title = new wxStaticText(src_panel, wxID_ANY, "◆ Source Image:");
+    Style::ApplyNeumorphicStyle(src_info_title);
+    src_info_title->SetFont(Style::GetSansFont(8));
+    src_box->Add(src_info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* src_info_item1 = new wxStaticText(src_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    src_info_item1->SetFont(Style::GetSansFont(8));
+    src_info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    src_box->Add(src_info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* src_info_item2 = new wxStaticText(src_panel, wxID_ANY, "- Captured color checker chart");
+    src_info_item2->SetFont(Style::GetSansFont(8));
+    src_info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    src_box->Add(src_info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* src_info_item3 = new wxStaticText(src_panel, wxID_ANY, "- Proper lighting and exposure");
+    src_info_item3->SetFont(Style::GetSansFont(8));
+    src_info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    src_box->Add(src_info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
     wxBoxSizer* src_camera_row = new wxBoxSizer(wxHORIZONTAL);
     open_src_camera_btn_ = new wxButton(src_panel, CE_ID_SRC_OPEN_CAMERA_BTN, "Open Camera");
     Style::ApplyNeumorphicStyle(open_src_camera_btn_);
@@ -103,6 +128,31 @@ ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     ref_row2->Add(load_ref_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     ref_row2->Add(ref_path_ctrl_, 1);
     ref_box->Add(ref_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* ref_info_header = new wxStaticText(ref_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(ref_info_header, true);
+    ref_info_header->SetFont(Style::GetSansFont(9));
+    ref_box->Add(ref_info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* ref_info_title = new wxStaticText(ref_panel, wxID_ANY, "◆ Reference Image:");
+    Style::ApplyNeumorphicStyle(ref_info_title);
+    ref_info_title->SetFont(Style::GetSansFont(8));
+    ref_box->Add(ref_info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* ref_info_item1 = new wxStaticText(ref_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    ref_info_item1->SetFont(Style::GetSansFont(8));
+    ref_info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    ref_box->Add(ref_info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* ref_info_item2 = new wxStaticText(ref_panel, wxID_ANY, "- Standard color chart or calibrated image");
+    ref_info_item2->SetFont(Style::GetSansFont(8));
+    ref_info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    ref_box->Add(ref_info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* ref_info_item3 = new wxStaticText(ref_panel, wxID_ANY, "- Same size/resolution as source");
+    ref_info_item3->SetFont(Style::GetSansFont(8));
+    ref_info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    ref_box->Add(ref_info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     wxBoxSizer* ref_camera_row = new wxBoxSizer(wxHORIZONTAL);
     open_ref_camera_btn_ = new wxButton(ref_panel, CE_ID_REF_OPEN_CAMERA_BTN, "Open Camera");
@@ -158,7 +208,7 @@ ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     Style::ApplyNeumorphicStyle(src_img_title);
     src_img_box->Add(src_img_title, 0, wxALIGN_CENTER | wxBOTTOM, Style::SPACING_MEDIUM);
     src_canvas_ = new ImageCanvas(image_panel, wxID_ANY);
-    src_canvas_->SetMinSize(wxSize(350, 250));
+    src_canvas_->SetMinSize(wxSize(350, 350));
     src_img_box->Add(src_canvas_, 1, wxEXPAND);
     image_box->Add(src_img_box, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
 
@@ -167,7 +217,7 @@ ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     Style::ApplyNeumorphicStyle(ref_img_title);
     ref_img_box->Add(ref_img_title, 0, wxALIGN_CENTER | wxBOTTOM, Style::SPACING_MEDIUM);
     ref_canvas_ = new ImageCanvas(image_panel, wxID_ANY);
-    ref_canvas_->SetMinSize(wxSize(350, 250));
+    ref_canvas_->SetMinSize(wxSize(350, 350));
     ref_img_box->Add(ref_canvas_, 1, wxEXPAND);
     image_box->Add(ref_img_box, 1, wxEXPAND);
     image_panel->SetSizer(image_box);
@@ -202,7 +252,6 @@ ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     color_grid_->SetFont(Style::GetSansFont(8));
     color_box->Add(color_grid_, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     color_panel->SetSizer(color_box);
-    main_sizer->Add(color_panel, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
 
     NeumorphicPanel* calc_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* calc_box = new wxBoxSizer(wxVERTICAL);
@@ -263,7 +312,11 @@ ColorErrorPanel::ColorErrorPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
 
     calc_box->Add(result_box, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
     calc_panel->SetSizer(calc_box);
-    main_sizer->Add(calc_panel, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
+
+    wxBoxSizer* bottom_row = new wxBoxSizer(wxHORIZONTAL);
+    bottom_row->Add(color_panel, 1, wxEXPAND | wxRIGHT, Style::SPACING_LARGE);
+    bottom_row->Add(calc_panel, 1, wxEXPAND);
+    main_sizer->Add(bottom_row, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
 
     SetSizer(main_sizer);
 }

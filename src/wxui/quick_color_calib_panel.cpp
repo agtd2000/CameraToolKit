@@ -102,6 +102,31 @@ QuickColorCalibPanel::QuickColorCalibPanel(wxWindow* parent) : wxPanel(parent, w
     src_row2->Add(src_path_ctrl_, 1);
     src_box->Add(src_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
+    wxStaticText* src_info_header = new wxStaticText(src_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(src_info_header, true);
+    src_info_header->SetFont(Style::GetSansFont(9));
+    src_box->Add(src_info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* src_info_title = new wxStaticText(src_panel, wxID_ANY, "◆ Source Image:");
+    Style::ApplyNeumorphicStyle(src_info_title);
+    src_info_title->SetFont(Style::GetSansFont(8));
+    src_box->Add(src_info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* src_info_item1 = new wxStaticText(src_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    src_info_item1->SetFont(Style::GetSansFont(8));
+    src_info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    src_box->Add(src_info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* src_info_item2 = new wxStaticText(src_panel, wxID_ANY, "- Captured color checker chart");
+    src_info_item2->SetFont(Style::GetSansFont(8));
+    src_info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    src_box->Add(src_info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* src_info_item3 = new wxStaticText(src_panel, wxID_ANY, "- Uniform illumination recommended");
+    src_info_item3->SetFont(Style::GetSansFont(8));
+    src_info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    src_box->Add(src_info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
     wxBoxSizer* src_camera_row = new wxBoxSizer(wxHORIZONTAL);
     open_src_camera_btn_ = new wxButton(src_panel, ID_SRC_OPEN_CAMERA_BTN, "Open Camera");
     Style::ApplyNeumorphicStyle(open_src_camera_btn_);
@@ -307,6 +332,31 @@ QuickColorCalibPanel::QuickColorCalibPanel(wxWindow* parent) : wxPanel(parent, w
     ref_row2->Add(load_ref_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     ref_row2->Add(ref_path_ctrl_, 1);
     ref_box->Add(ref_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* ref_info_header = new wxStaticText(ref_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(ref_info_header, true);
+    ref_info_header->SetFont(Style::GetSansFont(9));
+    ref_box->Add(ref_info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* ref_info_title = new wxStaticText(ref_panel, wxID_ANY, "◆ Reference Image:");
+    Style::ApplyNeumorphicStyle(ref_info_title);
+    ref_info_title->SetFont(Style::GetSansFont(8));
+    ref_box->Add(ref_info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* ref_info_item1 = new wxStaticText(ref_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    ref_info_item1->SetFont(Style::GetSansFont(8));
+    ref_info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    ref_box->Add(ref_info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* ref_info_item2 = new wxStaticText(ref_panel, wxID_ANY, "- Standard color chart or calibrated image");
+    ref_info_item2->SetFont(Style::GetSansFont(8));
+    ref_info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    ref_box->Add(ref_info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    wxStaticText* ref_info_item3 = new wxStaticText(ref_panel, wxID_ANY, "- Same chart type as source image");
+    ref_info_item3->SetFont(Style::GetSansFont(8));
+    ref_info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    ref_box->Add(ref_info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
 
     wxBoxSizer* ref_camera_row = new wxBoxSizer(wxHORIZONTAL);
     open_ref_camera_btn_ = new wxButton(ref_panel, ID_REF_OPEN_CAMERA_BTN, "Open Camera");

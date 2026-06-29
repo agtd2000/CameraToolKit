@@ -1,0 +1,11 @@
+========== Log Started ==========
+Timestamp: 2026-06-29 12:27:45
+==================================
+[2026-06-29 12:27:45] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 12:27:45] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 12:27:45] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-29 12:27:45] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 12:27:45] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 12:27:45] [INFO] Ready. Please load an input image.
+[2026-06-29 12:27:45] [INFO] MainFrame initialized successfully
+[2026-06-29 12:34:17] [INFO] [OPERATION] Close - Application closing

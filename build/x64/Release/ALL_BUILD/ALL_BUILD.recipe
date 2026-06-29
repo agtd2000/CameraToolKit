@@ -2,13 +2,13 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>E:\Projects\Study\MvToolKit\build\x64\Release\ZERO_CHECK</FullPath>
+      <FullPath>E:\Projects\Study\CameraToolKit\build\x64\Release\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>E:\Projects\Study\MvToolKit\build\Release\CameraToolKit.exe</FullPath>
+      <FullPath>E:\Projects\Study\CameraToolKit\build\Release\CameraToolKit.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>E:\Projects\Study\MvToolKit\build\x64\Release\ALL_BUILD</FullPath>
+      <FullPath>E:\Projects\Study\CameraToolKit\build\x64\Release\ALL_BUILD</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

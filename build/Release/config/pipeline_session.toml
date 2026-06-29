@@ -1,16 +1,188 @@
-[[history.calibration]]
-description = 'Sensor characterization evaluation (SI0)'
-duration_ms = 0.0
-notes = 'exposure_groups=3, frames=50'
-success = true
-timestamp = '2026-06-28T18:27:39+0800'
-type = 'SCM'
+[color_char_calib]
+ccm_matrix_first = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+ccm_method = 0
+ccm_quant = 1024
+executed = true
+export_path = 'config/color_char_calib.txt'
+light_source_count = 1
+quantize = true
+standard_color = 0
+wb_b_gain_first = 1.0
+wb_g_gain_first = 1.0
+wb_method = 0
+wb_quant = 1024
+wb_r_gain_first = 1.0
+
+[color_error]
+color_count = 24
+delta_c_mean = 0.0
+delta_e00_max = 0.0
+delta_e00_mean = 0.0
+delta_e00_min = 0.0
+delta_e76_mean = 0.0
+delta_l_mean = 0.0
+executed = true
+use_srgb = true
+
+[dead_pixel]
+avg_brightness_max = 255.0
+avg_brightness_min = 0.0
+correct_method = 0
+csv_export_path = 'config/dead_pixels.csv'
+dead_pixels_corrected = 55
+dead_pixels_detected = 55
+detect_type = 0
+executed = true
+kernel_size = 3
+threshold = 10
+
+[flat_field]
+calib_mode = 0
+center_brightness_before = 203.81108474731445
+channel_mode = 0
+edge_brightness_before = 203.78390502929688
+edge_fill = 1
+executed = true
+gain_map_max = 2.047666282171768
+gain_map_min = 0.9770240770079259
+gain_map_path = 'config/gain_map.dat'
+smooth_kernel = 64
+target_brightness = 128.0
+uniformity_after = 0.9887052303099574
+uniformity_before = 0.9887052303099574
+use_dark_frame = false
+
+[output]
+output_bit_depth = 8
+output_channels = 3
+output_height = 2048
+output_mean_b = 1.2712576389312744
+output_mean_g = 4.109962463378906
+output_mean_r = 4.269484519958496
+output_std_b = 3.5988815539714403
+output_std_g = 6.304291431271539
+output_std_r = 6.666799712490282
+output_width = 2048
+
+[pipeline]
+enabled_nodes = 5
+input_bit_depth = 8
+input_channels = 3
+input_height = 2048
+input_image_path = 'E:\Projects\Study\CameraToolKit\build\images\flat.BMP'
+input_width = 2048
+recommended_ccm_exposure_us = 2000.0
+recommended_lsc_exposure_us = 2000.0
+total_nodes = 8
+
+    [pipeline.nodes.CCM]
+    enabled = true
+    executed = true
+    last_run_at = '2026-06-29T13:12:56+0800'
+    output_mean = 68.07893300056458
+    output_std = 23.31401725275542
+    processing_time_ms = 93.9587
+
+    [pipeline.nodes.DPC]
+    absolute_threshold_dn = 150.0
+    executed = true
+    last_run_at = '2026-06-29T13:12:41+0800'
+    output_mean = 68.41785478591919
+    output_std = 23.33265754181614
+    processing_time_ms = 107.838
+
+    [pipeline.nodes.Demosaicing]
+    executed = true
+    last_run_at = '2026-06-29T13:12:52+0800'
+    output_channels = 3
+    output_mean = 68.07893300056458
+    output_std = 23.31401725275542
+    processing_time_ms = 12.2764
+
+    [pipeline.nodes.Denoise]
+    executed = true
+    last_run_at = '2026-06-29T13:12:50+0800'
+    output_mean = 68.07893300056458
+    output_std = 23.31401725275542
+    processing_time_ms = 1712.2555
+
+    [pipeline.nodes.Gamma]
+    executed = true
+    last_run_at = '2026-06-29T13:12:57+0800'
+    output_mean = 11.323930263519287
+    output_std = 2.071191464974652
+    processing_time_ms = 147.3143
+
+    [pipeline.nodes.LSC]
+    enabled = true
+    executed = true
+    last_run_at = '2026-06-29T13:12:45+0800'
+    output_mean = 68.41785478591919
+    output_std = 23.33265754181614
+    processing_time_ms = 12.3045
+
+    [pipeline.nodes.OB]
+    black_level_dn = 100.0
+    enabled = true
+    executed = true
+    last_run_at = '2026-06-29T13:12:39+0800'
+    output_mean = 68.41785478591919
+    output_std = 23.33265754181614
+    processing_time_ms = 36.5657
+
+    [pipeline.nodes.WhiteBalance]
+    enabled = true
+    executed = true
+    last_run_at = '2026-06-29T13:12:53+0800'
+    output_mean = 68.07893300056458
+    output_std = 23.31401725275542
+    processing_time_ms = 43.9927
+
+[quick_color_calib]
+calib_mode = 0
+ccm_matrix = [ 0.9224351105771919, -0.018565508502619423, 0.0872434640969137, 0.0996320771433993, 0.7760032806204905, 0.14654489841069057, 0.11087079156826306, -0.05559356846199878, 0.8972129757755326 ]
+ccm_method = 1
+delta_e00_list = [
+    6.474140355065466,
+    2.671156164787126,
+    1.8495927502855012,
+    4.083651255025214,
+    0.9949650682808543,
+    3.325941765879996,
+    2.256464822995928,
+    4.303854676238778,
+    2.4703519113696166,
+    5.048936483806073,
+    2.156106739126224,
+    2.908231603515218,
+    3.4838024238239704,
+    1.2461076263203072,
+    1.6025144277913568,
+    0.9639887712590407,
+    1.485714553026049,
+    4.329289902207227,
+    1.9931830595143045,
+    1.7682091867616254,
+    2.8458037815877306,
+    0.6127191170758693,
+    4.002486525370726,
+    14.492643471528115
+]
+delta_e00_max = 14.492643471528115
+delta_e00_mean = 3.22374401844343
+executed = true
+roi_count = 24
+stat_method = 1
+wb_b_gain = 1.0570342205323193
+wb_g_gain = 1.0
+wb_method = 1
+wb_r_gain = 1.009227929867733
 
 [scm]
 bright_means = [ 10101.61162376303, 20103.60133873698, 40107.871675912116 ]
 bright_variances = [ 20905.119575222227, 40913.73767338633, 80901.83704186676 ]
 dark_current_e_per_sec = 2002.7258556546044
-dark_current_e_per_sec_per_mm2 = 9.6564504089e-312
+dark_current_e_per_sec_per_mm2 = 8.006248137977e-312
 dark_means = [ 101.49841848958327, 103.50602473958237, 107.5075721354161 ]
 dark_noise_dn = 29.98477611113423
 dark_noise_e = 14.994072426410595
@@ -44,11 +216,16 @@ test_temperature_c = 25.0
 [sensor]
 bayer_pattern = 'RGGB'
 bit_depth = 16
-manufacturer = 'S'
+manufacturer = 'S1'
 max_digital_value = 65535
-model = 'I0'
+model = 'I01'
 resolution_height = 480
 resolution_width = 640
-sensor_name = 'SI0'
-serial_number = 'SN0'
+sensor_name = 'SI01'
+serial_number = 'SN01'
 temperature_c = 25.0
+
+[spectral_calib]
+field_height_mm = 86.0000029206276
+field_width_mm = 113.99999260902405
+light_source_count = 1

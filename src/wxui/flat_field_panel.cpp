@@ -64,6 +64,31 @@ FlatFieldPanel::FlatFieldPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     flat_row2->Add(flat_path_ctrl_, 1);
     flat_box->Add(flat_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
+    wxStaticText* flat_info_header = new wxStaticText(flat_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(flat_info_header, true);
+    flat_info_header->SetFont(Style::GetSansFont(9));
+    flat_box->Add(flat_info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* flat_info_title = new wxStaticText(flat_panel, wxID_ANY, "◆ Flat Field Image:");
+    Style::ApplyNeumorphicStyle(flat_info_title);
+    flat_info_title->SetFont(Style::GetSansFont(8));
+    flat_box->Add(flat_info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* flat_info_item1 = new wxStaticText(flat_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    flat_info_item1->SetFont(Style::GetSansFont(8));
+    flat_info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    flat_box->Add(flat_info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* flat_info_item2 = new wxStaticText(flat_panel, wxID_ANY, "- Uniform light source (integrating sphere)");
+    flat_info_item2->SetFont(Style::GetSansFont(8));
+    flat_info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    flat_box->Add(flat_info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* flat_info_item3 = new wxStaticText(flat_panel, wxID_ANY, "- Brightness: 30-70% of full scale");
+    flat_info_item3->SetFont(Style::GetSansFont(8));
+    flat_info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    flat_box->Add(flat_info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
     wxBoxSizer* flat_camera_row = new wxBoxSizer(wxHORIZONTAL);
     open_flat_camera_btn_ = new wxButton(flat_panel, FF_ID_OPEN_FLAT_CAMERA_BTN, "Open Camera");
     Style::ApplyNeumorphicStyle(open_flat_camera_btn_);
@@ -110,6 +135,31 @@ FlatFieldPanel::FlatFieldPanel(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
     dark_row2->Add(load_dark_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
     dark_row2->Add(dark_path_ctrl_, 1);
     dark_box->Add(dark_row2, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* dark_info_header = new wxStaticText(dark_panel, wxID_ANY, "[Info]");
+    Style::ApplyNeumorphicStyle(dark_info_header, true);
+    dark_info_header->SetFont(Style::GetSansFont(9));
+    dark_box->Add(dark_info_header, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* dark_info_title = new wxStaticText(dark_panel, wxID_ANY, "◆ Dark Frame Image:");
+    Style::ApplyNeumorphicStyle(dark_info_title);
+    dark_info_title->SetFont(Style::GetSansFont(8));
+    dark_box->Add(dark_info_title, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* dark_info_item1 = new wxStaticText(dark_panel, wxID_ANY, "- Format: .png .jpg .bmp .tif (8/16-bit)");
+    dark_info_item1->SetFont(Style::GetSansFont(8));
+    dark_info_item1->SetForegroundColour(wxColour(128, 128, 128));
+    dark_box->Add(dark_info_item1, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* dark_info_item2 = new wxStaticText(dark_panel, wxID_ANY, "- Same exposure as flat field");
+    dark_info_item2->SetFont(Style::GetSansFont(8));
+    dark_info_item2->SetForegroundColour(wxColour(128, 128, 128));
+    dark_box->Add(dark_info_item2, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
+
+    wxStaticText* dark_info_item3 = new wxStaticText(dark_panel, wxID_ANY, "- Light source off or lens capped");
+    dark_info_item3->SetFont(Style::GetSansFont(8));
+    dark_info_item3->SetForegroundColour(wxColour(128, 128, 128));
+    dark_box->Add(dark_info_item3, 0, wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     wxBoxSizer* dark_camera_row = new wxBoxSizer(wxHORIZONTAL);
     open_dark_camera_btn_ = new wxButton(dark_panel, FF_ID_OPEN_DARK_CAMERA_BTN, "Open Camera");
