@@ -1,0 +1,112 @@
+========== Log Started ==========
+Timestamp: 2026-06-29 13:40:23
+==================================
+[2026-06-29 13:40:23] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:40:24] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:40:24] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-29 13:40:24] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:40:24] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:40:24] [INFO] Ready. Please load an input image.
+[2026-06-29 13:40:24] [INFO] MainFrame initialized successfully
+[2026-06-29 13:52:26] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\dark\exp_1000us\dark_1000us_0001.png
+[2026-06-29 13:52:26] [DEBUG] [DATA] ImageInfo = Size: 1280x720
+[2026-06-29 13:52:43] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:52:43] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:52:47] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:52:47] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:52:53] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:52:53] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:53:21] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\dark\exp_4000us\dark_4000us_0001.png
+[2026-06-29 13:53:21] [DEBUG] [DATA] ImageInfo = Size: 1280x720
+[2026-06-29 13:53:24] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:53:24] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:54:06] [INFO] [OPERATION] Load Image - Path: "E:\Projects\Study\CameraToolKit\build\images\bright\exp_4000us\bright_4000us_0001.png"
+[2026-06-29 13:54:06] [ERROR] [ERROR-ImageLoad] Failed to load image: "E:\Projects\Study\CameraToolKit\build\images\bright\exp_4000us\bright_4000us_0001.png"
+[2026-06-29 13:54:16] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\bright\exp_4000us\bright_4000us_0001.png
+[2026-06-29 13:54:16] [DEBUG] [DATA] ImageInfo = Size: 1280x720
+[2026-06-29 13:54:21] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:54:21] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:54:31] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:54:31] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:54:40] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:54:40] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:55:21] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\DeadPixel\dark_01.tiff
+[2026-06-29 13:55:22] [DEBUG] [DATA] ImageInfo = Size: 1280x720
+[2026-06-29 13:55:28] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:55:28] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:55:52] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:55:52] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:56:27] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:56:27] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:56:45] [INFO] [OPERATION] Load Flat Image - Path: E:\Projects\Study\CameraToolKit\build\images\FlatField\flat_01.tiff
+[2026-06-29 13:56:45] [DEBUG] [DATA] ImageInfo = Size: 1280x720
+[2026-06-29 13:57:25] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:57:25] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:57:31] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:57:31] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:25] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:25] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:27] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:27] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:35] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:35] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:36] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:36] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:43] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:43] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:45] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:45] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:50] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:50] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:51] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:51] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:55] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:55] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 13:58:56] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 13:58:56] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 15:41:32] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 15:41:32] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 15:41:36] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 15:41:36] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 15:42:10] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\CameraToolKit\build\images\QuickCalib\color_chart.png
+[2026-06-29 15:42:10] [DEBUG] [DATA] ImageInfo = Size: 640x480, Channels: 3, Depth: 0
+[2026-06-29 15:42:26] [INFO] [OPERATION] Detect Color Checker - Starting auto detection...
+[2026-06-29 15:42:26] [ERROR] [ERROR-ROIDetection] MCC module failed to detect color checker
+[2026-06-29 15:50:08] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\CameraToolKit\build\images\QuickCalib\colorchecker.bmp
+[2026-06-29 15:50:08] [DEBUG] [DATA] ImageInfo = Size: 2048x2048, Channels: 3, Depth: 0
+[2026-06-29 15:50:16] [INFO] [OPERATION] Detect Color Checker - Starting auto detection...
+[2026-06-29 15:50:17] [DEBUG] [DATA] ROIResult = Detected 24 ROIs (Auto)
+[2026-06-29 15:50:17] [DEBUG] [DATA] BrightnessCheck = Value: 0.267555, Range: [0.155000, 0.650000], Status: OK
+[2026-06-29 15:50:32] [INFO] [OPERATION] Load Reference Image - Path: E:\Projects\Study\CameraToolKit\build\images\QuickCalib\colorchecker.bmp
+[2026-06-29 15:50:32] [DEBUG] [DATA] RefImageInfo = Size: 2048x2048
+[2026-06-29 15:50:36] [INFO] [OPERATION] Detect Reference Color Checker - Starting auto detection...
+[2026-06-29 15:50:36] [DEBUG] [DATA] RefROIResult = Detected 24 ROIs (Auto)
+[2026-06-29 15:51:19] [INFO] [OPERATION] Load Reference Image - Path: E:\Projects\Study\CameraToolKit\images\colorchecker_640x480.bmp
+[2026-06-29 15:51:19] [DEBUG] [DATA] RefImageInfo = Size: 640x480
+[2026-06-29 15:51:22] [INFO] [OPERATION] Detect Reference Color Checker - Starting auto detection...
+[2026-06-29 15:51:22] [DEBUG] [DATA] RefROIResult = Detected 24 ROIs (Auto)
+[2026-06-29 15:51:28] [INFO] [OPERATION] Calibrate - Mode: Standard, ROIs: 24, WB Method: 0, CCM Method: 0, Stat Method: 1
+[2026-06-29 15:51:28] [DEBUG] [DATA] WhiteBalance = R Gain: 0.887727, G Gain: 1.000000, B Gain: 1.097338
+[2026-06-29 15:51:28] [DEBUG] [DATA] CCMMatrix = [1.048654,-0.018360,0.083928] [0.112873,0.776444,0.141215] [0.124371,-0.053173,0.864115]
+[2026-06-29 15:51:28] [DEBUG] [DATA] DeltaE00 = Mean: 3.227843, Max: 14.492643
+[2026-06-29 15:51:28] [INFO] [OPERATION] Calibration - Completed successfully
+[2026-06-29 15:51:28] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 15:51:28] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 15:52:13] [INFO] [OPERATION] Load Source Image - Path: E:\Projects\Study\CameraToolKit\images\colorchecker_640x480.bmp
+[2026-06-29 15:52:13] [DEBUG] [DATA] ImageInfo = Size: 640x480
+[2026-06-29 15:52:29] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 15:52:29] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 15:53:13] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\images\colorchecker.bmp
+[2026-06-29 15:53:13] [DEBUG] [DATA] LightSource = Name: D65, ColorTemp: 6500.000000, Image: 2048x2048
+[2026-06-29 15:53:31] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 15:53:31] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 15:54:15] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 15:54:15] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 15:54:49] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\images\colorchecker.bmp
+[2026-06-29 15:54:49] [DEBUG] [DATA] LightSource = Name: D50, ColorTemp: 5700.000000, Image: 2048x2048
+[2026-06-29 15:54:59] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\images\colorchecker.bmp
+[2026-06-29 15:54:59] [DEBUG] [DATA] LightSource = Name: D49, ColorTemp: 5000.000000, Image: 2048x2048
+[2026-06-29 15:55:09] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\images\colorchecker.bmp
+[2026-06-29 15:55:09] [DEBUG] [DATA] LightSource = Name: A, ColorTemp: 2000.000000, Image: 2048x2048
+[2026-06-29 15:55:16] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 15:55:16] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml

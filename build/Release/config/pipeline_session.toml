@@ -1,76 +1,76 @@
 [color_char_calib]
-ccm_matrix_first = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+ccm_matrix_first = [ 0.9311960560569427, -0.018598225616527964, 0.09226587286841173, 0.10046413949584965, 0.7760801193215257, 0.1549615009204895, 0.1113776918073277, -0.05472054925852632, 0.9480285589092297 ]
 ccm_method = 0
 ccm_quant = 1024
 executed = true
 export_path = 'config/color_char_calib.txt'
-light_source_count = 1
+light_source_count = 3
 quantize = true
 standard_color = 0
-wb_b_gain_first = 1.0
+wb_b_gain_first = 1.0973384030418252
 wb_g_gain_first = 1.0
 wb_method = 0
 wb_quant = 1024
-wb_r_gain_first = 1.0
+wb_r_gain_first = 0.887726853275915
 
 [color_error]
 color_count = 24
-delta_c_mean = 0.0
-delta_e00_max = 0.0
-delta_e00_mean = 0.0
+delta_c_mean = 0.03737607475236088
+delta_e00_max = 0.46836015590593577
+delta_e00_mean = 0.06498852108914122
 delta_e00_min = 0.0
-delta_e76_mean = 0.0
-delta_l_mean = 0.0
+delta_e76_mean = 0.08048589771360422
+delta_l_mean = -0.006988184269442144
 executed = true
-use_srgb = true
+use_srgb = false
 
 [dead_pixel]
 avg_brightness_max = 255.0
 avg_brightness_min = 0.0
 correct_method = 0
 csv_export_path = 'config/dead_pixels.csv'
-dead_pixels_corrected = 55
-dead_pixels_detected = 55
-detect_type = 0
+dead_pixels_corrected = 16
+dead_pixels_detected = 16
+detect_type = 1
 executed = true
 kernel_size = 3
-threshold = 10
+threshold = 3
 
 [flat_field]
-calib_mode = 0
-center_brightness_before = 203.81108474731445
-channel_mode = 0
-edge_brightness_before = 203.78390502929688
-edge_fill = 1
+calib_mode = 2
+center_brightness_before = 191.0
+channel_mode = 1
+edge_brightness_before = 191.0
+edge_fill = 2
 executed = true
-gain_map_max = 2.047666282171768
-gain_map_min = 0.9770240770079259
+gain_map_max = 1.8188079231970955
+gain_map_min = 1.4921875
 gain_map_path = 'config/gain_map.dat'
 smooth_kernel = 64
-target_brightness = 128.0
-uniformity_after = 0.9887052303099574
-uniformity_before = 0.9887052303099574
-use_dark_frame = false
+target_brightness = 191.0
+uniformity_after = 0.9977431179093248
+uniformity_before = 0.9977431179093248
+use_dark_frame = true
 
 [output]
 output_bit_depth = 8
 output_channels = 3
-output_height = 2048
-output_mean_b = 1.2712576389312744
-output_mean_g = 4.109962463378906
-output_mean_r = 4.269484519958496
-output_std_b = 3.5988815539714403
-output_std_g = 6.304291431271539
-output_std_r = 6.666799712490282
-output_width = 2048
+output_height = 480
+output_mean_b = 7.000000000000001
+output_mean_g = 14.041666666666668
+output_mean_r = 12.58357421875
+output_std_b = 6.6143782776614755
+output_std_g = 5.608618120555386
+output_std_r = 6.137062504431063
+output_width = 640
 
 [pipeline]
-enabled_nodes = 5
+enabled_nodes = 8
 input_bit_depth = 8
 input_channels = 3
-input_height = 2048
-input_image_path = 'E:\Projects\Study\CameraToolKit\build\images\flat.BMP'
-input_width = 2048
+input_height = 480
+input_image_path = 'E:\Projects\Study\CameraToolKit\build\images\Pipeline\input.png'
+input_width = 640
 recommended_ccm_exposure_us = 2000.0
 recommended_lsc_exposure_us = 2000.0
 total_nodes = 8
@@ -78,105 +78,105 @@ total_nodes = 8
     [pipeline.nodes.CCM]
     enabled = true
     executed = true
-    last_run_at = '2026-06-29T13:12:56+0800'
-    output_mean = 68.07893300056458
-    output_std = 23.31401725275542
-    processing_time_ms = 93.9587
+    last_run_at = '2026-06-29T16:22:37+0800'
+    output_mean = 48.16618489583334
+    output_std = 54.96379797930236
+    processing_time_ms = 13.1409
 
     [pipeline.nodes.DPC]
     absolute_threshold_dn = 150.0
     executed = true
-    last_run_at = '2026-06-29T13:12:41+0800'
-    output_mean = 68.41785478591919
-    output_std = 23.33265754181614
-    processing_time_ms = 107.838
+    last_run_at = '2026-06-29T16:22:36+0800'
+    output_mean = 48.208333333333336
+    output_std = 54.94541167275835
+    processing_time_ms = 17.651
 
     [pipeline.nodes.Demosaicing]
     executed = true
-    last_run_at = '2026-06-29T13:12:52+0800'
+    last_run_at = '2026-06-29T16:22:37+0800'
     output_channels = 3
-    output_mean = 68.07893300056458
-    output_std = 23.31401725275542
-    processing_time_ms = 12.2764
+    output_mean = 48.16618489583334
+    output_std = 54.96379797930236
+    processing_time_ms = 7.4726
 
     [pipeline.nodes.Denoise]
     executed = true
-    last_run_at = '2026-06-29T13:12:50+0800'
-    output_mean = 68.07893300056458
-    output_std = 23.31401725275542
-    processing_time_ms = 1712.2555
+    last_run_at = '2026-06-29T16:22:37+0800'
+    output_mean = 48.16618489583334
+    output_std = 54.96379797930236
+    processing_time_ms = 508.608
 
     [pipeline.nodes.Gamma]
     executed = true
-    last_run_at = '2026-06-29T13:12:57+0800'
-    output_mean = 11.323930263519287
-    output_std = 2.071191464974652
-    processing_time_ms = 147.3143
+    last_run_at = '2026-06-29T16:22:37+0800'
+    output_mean = 7.000000000000001
+    output_std = 6.6143782776614755
+    processing_time_ms = 20.0724
 
     [pipeline.nodes.LSC]
     enabled = true
     executed = true
-    last_run_at = '2026-06-29T13:12:45+0800'
-    output_mean = 68.41785478591919
-    output_std = 23.33265754181614
-    processing_time_ms = 12.3045
+    last_run_at = '2026-06-29T16:22:36+0800'
+    output_mean = 48.208333333333336
+    output_std = 54.94541167275835
+    processing_time_ms = 13.1225
 
     [pipeline.nodes.OB]
     black_level_dn = 100.0
     enabled = true
     executed = true
-    last_run_at = '2026-06-29T13:12:39+0800'
-    output_mean = 68.41785478591919
-    output_std = 23.33265754181614
-    processing_time_ms = 36.5657
+    last_run_at = '2026-06-29T16:22:36+0800'
+    output_mean = 48.208333333333336
+    output_std = 54.94541167275835
+    processing_time_ms = 11.9191
 
     [pipeline.nodes.WhiteBalance]
     enabled = true
     executed = true
-    last_run_at = '2026-06-29T13:12:53+0800'
-    output_mean = 68.07893300056458
-    output_std = 23.31401725275542
-    processing_time_ms = 43.9927
+    last_run_at = '2026-06-29T16:22:37+0800'
+    output_mean = 48.16618489583334
+    output_std = 54.96379797930236
+    processing_time_ms = 12.5391
 
 [quick_color_calib]
 calib_mode = 0
-ccm_matrix = [ 0.9224351105771919, -0.018565508502619423, 0.0872434640969137, 0.0996320771433993, 0.7760032806204905, 0.14654489841069057, 0.11087079156826306, -0.05559356846199878, 0.8972129757755326 ]
-ccm_method = 1
+ccm_matrix = [ 1.0486535815734368, -0.018360435474773784, 0.08392751879483637, 0.11287328853375805, 0.7764436011878051, 0.1412145347808768, 0.12437050469141975, -0.053173210060528164, 0.8641151445978069 ]
+ccm_method = 0
 delta_e00_list = [
     6.474140355065466,
-    2.671156164787126,
+    2.516161858803386,
     1.8495927502855012,
-    4.083651255025214,
-    0.9949650682808543,
-    3.325941765879996,
+    3.843813194215121,
+    0.974782375992381,
+    3.477333698785756,
     2.256464822995928,
-    4.303854676238778,
+    4.3364335160180865,
     2.4703519113696166,
-    5.048936483806073,
+    5.220453957942395,
     2.156106739126224,
-    2.908231603515218,
-    3.4838024238239704,
-    1.2461076263203072,
+    2.784324604693241,
+    3.4232869402569404,
+    1.266078000981221,
     1.6025144277913568,
-    0.9639887712590407,
-    1.485714553026049,
+    0.8628559830184317,
+    1.4989141639872825,
     4.329289902207227,
-    1.9931830595143045,
-    1.7682091867616254,
+    2.134796536633467,
+    1.9372619174259562,
     2.8458037815877306,
     0.6127191170758693,
-    4.002486525370726,
+    4.1021077581491365,
     14.492643471528115
 ]
 delta_e00_max = 14.492643471528115
-delta_e00_mean = 3.22374401844343
+delta_e00_mean = 3.22784299108066
 executed = true
 roi_count = 24
 stat_method = 1
-wb_b_gain = 1.0570342205323193
+wb_b_gain = 1.0973384030418252
 wb_g_gain = 1.0
-wb_method = 1
-wb_r_gain = 1.009227929867733
+wb_method = 0
+wb_r_gain = 0.887726853275915
 
 [scm]
 bright_means = [ 10101.61162376303, 20103.60133873698, 40107.871675912116 ]
@@ -226,6 +226,10 @@ serial_number = 'SN01'
 temperature_c = 25.0
 
 [spectral_calib]
+calib_mode = 'Factory'
+complexity = 'Standard'
+executed = true
+export_path = 'config/spectral_calib.dat'
 field_height_mm = 86.0000029206276
 field_width_mm = 113.99999260902405
 light_source_count = 1

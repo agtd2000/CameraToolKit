@@ -48,10 +48,10 @@ SpectralCalibPanel::SpectralCalibPanel(wxWindow* parent) : wxPanel(parent, wxID_
     step_panel->SetSizer(step_sizer);
     main_sizer->Add(step_panel, 0, wxALIGN_CENTER | wxALL, Style::SPACING_LARGE);
 
-    wxNotebook* notebook = new wxNotebook(this, wxID_ANY);
-    notebook->SetBackgroundColour(Style::NEU_BG_COLOR);
+    notebook_ = new wxNotebook(this, wxID_ANY);
+    notebook_->SetBackgroundColour(Style::NEU_BG_COLOR);
 
-    NeumorphicPanel* page0 = new NeumorphicPanel(notebook);
+    NeumorphicPanel* page0 = new NeumorphicPanel(notebook_);
     wxBoxSizer* page0_sizer = new wxBoxSizer(wxVERTICAL);
 
     wxBoxSizer* page0_top_row = new wxBoxSizer(wxHORIZONTAL);
@@ -215,9 +215,9 @@ SpectralCalibPanel::SpectralCalibPanel(wxWindow* parent) : wxPanel(parent, wxID_
     region_panel->SetSizer(region_box);
     page0_sizer->Add(region_panel, 0, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
     page0->SetSizer(page0_sizer);
-    notebook->AddPage(page0, "Step 1");
+    notebook_->AddPage(page0, "Step 1");
 
-    NeumorphicPanel* page1 = new NeumorphicPanel(notebook);
+    NeumorphicPanel* page1 = new NeumorphicPanel(notebook_);
     wxBoxSizer* page1_sizer = new wxBoxSizer(wxVERTICAL);
 
     NeumorphicPanel* capture_panel = new NeumorphicPanel(page1);
@@ -295,9 +295,9 @@ SpectralCalibPanel::SpectralCalibPanel(wxWindow* parent) : wxPanel(parent, wxID_
     capture_panel->SetSizer(capture_box);
     page1_sizer->Add(capture_panel, 1, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
     page1->SetSizer(page1_sizer);
-    notebook->AddPage(page1, "Step 2");
+    notebook_->AddPage(page1, "Step 2");
 
-    NeumorphicPanel* page2 = new NeumorphicPanel(notebook);
+    NeumorphicPanel* page2 = new NeumorphicPanel(notebook_);
     wxBoxSizer* page2_sizer = new wxBoxSizer(wxVERTICAL);
 
     NeumorphicPanel* preview_panel = new NeumorphicPanel(page2);
@@ -322,9 +322,9 @@ SpectralCalibPanel::SpectralCalibPanel(wxWindow* parent) : wxPanel(parent, wxID_
     preview_img_panel->SetSizer(preview_img_box);
     page2_sizer->Add(preview_img_panel, 1, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
     page2->SetSizer(page2_sizer);
-    notebook->AddPage(page2, "Step 3");
+    notebook_->AddPage(page2, "Step 3");
 
-    NeumorphicPanel* page3 = new NeumorphicPanel(notebook);
+    NeumorphicPanel* page3 = new NeumorphicPanel(notebook_);
     wxBoxSizer* page3_sizer = new wxBoxSizer(wxVERTICAL);
 
     NeumorphicPanel* export_panel = new NeumorphicPanel(page3);
@@ -341,9 +341,9 @@ SpectralCalibPanel::SpectralCalibPanel(wxWindow* parent) : wxPanel(parent, wxID_
     export_panel->SetSizer(export_box);
     page3_sizer->Add(export_panel, 1, wxEXPAND | wxALL, Style::SPACING_MEDIUM);
     page3->SetSizer(page3_sizer);
-    notebook->AddPage(page3, "Step 4");
+    notebook_->AddPage(page3, "Step 4");
 
-    main_sizer->Add(notebook, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
+    main_sizer->Add(notebook_, 1, wxEXPAND | wxALL, Style::SPACING_LARGE);
 
     NeumorphicPanel* nav_panel = new NeumorphicPanel(this, wxID_ANY);
     wxBoxSizer* nav_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -423,13 +423,33 @@ void SpectralCalibPanel::OnImportFactory(wxCommandEvent& event) {
     wxString path = factory_path_ctrl_->GetValue().Trim();
     if (path.IsEmpty()) {
         UpdateStatus("Please enter a file path first", true);
+        MV_LOG_ERROR_DETAIL("FactoryLoad", "Empty file path");
         return;
     }
     if (!wxFileName::FileExists(path)) {
         UpdateStatus("File not found: " + path, true);
+        MV_LOG_ERROR_DETAIL("FactoryLoad", "File not found: " + path.ToStdString());
         return;
     }
-    UpdateStatus("Factory calibration imported");
+    
+    MV_LOG_OPERATION("FactoryLoad", "Loading file: " + path.ToStdString());
+    std::vector<mvtk::LightSourceInfo> sources = mvtk::SpectralCalibrator::importFactoryCalibFile(path.ToStdString());
+    
+    if (!sources.empty()) {
+        factory_sources_ = sources;
+        UpdateLightList();
+        UpdateStatus("Factory calibration imported: " + wxFileName(path).GetFullName() + 
+                     " (loaded " + std::to_string(sources.size()) + " light sources)");
+        MV_LOG_DATA("FactoryLoad", "Successfully loaded " + std::to_string(sources.size()) + " light sources");
+        for (size_t i = 0; i < sources.size(); ++i) {
+            MV_LOG_DATA("LightSource", "Source " + std::to_string(i) + ": " + sources[i].name + 
+                       ", Temp: " + std::to_string(sources[i].color_temperature) + "K" +
+                       ", Curves: " + std::to_string(sources[i].curves.size()));
+        }
+    } else {
+        UpdateStatus("Failed to parse factory calibration file", true);
+        MV_LOG_ERROR_DETAIL("FactoryLoad", "Failed to parse factory calibration file");
+    }
 }
 
 void SpectralCalibPanel::OnAddLight(wxCommandEvent& event) {
@@ -511,11 +531,110 @@ void SpectralCalibPanel::OnLoadCurve(wxCommandEvent& event) {
         UpdateStatus("File not found: " + path, true);
         return;
     }
-    UpdateStatus("Spectral curve loaded");
+    
+    std::ifstream ifs(path.ToStdString());
+    if (!ifs.is_open()) {
+        UpdateStatus("Failed to open curve file", true);
+        return;
+    }
+    
+    std::vector<double> wavelengths, r_values, g_values, b_values;
+    std::string line;
+    bool first_line = true;
+    
+    while (std::getline(ifs, line)) {
+        if (first_line) {
+            first_line = false;
+            continue;
+        }
+        
+        std::stringstream ss(line);
+        std::string token;
+        double wl, r, g, b;
+        int idx = 0;
+        
+        while (std::getline(ss, token, ',')) {
+            if (idx == 0) wl = std::stod(token);
+            else if (idx == 1) r = std::stod(token);
+            else if (idx == 2) g = std::stod(token);
+            else if (idx == 3) b = std::stod(token);
+            idx++;
+        }
+        
+        wavelengths.push_back(wl);
+        r_values.push_back(r);
+        g_values.push_back(g);
+        b_values.push_back(b);
+    }
+    
+    if (wavelengths.empty()) {
+        UpdateStatus("No valid curve data found", true);
+        return;
+    }
+    
+    cv::Mat canvas = cv::Mat::zeros(400, 600, CV_8UC3);
+    canvas.setTo(cv::Scalar(30, 30, 30));
+    
+    int margin = 50;
+    int plot_w = canvas.cols - 2 * margin;
+    int plot_h = canvas.rows - 2 * margin;
+    
+    cv::line(canvas, cv::Point(margin, margin), cv::Point(margin, canvas.rows - margin), cv::Scalar(200, 200, 200));
+    cv::line(canvas, cv::Point(margin, canvas.rows - margin), cv::Point(canvas.cols - margin, canvas.rows - margin), cv::Scalar(200, 200, 200));
+    
+    cv::putText(canvas, "Wavelength (nm)", cv::Point(canvas.cols / 2 - 60, canvas.rows - 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(200, 200, 200));
+    cv::putText(canvas, "Intensity", cv::Point(5, canvas.rows / 2), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(200, 200, 200));
+    
+    double min_wl = *std::min_element(wavelengths.begin(), wavelengths.end());
+    double max_wl = *std::max_element(wavelengths.begin(), wavelengths.end());
+    
+    for (size_t i = 1; i < wavelengths.size(); ++i) {
+        double wl1 = wavelengths[i - 1];
+        double wl2 = wavelengths[i];
+        
+        int x1 = margin + static_cast<int>((wl1 - min_wl) / (max_wl - min_wl) * plot_w);
+        int x2 = margin + static_cast<int>((wl2 - min_wl) / (max_wl - min_wl) * plot_w);
+        
+        int y1_r = canvas.rows - margin - static_cast<int>(r_values[i - 1] * plot_h);
+        int y2_r = canvas.rows - margin - static_cast<int>(r_values[i] * plot_h);
+        cv::line(canvas, cv::Point(x1, y1_r), cv::Point(x2, y2_r), cv::Scalar(0, 0, 255), 2);
+        
+        int y1_g = canvas.rows - margin - static_cast<int>(g_values[i - 1] * plot_h);
+        int y2_g = canvas.rows - margin - static_cast<int>(g_values[i] * plot_h);
+        cv::line(canvas, cv::Point(x1, y1_g), cv::Point(x2, y2_g), cv::Scalar(0, 255, 0), 2);
+        
+        int y1_b = canvas.rows - margin - static_cast<int>(b_values[i - 1] * plot_h);
+        int y2_b = canvas.rows - margin - static_cast<int>(b_values[i] * plot_h);
+        cv::line(canvas, cv::Point(x1, y1_b), cv::Point(x2, y2_b), cv::Scalar(255, 0, 0), 2);
+    }
+    
+    cv::putText(canvas, "R", cv::Point(canvas.cols - margin - 30, margin + 20), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255));
+    cv::putText(canvas, "G", cv::Point(canvas.cols - margin - 30, margin + 40), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0));
+    cv::putText(canvas, "B", cv::Point(canvas.cols - margin - 30, margin + 60), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 0, 0));
+    
+    image_canvas_->SetImage(canvas);
+    UpdateStatus("Spectral curve loaded and displayed");
 }
 
 void SpectralCalibPanel::OnPreview(wxCommandEvent& event) {
-    UpdateStatus("Preview generated");
+    std::vector<mvtk::LightSourceInfo> all_sources = factory_sources_;
+    for (const auto& ls : light_sources_) {
+        all_sources.push_back(ls);
+    }
+    
+    cv::Mat preview;
+    if (!all_sources.empty()) {
+        preview = mvtk::SpectralCalibrator::previewSpectralCurves(all_sources);
+    } else {
+        preview = cv::Mat::zeros(400, 600, CV_8UC3);
+        preview.setTo(cv::Scalar(30, 30, 30));
+        cv::putText(preview, "No light sources available", cv::Point(150, 200), 
+                    cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(200, 200, 200));
+    }
+    
+    image_canvas_->SetImage(preview);
+    spectral_preview_ = preview.clone();
+    UpdateStatus("Preview generated and displayed");
 }
 
 void SpectralCalibPanel::OnExport(wxCommandEvent& event) {
@@ -546,6 +665,7 @@ void SpectralCalibPanel::OnBack(wxCommandEvent& event) {
     if (step_ > 0) {
         step_--;
         UpdateStepButtons();
+        notebook_->SetSelection(step_);
     }
 }
 
@@ -553,6 +673,7 @@ void SpectralCalibPanel::OnNext(wxCommandEvent& event) {
     if (step_ < 3) {
         step_++;
         UpdateStepButtons();
+        notebook_->SetSelection(step_);
     }
 }
 

@@ -63,6 +63,7 @@ private:
     cv::Mat captured_image_;
 
     wxButton* step_btns_[4];
+    wxNotebook* notebook_;
 
     wxComboBox* calib_mode_combo_;
     wxComboBox* complexity_combo_;

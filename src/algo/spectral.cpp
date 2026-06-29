@@ -10,6 +10,7 @@
 #include <cmath>
 
 #include "algo/spectral.h"
+#include "utils/logger.h"
 
 namespace mvtk {
 
@@ -155,7 +156,12 @@ bool SpectralCalibrator::generateCalibFile(
 std::vector<LightSourceInfo> SpectralCalibrator::importFactoryCalibFile(const std::string& filepath) {
     std::vector<LightSourceInfo> result;
     std::ifstream ifs(filepath, std::ios::binary);
-    if (!ifs.is_open()) return result;
+    if (!ifs.is_open()) {
+        MV_LOG_ERROR_DETAIL("ImportFactory", "Failed to open file: " + filepath);
+        return result;
+    }
+    
+    MV_LOG_OPERATION("ImportFactory", "Reading binary file: " + filepath);
 
     uint32_t magic, version, num_sources, mode_val, complexity_val;
     ifs.read(reinterpret_cast<char*>(&magic), sizeof(magic));
@@ -163,8 +169,14 @@ std::vector<LightSourceInfo> SpectralCalibrator::importFactoryCalibFile(const st
     ifs.read(reinterpret_cast<char*>(&num_sources), sizeof(num_sources));
     ifs.read(reinterpret_cast<char*>(&mode_val), sizeof(mode_val));
     ifs.read(reinterpret_cast<char*>(&complexity_val), sizeof(complexity_val));
+    
+    MV_LOG_DATA("ImportFactory", "Header: magic=0x" + std::to_string(magic) + ", version=" + std::to_string(version) + 
+               ", num_sources=" + std::to_string(num_sources));
 
-    if (magic != 0x53504342) return result;
+    if (magic != 0x53504342) {
+        MV_LOG_ERROR_DETAIL("ImportFactory", "Invalid magic number: 0x" + std::to_string(magic));
+        return result;
+    }
 
     for (uint32_t i = 0; i < num_sources; ++i) {
         LightSourceInfo ls;
@@ -176,6 +188,9 @@ std::vector<LightSourceInfo> SpectralCalibrator::importFactoryCalibFile(const st
 
         uint32_t num_curves;
         ifs.read(reinterpret_cast<char*>(&num_curves), sizeof(num_curves));
+        
+        MV_LOG_DATA("ImportFactory", "Source " + std::to_string(i) + ": name=" + ls.name + 
+                   ", temp=" + std::to_string(ls.color_temperature) + ", num_curves=" + std::to_string(num_curves));
 
         for (uint32_t j = 0; j < num_curves; ++j) {
             SpectralCurve curve;
@@ -189,12 +204,16 @@ std::vector<LightSourceInfo> SpectralCalibrator::importFactoryCalibFile(const st
                 ifs.read(reinterpret_cast<char*>(&curve.wavelengths[k]), sizeof(double));
                 ifs.read(reinterpret_cast<char*>(&curve.intensities[k]), sizeof(double));
             }
+            
+            MV_LOG_DATA("ImportFactory", "  Curve " + std::to_string(j) + ": num_bands=" + std::to_string(num_bands));
 
             ls.curves.push_back(curve);
         }
 
         result.push_back(ls);
     }
+    
+    MV_LOG_DATA("ImportFactory", "Successfully loaded " + std::to_string(result.size()) + " light sources");
 
     return result;
 }

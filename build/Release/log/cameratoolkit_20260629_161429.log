@@ -1,0 +1,50 @@
+========== Log Started ==========
+Timestamp: 2026-06-29 16:14:29
+==================================
+[2026-06-29 16:14:29] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:14:29] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:14:29] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:14:29] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-29 16:14:29] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:14:29] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:14:29] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:14:29] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:14:29] [INFO] Ready. Please load an input image.
+[2026-06-29 16:14:29] [INFO] MainFrame initialized successfully
+[2026-06-29 16:15:38] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\QuickCalib\colorchecker.bmp
+[2026-06-29 16:15:38] [DEBUG] [DATA] LightSource = Name: D65, ColorTemp: 6500.000000, Image: 2048x2048, ROIs: 24
+[2026-06-29 16:15:52] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\QuickCalib\colorchecker.bmp
+[2026-06-29 16:15:52] [DEBUG] [DATA] LightSource = Name: D50, ColorTemp: 5000.000000, Image: 2048x2048, ROIs: 24
+[2026-06-29 16:16:01] [INFO] [OPERATION] Load Image - Path: E:\Projects\Study\CameraToolKit\build\images\QuickCalib\colorchecker.bmp
+[2026-06-29 16:16:01] [DEBUG] [DATA] LightSource = Name: A, ColorTemp: 2300.000000, Image: 2048x2048, ROIs: 24
+[2026-06-29 16:16:11] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:16:11] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:16:18] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:16:18] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:17:39] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:17:39] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:17:45] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:17:45] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:17:54] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:17:54] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:17:57] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:17:57] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:18:00] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:18:00] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:22:13] [ERROR] Please enter a file path first
+[2026-06-29 16:22:33] [INFO] Image loaded: 640x480, 3 channels, 8-bit
+[2026-06-29 16:22:33] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:22:33] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:22:36] [INFO] Pipeline step [OB] processed
+[2026-06-29 16:22:36] [INFO] Pipeline step [DPC] processed
+[2026-06-29 16:22:36] [INFO] Pipeline step [LSC] processed
+[2026-06-29 16:22:37] [INFO] Pipeline step [Denoise] processed
+[2026-06-29 16:22:37] [INFO] Pipeline step [Demosaicing] processed
+[2026-06-29 16:22:37] [INFO] Pipeline step [WhiteBalance] processed
+[2026-06-29 16:22:37] [INFO] Pipeline step [CCM] processed
+[2026-06-29 16:22:37] [INFO] Pipeline step [Gamma] processed
+[2026-06-29 16:22:37] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:22:37] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:22:37] [INFO] Pipeline done: 8 nodes processed, results saved to TOML
+[2026-06-29 16:22:56] [INFO] Reset to input image
+[2026-06-29 16:25:21] [INFO] [OPERATION] Close - Application closing

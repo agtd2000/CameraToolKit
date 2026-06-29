@@ -1,0 +1,36 @@
+========== Log Started ==========
+Timestamp: 2026-06-29 16:50:17
+==================================
+[2026-06-29 16:50:17] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:50:17] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:50:17] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:50:17] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-29 16:50:17] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:50:17] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:50:18] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:50:18] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:50:18] [INFO] Ready. Please load an input image.
+[2026-06-29 16:50:18] [INFO] MainFrame initialized successfully
+[2026-06-29 16:50:54] [INFO] [OPERATION] FactoryLoad - Loading file: E:\Projects\Study\CameraToolKit\build\images\Spectral\factory_calib.dat
+[2026-06-29 16:50:54] [INFO] [OPERATION] ImportFactory - Reading binary file: E:\Projects\Study\CameraToolKit\build\images\Spectral\factory_calib.dat
+[2026-06-29 16:50:54] [DEBUG] [DATA] ImportFactory = Header: magic=0x1397769026, version=1, num_sources=3
+[2026-06-29 16:50:54] [DEBUG] [DATA] ImportFactory = Source 0: name=D65, temp=6500.000000, num_curves=1
+[2026-06-29 16:50:54] [DEBUG] [DATA] ImportFactory =   Curve 0: num_bands=41
+[2026-06-29 16:50:54] [DEBUG] [DATA] ImportFactory = Source 1: name=D50, temp=5000.000000, num_curves=1
+[2026-06-29 16:50:54] [DEBUG] [DATA] ImportFactory =   Curve 0: num_bands=41
+[2026-06-29 16:50:54] [DEBUG] [DATA] ImportFactory = Source 2: name=A-Light, temp=2856.000000, num_curves=1
+[2026-06-29 16:50:54] [DEBUG] [DATA] ImportFactory =   Curve 0: num_bands=41
+[2026-06-29 16:50:54] [DEBUG] [DATA] ImportFactory = Successfully loaded 3 light sources
+[2026-06-29 16:50:54] [DEBUG] [DATA] FactoryLoad = Successfully loaded 3 light sources
+[2026-06-29 16:50:54] [DEBUG] [DATA] LightSource = Source 0: D65, Temp: 6500.000000K, Curves: 1
+[2026-06-29 16:50:54] [DEBUG] [DATA] LightSource = Source 1: D50, Temp: 5000.000000K, Curves: 1
+[2026-06-29 16:50:54] [DEBUG] [DATA] LightSource = Source 2: A-Light, Temp: 2856.000000K, Curves: 1
+[2026-06-29 16:52:00] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:52:00] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:52:03] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:52:03] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:52:59] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:52:59] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:53:20] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:53:20] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:53:47] [INFO] [OPERATION] Close - Application closing

@@ -399,14 +399,22 @@ void ColorCharCalibPanel::OnLoadImage(wxCommandEvent& event) {
         ls.name = new_light_name_ctrl_->GetValue().ToStdString();
         ls.color_temp = new_light_temp_slider_->GetValue() * 100.0;
         ls.image = img;
-        ls.rois = ROIManager::generate24ColorROI(50, 50, 30, 30, 2);
+        
+        std::vector<mvtk::ROIInfo> detected_rois = ROIManager::detectColorChecker(img, ROIType::COLOR_24);
+        if (!detected_rois.empty()) {
+            ls.rois = detected_rois;
+        } else {
+            ls.rois = ROIManager::generate24ColorROI(50, 50, 30, 30, 2);
+        }
+        
         light_sources_.push_back(ls);
         current_light_idx_ = static_cast<int>(light_sources_.size()) - 1;
         UpdateLightList();
         UpdateLightInfo();
         UpdateStatus("Light source added from file");
         MV_LOG_DATA("LightSource", "Name: " + ls.name + ", ColorTemp: " + std::to_string(ls.color_temp) + 
-                    ", Image: " + std::to_string(img.cols) + "x" + std::to_string(img.rows));
+                    ", Image: " + std::to_string(img.cols) + "x" + std::to_string(img.rows) +
+                    ", ROIs: " + std::to_string(ls.rois.size()));
     } else {
         UpdateStatus("Failed to load image", true);
         MV_LOG_ERROR_DETAIL("ImageLoad", "Failed to load image: " + path.ToStdString());
@@ -438,7 +446,14 @@ void ColorCharCalibPanel::OnCapture(wxCommandEvent& event) {
         ls.name = new_light_name_ctrl_->GetValue().ToStdString();
         ls.color_temp = new_light_temp_slider_->GetValue() * 100.0;
         ls.image = img;
-        ls.rois = ROIManager::generate24ColorROI(50, 50, 30, 30, 2);
+        
+        std::vector<mvtk::ROIInfo> detected_rois = ROIManager::detectColorChecker(img, ROIType::COLOR_24);
+        if (!detected_rois.empty()) {
+            ls.rois = detected_rois;
+        } else {
+            ls.rois = ROIManager::generate24ColorROI(50, 50, 30, 30, 2);
+        }
+        
         light_sources_.push_back(ls);
         current_light_idx_ = static_cast<int>(light_sources_.size()) - 1;
         UpdateLightList();

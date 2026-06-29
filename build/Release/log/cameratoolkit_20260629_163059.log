@@ -1,0 +1,17 @@
+========== Log Started ==========
+Timestamp: 2026-06-29 16:30:59
+==================================
+[2026-06-29 16:30:59] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:30:59] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:30:59] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:30:59] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-29 16:30:59] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:30:59] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:31:00] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-29 16:31:00] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:31:00] [INFO] Ready. Please load an input image.
+[2026-06-29 16:31:00] [INFO] MainFrame initialized successfully
+[2026-06-29 16:32:23] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:32:23] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-29 16:33:04] [INFO] SessionConfig: history saved to config/pipeline_session_history.toml
+[2026-06-29 16:33:04] [INFO] SessionConfig: saved to E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
