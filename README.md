@@ -100,8 +100,6 @@ CameraToolKit/
 │   ├── dark.BMP                    # 暗场图像
 │   ├── flat.BMP                    # 亮场图像
 │   └── ...
-└── third_party/
-    └── imgui/                      # 保留的第三方库目录（已不再使用）
 ```
 
 ## 依赖项
