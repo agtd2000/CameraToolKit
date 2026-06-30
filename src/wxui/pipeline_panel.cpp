@@ -26,6 +26,8 @@ BEGIN_EVENT_TABLE(PipelinePanel, wxPanel)
     EVT_BUTTON(PIPELINE_ID_PREV_STEP_BTN, PipelinePanel::OnPrevStep)
     EVT_BUTTON(PIPELINE_ID_RESET_BTN, PipelinePanel::OnReset)
     EVT_BUTTON(PIPELINE_ID_SAVE_OUTPUT_BTN, PipelinePanel::OnSaveOutput)
+    EVT_BUTTON(PIPELINE_ID_RELOAD_CALIB_BTN, PipelinePanel::OnReloadCalib)
+    EVT_BUTTON(PIPELINE_ID_DEBUG_MODE_BTN, PipelinePanel::OnDebugMode)
     EVT_BUTTON(PIPELINE_ID_APPLY_CONFIG_BTN, PipelinePanel::OnApplyConfig)
     EVT_LISTBOX(wxID_ANY, PipelinePanel::OnNodeSelected)
     EVT_CHECKBOX(wxID_ANY, PipelinePanel::OnNodeEnabledChanged)
@@ -42,20 +44,23 @@ PipelinePanel::PipelinePanel(wxWindow* parent)
       param1_ctrl_(nullptr), param2_ctrl_(nullptr), param3_ctrl_(nullptr),
       param1_label_(nullptr), param2_label_(nullptr), param3_label_(nullptr),
       input_canvas_(nullptr), output_canvas_(nullptr),
-      status_label_(nullptr) {
+      status_label_(nullptr),
+      calib_source_label_(nullptr), reload_calib_btn_(nullptr),
+      debug_mode_btn_(nullptr), debug_mode_enabled_(false) {
 
     SetBackgroundColour(Style::NEU_BG_COLOR);
 
     InitializePipeline();
     BuildUI();
     UpdateNodeList();
+    UpdateCalibSourceInfo();
     UpdateStatus("Ready. Please load an input image.");
 }
 
 PipelinePanel::~PipelinePanel() = default;
 
 void PipelinePanel::InitializePipeline() {
-    // Create 8 standard node instances in ISP-standard order
+    // Create 9 standard node instances in ISP-standard order (N0-N8)
     ob_node_ = std::make_shared<algo::OBNode>();
     dpc_node_ = std::make_shared<algo::DPCNode>();
     lsc_node_ = std::make_shared<algo::LSCNode>();
@@ -63,12 +68,16 @@ void PipelinePanel::InitializePipeline() {
     demosaic_node_ = std::make_shared<algo::DemosaicingNode>();
     wb_node_ = std::make_shared<algo::WhiteBalanceNode>();
     ccm_node_ = std::make_shared<algo::CCMNode>();
-    gamma_node_ = std::make_shared<algo::GammaNode>();
+    tone_mapping_node_ = std::make_shared<algo::ToneMappingNode>();  // N7: Tone Mapping
+    gamma_node_ = std::make_shared<algo::GammaNode>();               // N8: Gamma Correction
 
     // Disable some nodes by default (require user-configured parameters)
     lsc_node_->SetEnabled(false);       // requires gain map
     wb_node_->SetEnabled(false);        // requires WB gains
     ccm_node_->SetEnabled(false);       // requires CCM matrix
+
+    // Reset calibration source before (re)loading
+    calib_source_.clear();
 
     // ============ Load SCM results from TOML to auto-configure node parameters ============
     auto& cfg = utils::SessionConfig::GetInstance();
@@ -91,10 +100,14 @@ void PipelinePanel::InitializePipeline() {
         // Noise model: sigma^2(I) = dark_noise^2 + system_gain * I
 
         // Node 6 (CCM): use SCM 50% SNR to decide whether to enable
-        // Node 7 (Gamma): use full-well capacity and dynamic range to configure mapping range
+        // Node 7 (ToneMapping): use full-well capacity to configure input range and Max_DN
         if (scm->full_well_capacity_dn > 0) {
             double effective_max = scm->full_well_capacity_dn - scm->dark_signal_dn;
-            gamma_node_->SetInputRange(0.0, effective_max > 0 ? effective_max : 65535.0);
+            float input_max = effective_max > 0 ? static_cast<float>(effective_max) : 65535.0f;
+            tone_mapping_node_->SetInputRange(0.0f, input_max);
+            tone_mapping_node_->SetMaxDN(static_cast<int>(scm->full_well_capacity_dn));
+            // Keep Gamma's compat input range in sync (used only by legacy 16-bit path)
+            gamma_node_->SetInputRange(0.0f, input_max);
         }
         if (scm->dynamic_range_bits > 0 && scm->dynamic_range_bits < 16) {
             // Dynamic range info can be used for debugging
@@ -102,6 +115,36 @@ void PipelinePanel::InitializePipeline() {
         // Write SCM recommended exposures to TOML pipeline section (for debugging reference)
         cfg.Set("pipeline.recommended_ccm_exposure_us", scm->recommended_ccm_exposure_us);
         cfg.Set("pipeline.recommended_lsc_exposure_us", scm->recommended_lsc_exposure_us);
+    }
+
+    // ============ Multi-source calibration data loading (Quick Calib > Color Char) ============
+    // 按优先级加载 WB/CCM：Quick Calib > Color Char
+    auto quick_calib = cfg.GetQuickCalibResults();
+    auto color_char = cfg.GetColorCharResults();
+
+    if (quick_calib && quick_calib->is_valid) {
+        // Quick Calib 优先
+        wb_node_->SetGains(cv::Vec3f(quick_calib->wb_r_gain, quick_calib->wb_g_gain, quick_calib->wb_b_gain));
+        cv::Mat ccm_mat(3, 3, CV_32F, const_cast<double*>(quick_calib->ccm_matrix));
+        ccm_node_->SetMatrix(ccm_mat.clone());
+        ccm_node_->SetOffset(cv::Vec3f(quick_calib->ccm_offset[0], quick_calib->ccm_offset[1], quick_calib->ccm_offset[2]));
+        gamma_node_->SetGamma(quick_calib->gamma);
+        wb_node_->SetEnabled(true);
+        ccm_node_->SetEnabled(true);
+        calib_source_ = "Quick Calib";
+        MV_LOG_INFO("Calibration loaded from Quick Calib (WB + CCM + Gamma)");
+    } else if (color_char && color_char->is_valid) {
+        // Color Char 次之
+        wb_node_->SetGains(cv::Vec3f(color_char->wb_r_gain, color_char->wb_g_gain, color_char->wb_b_gain));
+        cv::Mat ccm_mat(3, 3, CV_32F, const_cast<double*>(color_char->ccm_matrix));
+        ccm_node_->SetMatrix(ccm_mat.clone());
+        ccm_node_->SetOffset(cv::Vec3f(color_char->ccm_offset[0], color_char->ccm_offset[1], color_char->ccm_offset[2]));
+        wb_node_->SetEnabled(true);
+        ccm_node_->SetEnabled(true);
+        calib_source_ = "Color Char";
+        MV_LOG_INFO("Calibration loaded from Color Char (WB + CCM)");
+    } else {
+        MV_LOG_INFO("No Quick Calib / Color Char results found; SCM-only configuration");
     }
 
     nodes_.clear();
@@ -126,8 +169,11 @@ void PipelinePanel::InitializePipeline() {
     nodes_.push_back({"CCM",         "N6: CCM Color Correction",
                       "3x3 color correction matrix. SCM inputs: 50% SNR, recommended CCM exposure.",
                       ccm_node_, false});
-    nodes_.push_back({"Gamma",       "N7: Gamma / Tone Mapping",
-                      "High bit-depth mapped to 8-bit for display. SCM inputs: dynamic range, full-well capacity.",
+    nodes_.push_back({"ToneMapping", "N7: Tone Mapping",
+                      "Dynamic range compression: THRESH_TRUNC + linear scaling to 8-bit. SCM inputs: full-well capacity.",
+                      tone_mapping_node_, true});
+    nodes_.push_back({"Gamma",       "N8: Gamma Correction",
+                      "Pure gamma correction on 8-bit data. SCM inputs: dynamic range.",
                       gamma_node_, true});
 
     // Sync enabled state
@@ -254,9 +300,22 @@ void PipelinePanel::BuildUI() {
     btn_row->Add(reset_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
 
     save_btn_ = make_btn("Save Output", PIPELINE_ID_SAVE_OUTPUT_BTN);
-    btn_row->Add(save_btn_, 0);
+    btn_row->Add(save_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+
+    reload_calib_btn_ = make_btn("Reload Calib", PIPELINE_ID_RELOAD_CALIB_BTN);
+    btn_row->Add(reload_calib_btn_, 0, wxRIGHT, Style::SPACING_SMALL);
+
+    debug_mode_btn_ = make_btn("Debug: OFF", PIPELINE_ID_DEBUG_MODE_BTN);
+    btn_row->Add(debug_mode_btn_, 0);
 
     right_sizer->Add(btn_row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
+
+    // Calibration source info label (below the button row)
+    calib_source_label_ = new wxStaticText(right_panel, wxID_ANY, "Calibration Source: None (SCM only)");
+    Style::ApplyNeumorphicStyle(calib_source_label_);
+    calib_source_label_->SetFont(Style::GetSansFont(8));
+    calib_source_label_->SetForegroundColour(wxColour(96, 96, 128));
+    right_sizer->Add(calib_source_label_, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_SMALL);
 
     // Info section
     wxStaticText* input_header = new wxStaticText(right_panel, wxID_ANY, "◆ Input Image:");
@@ -288,10 +347,11 @@ void PipelinePanel::BuildUI() {
         "* OB: Black Level, Dark Current, Exposure\n"
         "* DPC: Threshold Sigma, Dark Noise, Kernel\n"
         "* Denoise: Sigma Strength\n"
-        "* Demosaicing: Bayer Pattern\n"
+        "* Demosaicing: Bayer Pattern, Algorithm, Chroma Denoise\n"
         "* WB: R/G/B Gain\n"
-        "* CCM: Gamma\n"
-        "* Gamma: Value, Input Range");
+        "* CCM: Gamma Scale\n"
+        "* ToneMapping: Input Min/Max, Max DN\n"
+        "* Gamma: Gamma Value");
     hint_text->SetFont(Style::GetSansFont(8));
     hint_text->SetForegroundColour(wxColour(128, 128, 128));
     right_sizer->Add(hint_text, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, Style::SPACING_MEDIUM);
@@ -400,13 +460,19 @@ void PipelinePanel::UpdateConfigPanel(int idx) {
     } else if (info.name == "Denoise") {
         set_param("Sigma Strength:", "1.0", "", "", "", "");
     } else if (info.name == "Demosaicing") {
-        set_param("Bayer Pattern (BG/GB/RG/GR):", "BG", "", "", "", "");
+        set_param("Bayer Pattern (BG/GB/RG/GR):", "BG",
+                  "Algorithm (BILINEAR/VNG/EA):", "EA",
+                  "Chroma Denoise (0/1):", "1");
     } else if (info.name == "WhiteBalance") {
         set_param("R Gain:", "1.0",
                   "G Gain:", "1.0",
                   "B Gain:", "1.0");
     } else if (info.name == "CCM") {
-        set_param("Gamma:", "1.0", "", "", "", "");
+        set_param("Gamma Scale:", "1.0", "", "", "", "");
+    } else if (info.name == "ToneMapping") {
+        set_param("Input Min:", "0.0",
+                  "Input Max:", "4095.0",
+                  "Max DN:", "4095");
     } else if (info.name == "Gamma") {
         set_param("Gamma Value:", "2.2",
                   "Input Min:", "0.0",
@@ -635,6 +701,50 @@ void PipelinePanel::OnSaveOutput(wxCommandEvent& event) {
     }
 }
 
+void PipelinePanel::OnReloadCalib(wxCommandEvent& event) {
+    auto& cfg = utils::SessionConfig::GetInstance();
+    cfg.Load();  // 重新加载TOML
+    InitializePipeline();  // 重新初始化Pipeline
+    UpdateNodeList();
+    UpdateCalibSourceInfo();
+    UpdateStatus("Calibration results reloaded from TOML");
+    MV_LOG_INFO("Pipeline reloaded calibration results from TOML");
+}
+
+void PipelinePanel::OnDebugMode(wxCommandEvent& event) {
+    debug_mode_enabled_ = !debug_mode_enabled_;
+    if (debug_mode_enabled_) {
+        debug_mode_btn_->SetLabel("Debug: ON");
+        UpdateStatus("Debug mode enabled - intermediate images will be saved");
+        MV_LOG_INFO("Debug mode enabled - intermediate images will be saved");
+    } else {
+        debug_mode_btn_->SetLabel("Debug: OFF");
+        UpdateStatus("Debug mode disabled");
+        MV_LOG_INFO("Debug mode disabled");
+    }
+}
+
+void PipelinePanel::UpdateCalibSourceInfo() {
+    if (!calib_source_label_) return;
+
+    wxString info = "Calibration Source: ";
+    if (calib_source_.empty()) {
+        info += "None (SCM only)";
+    } else {
+        info += calib_source_;
+    }
+
+    auto& cfg = utils::SessionConfig::GetInstance();
+    auto scm = cfg.GetSCMResults();
+    if (scm) {
+        info += " | SCM: Loaded";
+    } else {
+        info += " | SCM: Not loaded";
+    }
+
+    calib_source_label_->SetLabel(info);
+}
+
 void PipelinePanel::OnNodeSelected(wxCommandEvent& event) {
     int idx = event.GetSelection();
     if (idx >= 0 && idx < static_cast<int>(nodes_.size())) {
@@ -681,6 +791,24 @@ void PipelinePanel::OnApplyConfig(wxCommandEvent& event) {
         dpc_node_->SetThresholdSigma(p1);
         dpc_node_->SetDarkNoise(p2);
         dpc_node_->SetKernelSize(static_cast<int>(p3));
+    } else if (info.name == "LSC") {
+        wxString gain_path = param1_ctrl_->GetValue();
+        wxString dark_path = param2_ctrl_->GetValue();
+        if (!gain_path.IsEmpty() && wxFileName::FileExists(gain_path)) {
+            cv::Mat gain_map = utils::imreadUtf8(std::string(gain_path.ToUTF8()), cv::IMREAD_UNCHANGED);
+            if (!gain_map.empty()) {
+                lsc_node_->SetGainMap(gain_map);
+                lsc_node_->SetEnabled(true);
+                nodes_[idx].enabled = true;
+                UpdateNodeList();
+            }
+        }
+        if (!dark_path.IsEmpty() && wxFileName::FileExists(dark_path)) {
+            cv::Mat dark_frame = utils::imreadUtf8(std::string(dark_path.ToUTF8()), cv::IMREAD_UNCHANGED);
+            if (!dark_frame.empty()) {
+                lsc_node_->SetDarkFrame(dark_frame);
+            }
+        }
     } else if (info.name == "Denoise") {
         denoise_node_->SetSigma(static_cast<float>(p1));
     } else if (info.name == "Demosaicing") {
@@ -689,14 +817,28 @@ void PipelinePanel::OnApplyConfig(wxCommandEvent& event) {
         else if (mode == "GB") demosaic_node_->SetPattern(algo::DemosaicingNode::BayerPattern::GB);
         else if (mode == "RG") demosaic_node_->SetPattern(algo::DemosaicingNode::BayerPattern::RG);
         else if (mode == "GR") demosaic_node_->SetPattern(algo::DemosaicingNode::BayerPattern::GR);
+
+        wxString algo_str = param2_ctrl_->GetValue().Upper();
+        if (algo_str == "BILINEAR") demosaic_node_->SetAlgorithm(algo::DemosaicingNode::Algorithm::BILINEAR);
+        else if (algo_str == "VNG") demosaic_node_->SetAlgorithm(algo::DemosaicingNode::Algorithm::VNG);
+        else if (algo_str == "EA") demosaic_node_->SetAlgorithm(algo::DemosaicingNode::Algorithm::EDGE_AWARE);
+
+        bool chroma_denoise = (param3_ctrl_->GetValue() == "1");
+        demosaic_node_->SetChromaDenoise(chroma_denoise);
     } else if (info.name == "WhiteBalance") {
         wb_node_->SetGains(cv::Vec3f(static_cast<float>(p1),
                                       static_cast<float>(p2),
                                       static_cast<float>(p3)));
     } else if (info.name == "CCM") {
-        // Simple example: use gamma as diagonal scaling
-        cv::Mat m = cv::Mat::eye(3, 3, CV_32F) * p1;
+        // p1作为gamma缩放因子应用到单位矩阵
+        cv::Mat m = cv::Mat::eye(3, 3, CV_32F);
+        if (p1 > 0) {
+            m *= static_cast<float>(p1);
+        }
         ccm_node_->SetMatrix(m);
+    } else if (info.name == "ToneMapping") {
+        tone_mapping_node_->SetInputRange(p1, p2);
+        tone_mapping_node_->SetMaxDN(static_cast<int>(p3));
     } else if (info.name == "Gamma") {
         gamma_node_->SetGamma(p1);
         gamma_node_->SetInputRange(p2, p3);
@@ -715,16 +857,25 @@ void PipelinePanel::OnApplyConfig(wxCommandEvent& event) {
         cfg.Set(prefix + "dark_noise_dn", p2);
         cfg.Set(prefix + "kernel_size", static_cast<int>(p3));
         cfg.Set(prefix + "absolute_threshold_dn", p1 * p2);
+    } else if (info.name == "LSC") {
+        cfg.Set(prefix + "gain_map_path", std::string(param1_ctrl_->GetValue().ToUTF8()));
+        cfg.Set(prefix + "dark_frame_path", std::string(param2_ctrl_->GetValue().ToUTF8()));
     } else if (info.name == "Denoise") {
         cfg.Set(prefix + "sigma", p1);
     } else if (info.name == "Demosaicing") {
         cfg.Set(prefix + "bayer_pattern", std::string(param1_ctrl_->GetValue().ToUTF8()));
+        cfg.Set(prefix + "algorithm", std::string(param2_ctrl_->GetValue().ToUTF8()));
+        cfg.Set(prefix + "chroma_denoise", (param3_ctrl_->GetValue() == "1"));
     } else if (info.name == "WhiteBalance") {
         cfg.Set(prefix + "r_gain", p1);
         cfg.Set(prefix + "g_gain", p2);
         cfg.Set(prefix + "b_gain", p3);
     } else if (info.name == "CCM") {
-        cfg.Set(prefix + "gamma", p1);
+        cfg.Set(prefix + "gamma_scale", p1);
+    } else if (info.name == "ToneMapping") {
+        cfg.Set(prefix + "input_min_dn", p1);
+        cfg.Set(prefix + "input_max_dn", p2);
+        cfg.Set(prefix + "max_dn", static_cast<int>(p3));
     } else if (info.name == "Gamma") {
         cfg.Set(prefix + "gamma_value", p1);
         cfg.Set(prefix + "input_min_dn", p2);
@@ -778,16 +929,16 @@ bool PipelinePanel::ProcessSingleStep(int idx) {
     auto& cfg = utils::SessionConfig::GetInstance();
     cfg.SetNodeResult(info.name, true, duration_ms, output_mean, output_std);
 
-    // Write node-specific debug info
+    // Write node-specific debug info (using actual node parameters, no hardcoding)
     if (info.name == "OB") {
-        // OB node: record black level and dark current compensation parameters
-        cfg.Set("pipeline.nodes.OB.black_level_dn", ob_node_->IsEnabled() ? 100.0 : 0.0);
-    } else if (info.name == "DPC") {
-        // DPC node: record absolute threshold
-        cfg.Set("pipeline.nodes.DPC.absolute_threshold_dn",
-                5.0 * 30.0);  // threshold_sigma * dark_noise
+        // OB node: record actual total offset (black level + dark current compensation)
+        cfg.Set("pipeline.nodes.OB.total_offset_dn", ob_node_->CalculateTotalOffset());
     } else if (info.name == "Demosaicing") {
         cfg.Set("pipeline.nodes.Demosaicing.output_channels", current_image_.channels());
+    } else if (info.name == "ToneMapping") {
+        // ToneMapping node: record output bit depth (16-bit → 8-bit)
+        cfg.Set("pipeline.nodes.ToneMapping.output_bit_depth",
+                current_image_.depth() == CV_8U ? 8 : 16);
     }
 
     return true;

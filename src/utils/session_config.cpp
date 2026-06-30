@@ -223,6 +223,78 @@ std::optional<SessionConfig::SCMResults> SessionConfig::GetSCMResults() const {
     return r;
 }
 
+void SessionConfig::SetColorCharResults(const ColorCharResults& results) {
+    Set("color_char.wb_r_gain", results.wb_r_gain);
+    Set("color_char.wb_g_gain", results.wb_g_gain);
+    Set("color_char.wb_b_gain", results.wb_b_gain);
+    SetArray<double>("color_char.ccm_row_0", std::vector<double>{results.ccm_matrix[0], results.ccm_matrix[1], results.ccm_matrix[2]});
+    SetArray<double>("color_char.ccm_row_1", std::vector<double>{results.ccm_matrix[3], results.ccm_matrix[4], results.ccm_matrix[5]});
+    SetArray<double>("color_char.ccm_row_2", std::vector<double>{results.ccm_matrix[6], results.ccm_matrix[7], results.ccm_matrix[8]});
+    SetArray<double>("color_char.ccm_offset", std::vector<double>{results.ccm_offset[0], results.ccm_offset[1], results.ccm_offset[2]});
+    Set("color_char.color_temp", results.color_temp);
+    Set("color_char.is_valid", results.is_valid);
+}
+
+std::optional<SessionConfig::ColorCharResults> SessionConfig::GetColorCharResults() const {
+    auto is_valid = Get<bool>("color_char.is_valid");
+    if (!is_valid || !*is_valid) return std::nullopt;
+
+    ColorCharResults results;
+    results.wb_r_gain = GetOr<double>("color_char.wb_r_gain", 1.0);
+    results.wb_g_gain = GetOr<double>("color_char.wb_g_gain", 1.0);
+    results.wb_b_gain = GetOr<double>("color_char.wb_b_gain", 1.0);
+
+    auto row0 = GetArray<double>("color_char.ccm_row_0");
+    auto row1 = GetArray<double>("color_char.ccm_row_1");
+    auto row2 = GetArray<double>("color_char.ccm_row_2");
+    if (row0.size() == 3) { results.ccm_matrix[0] = row0[0]; results.ccm_matrix[1] = row0[1]; results.ccm_matrix[2] = row0[2]; }
+    if (row1.size() == 3) { results.ccm_matrix[3] = row1[0]; results.ccm_matrix[4] = row1[1]; results.ccm_matrix[5] = row1[2]; }
+    if (row2.size() == 3) { results.ccm_matrix[6] = row2[0]; results.ccm_matrix[7] = row2[1]; results.ccm_matrix[8] = row2[2]; }
+
+    auto offset = GetArray<double>("color_char.ccm_offset");
+    if (offset.size() == 3) { results.ccm_offset[0] = offset[0]; results.ccm_offset[1] = offset[1]; results.ccm_offset[2] = offset[2]; }
+
+    results.color_temp = GetOr<double>("color_char.color_temp", 6500.0);
+    results.is_valid = true;
+    return results;
+}
+
+void SessionConfig::SetQuickCalibResults(const QuickCalibResults& results) {
+    Set("quick_calib.wb_r_gain", results.wb_r_gain);
+    Set("quick_calib.wb_g_gain", results.wb_g_gain);
+    Set("quick_calib.wb_b_gain", results.wb_b_gain);
+    SetArray<double>("quick_calib.ccm_row_0", std::vector<double>{results.ccm_matrix[0], results.ccm_matrix[1], results.ccm_matrix[2]});
+    SetArray<double>("quick_calib.ccm_row_1", std::vector<double>{results.ccm_matrix[3], results.ccm_matrix[4], results.ccm_matrix[5]});
+    SetArray<double>("quick_calib.ccm_row_2", std::vector<double>{results.ccm_matrix[6], results.ccm_matrix[7], results.ccm_matrix[8]});
+    SetArray<double>("quick_calib.ccm_offset", std::vector<double>{results.ccm_offset[0], results.ccm_offset[1], results.ccm_offset[2]});
+    Set("quick_calib.gamma", results.gamma);
+    Set("quick_calib.is_valid", results.is_valid);
+}
+
+std::optional<SessionConfig::QuickCalibResults> SessionConfig::GetQuickCalibResults() const {
+    auto is_valid = Get<bool>("quick_calib.is_valid");
+    if (!is_valid || !*is_valid) return std::nullopt;
+
+    QuickCalibResults results;
+    results.wb_r_gain = GetOr<double>("quick_calib.wb_r_gain", 1.0);
+    results.wb_g_gain = GetOr<double>("quick_calib.wb_g_gain", 1.0);
+    results.wb_b_gain = GetOr<double>("quick_calib.wb_b_gain", 1.0);
+
+    auto row0 = GetArray<double>("quick_calib.ccm_row_0");
+    auto row1 = GetArray<double>("quick_calib.ccm_row_1");
+    auto row2 = GetArray<double>("quick_calib.ccm_row_2");
+    if (row0.size() == 3) { results.ccm_matrix[0] = row0[0]; results.ccm_matrix[1] = row0[1]; results.ccm_matrix[2] = row0[2]; }
+    if (row1.size() == 3) { results.ccm_matrix[3] = row1[0]; results.ccm_matrix[4] = row1[1]; results.ccm_matrix[5] = row1[2]; }
+    if (row2.size() == 3) { results.ccm_matrix[6] = row2[0]; results.ccm_matrix[7] = row2[1]; results.ccm_matrix[8] = row2[2]; }
+
+    auto offset = GetArray<double>("quick_calib.ccm_offset");
+    if (offset.size() == 3) { results.ccm_offset[0] = offset[0]; results.ccm_offset[1] = offset[1]; results.ccm_offset[2] = offset[2]; }
+
+    results.gamma = GetOr<double>("quick_calib.gamma", 2.2);
+    results.is_valid = true;
+    return results;
+}
+
 std::string SessionConfig::GetNodeConfigString(const std::string& node_name) const {
     std::lock_guard<std::mutex> lock(mutex_);
     if (!loaded_ || !root_) return "";

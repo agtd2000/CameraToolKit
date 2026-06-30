@@ -1,0 +1,14 @@
+========== Log Started ==========
+Timestamp: 2026-06-30 16:53:15
+==================================
+[2026-06-30 16:53:15] [INFO] CameraToolKitApp: config file path: E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-30 16:53:15] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-30 16:53:15] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-30 16:53:15] [INFO] [OPERATION] MainFrame initialization - Starting CameraToolKit application
+[2026-06-30 16:53:15] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-30 16:53:15] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-30 16:53:15] [INFO] SessionConfig: loaded history from config/pipeline_session_history.toml
+[2026-06-30 16:53:15] [INFO] SessionConfig: loaded config file E:\Projects\Study\CameraToolKit\build\Release\config\pipeline_session.toml
+[2026-06-30 16:53:15] [INFO] No Quick Calib / Color Char results found; SCM-only configuration
+[2026-06-30 16:53:15] [INFO] Ready. Please load an input image.
+[2026-06-30 16:53:15] [INFO] MainFrame initialized successfully

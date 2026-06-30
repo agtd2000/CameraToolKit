@@ -23,7 +23,9 @@ enum PipelinePanelIDs {
     PIPELINE_ID_PREV_STEP_BTN,
     PIPELINE_ID_NODE_ENABLE_CHK_BASE,    // 节点启用复选框起始 ID（动态分配）
     PIPELINE_ID_NODE_CONFIG_BTN_BASE,    // 节点配置按钮起始 ID
-    PIPELINE_ID_SAVE_OUTPUT_BTN
+    PIPELINE_ID_SAVE_OUTPUT_BTN,
+    PIPELINE_ID_RELOAD_CALIB_BTN,        // 重新加载标定结果按钮
+    PIPELINE_ID_DEBUG_MODE_BTN           // Debug模式开关按钮
 };
 
 // 节点定义（顺序固定，对应标准 ISP 流程）
@@ -58,6 +60,7 @@ private:
     std::shared_ptr<algo::DemosaicingNode> demosaic_node_;
     std::shared_ptr<algo::WhiteBalanceNode> wb_node_;
     std::shared_ptr<algo::CCMNode> ccm_node_;
+    std::shared_ptr<algo::ToneMappingNode> tone_mapping_node_;  // N7: Tone Mapping
     std::shared_ptr<algo::GammaNode> gamma_node_;
 
     // UI 控件
@@ -87,12 +90,20 @@ private:
 
     wxStaticText* status_label_;           // 状态栏
 
+    // 标定来源信息
+    std::string calib_source_;             // 当前标定数据来源
+    wxStaticText* calib_source_label_;     // 标定来源显示标签
+    wxButton* reload_calib_btn_;           // 重新加载标定结果按钮
+    wxButton* debug_mode_btn_;             // Debug模式开关按钮
+    bool debug_mode_enabled_;              // Debug模式状态
+
     // 初始化
     void InitializePipeline();
     void BuildUI();
     void UpdateNodeList();
     void UpdateConfigPanel(int idx);
     void UpdateStatus(const wxString& msg, bool is_error = false);
+    void UpdateCalibSourceInfo();
 
     // 事件处理
     void OnLoadInput(wxCommandEvent& event);
@@ -101,6 +112,8 @@ private:
     void OnPrevStep(wxCommandEvent& event);
     void OnReset(wxCommandEvent& event);
     void OnSaveOutput(wxCommandEvent& event);
+    void OnReloadCalib(wxCommandEvent& event);
+    void OnDebugMode(wxCommandEvent& event);
     void OnNodeSelected(wxCommandEvent& event);
     void OnNodeEnabledChanged(wxCommandEvent& event);
     void OnApplyConfig(wxCommandEvent& event);

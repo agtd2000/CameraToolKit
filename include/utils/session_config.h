@@ -90,8 +90,34 @@ public:
         std::string evaluation_message;
     };
 
+    struct ColorCharResults {
+        double wb_r_gain = 1.0;
+        double wb_g_gain = 1.0;
+        double wb_b_gain = 1.0;
+        double ccm_matrix[9] = {1,0,0, 0,1,0, 0,0,1}; // 3x3 row-major
+        double ccm_offset[3] = {0,0,0};
+        double color_temp = 6500.0;
+        bool is_valid = false;
+    };
+
+    struct QuickCalibResults {
+        double wb_r_gain = 1.0;
+        double wb_g_gain = 1.0;
+        double wb_b_gain = 1.0;
+        double ccm_matrix[9] = {1,0,0, 0,1,0, 0,0,1}; // 3x3 row-major
+        double ccm_offset[3] = {0,0,0};
+        double gamma = 2.2;
+        bool is_valid = false;
+    };
+
     void SetSCMResults(const SCMResults& results);
     std::optional<SCMResults> GetSCMResults() const;
+
+    void SetColorCharResults(const ColorCharResults& results);
+    std::optional<ColorCharResults> GetColorCharResults() const;
+
+    void SetQuickCalibResults(const QuickCalibResults& results);
+    std::optional<QuickCalibResults> GetQuickCalibResults() const;
 
     std::string GetNodeConfigString(const std::string& node_name) const;
 

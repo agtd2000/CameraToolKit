@@ -4,9 +4,41 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <atomic>
+#include <cmath>
 
 namespace mvtk {
 namespace algo {
+
+// 位深自适应的全局配置
+struct PipelineConfig {
+    int bit_depth = 12;      // 默认 12-bit
+    bool is_raw = true;      // 是否为 Raw 数据
+
+    // 计算当前位深的 Max DN
+    int GetMaxDN() const { return (1 << bit_depth) - 1; }
+
+    // 16-bit 到当前位深的缩放因子
+    double GetScaleFactor() const { return 1.0 / std::pow(2, 16 - bit_depth); }
+
+    // 当前位深到 16-bit 的缩放因子
+    double GetUpscaleFactor() const { return std::pow(2, 16 - bit_depth); }
+};
+
+// 单节点耗时统计（性能分析用）
+struct NodeLatency {
+    std::string name;
+    double elapsed_ms;
+    double percentage;
+};
+
+// 调试模式配置
+struct DebugConfig {
+    bool enabled = false;
+    bool save_intermediate_images = true;
+    bool save_statistics = true;
+    std::string output_dir = "./debug_output/";
+};
 
 class ImageNode {
 public:
@@ -50,9 +82,16 @@ public:
 
     void UpdatePipelineOrder();
 
+    // ====== Debug Mode 与性能分析 ======
+    // 开启/关闭调试模式（导出中间图像与统计信息）
+    void SetDebugMode(const DebugConfig& config);
+    // 分节点耗时统计，返回每个节点的耗时与占比
+    std::vector<NodeLatency> ProfileLatency(const cv::Mat& input);
+
 private:
     std::vector<std::shared_ptr<ImageNode>> nodes_;
     DenoisePosition denoise_position_;
+    DebugConfig debug_config_;
 };
 
 // 节点 0：OB 扣除（Optical Black / Black Level Subtraction）
@@ -77,6 +116,12 @@ public:
                                      double system_gain_dn_per_e,
                                      double exposure_s);
 
+    // ====== 2D 暗场扣除（升级）======
+    // 设置 2D 暗场图像（逐像素暗信号），优先于标量扣除
+    void SetDarkMap(const cv::Mat& dark_map);
+    // 计算总偏置（含防呆：下限 0，上限 full_well/2），线程安全读取
+    double CalculateTotalOffset() const;
+
 private:
     bool enabled_;
     double black_level_dn_;            // 静态黑电平
@@ -84,6 +129,11 @@ private:
     double dark_current_e_per_s_;      // 暗电流
     double system_gain_dn_per_e_;      // 系统增益
     double exposure_s_;                // 曝光时间（秒）
+
+    cv::Mat dark_map_;                 // 2D 暗场图像（逐像素暗信号）
+    bool use_dark_map_;                // 是否使用 2D 暗场扣除
+    std::atomic<double> black_level_atomic_; // 原子黑电平（线程安全，供并行遍历读取）
+    double full_well_capacity_dn_;     // 满阱容量（用于偏置上限防呆）
 };
 
 // 节点 1：DPC 坏点校正（Dead Pixel Correction）
@@ -122,20 +172,25 @@ class LSCNode : public ImageNode {
 public:
     LSCNode();
     ~LSCNode() override = default;
-    
+
     cv::Mat Process(const cv::Mat& input) override;
     bool ProcessInPlace(cv::Mat& input) override;
     std::string GetName() const override { return "LSC"; }
     bool IsEnabled() const override { return enabled_; }
     void SetEnabled(bool enabled) override { enabled_ = enabled; }
-    
-    void SetGainMap(const cv::Mat& gain_map);
+
+    // 设置 Gain Map。use_prnu=true 时保留高频 PRNU 校正（直接使用原始高精度 Gain Map）
+    // use_prnu=false 时仅保留低频 LSC（高斯平滑后）
+    void SetGainMap(const cv::Mat& gain_map, bool use_prnu = false);
     void SetDarkFrame(const cv::Mat& dark_frame);
-    
+
 private:
     bool enabled_;
-    cv::Mat gain_map_;
+    cv::Mat gain_map_;             // 兼容旧接口（保留）
     cv::Mat dark_frame_;
+    cv::Mat original_gain_map_;    // 原始高精度 Gain Map（实际校正用）
+    cv::Mat lsc_map_;              // 低频 LSC Map（高斯平滑后，仅低频校正时使用）
+    bool use_prnu_;                // 是否启用高频 PRNU 校正
 };
 
 class DenoiseNode : public ImageNode {
@@ -194,6 +249,13 @@ public:
         GR
     };
 
+    // 去马赛克算法选择
+    enum class Algorithm {
+        BILINEAR,      // 双线性插值（速度最快）
+        VNG,           // Variable Number of Gradients
+        EDGE_AWARE     // Edge-Aware（OpenCV EA，伪彩抑制更好）
+    };
+
     DemosaicingNode();
     ~DemosaicingNode() override = default;
 
@@ -206,9 +268,18 @@ public:
     // 设置 Bayer 排列模式
     void SetPattern(BayerPattern pattern);
 
+    // ====== 算法与色度降噪（升级）======
+    // 设置去马赛克算法（默认 EDGE_AWARE）
+    void SetAlgorithm(Algorithm algo);
+    // 设置色度降噪开关与核大小（默认启用，核大小 3）
+    void SetChromaDenoise(bool enabled, int filter_size = 3);
+
 private:
     bool enabled_;
     BayerPattern pattern_;
+    Algorithm algorithm_;              // 当前算法
+    bool chroma_denoise_enabled_;      // 色度降噪开关
+    int chroma_filter_size_;           // 色度滤波核大小
 };
 
 class WhiteBalanceNode : public ImageNode {
@@ -234,41 +305,72 @@ class CCMNode : public ImageNode {
 public:
     CCMNode();
     ~CCMNode() override = default;
-    
+
     cv::Mat Process(const cv::Mat& input) override;
     bool ProcessInPlace(cv::Mat& input) override;
     std::string GetName() const override { return "CCM"; }
     bool IsEnabled() const override { return enabled_; }
     void SetEnabled(bool enabled) override { enabled_ = enabled; }
-    
-    void SetMatrix(const cv::Mat& matrix);
+
+    // 设置色彩校正矩阵，含 3x3 校验与每行系数和校验（0.9~1.1）
+    // 返回 bool 表示是否成功（矩阵必须为 3x3）
+    bool SetMatrix(const cv::Mat& matrix);
     void SetOffset(const cv::Vec3f& offset);
-    
+
 private:
     bool enabled_;
     cv::Mat matrix_;
     cv::Vec3f offset_;
 };
 
+// 节点 7：Tone Mapping 动态范围映射（16-bit → 8-bit）
+// 作用：在线性空间执行 THRESH_TRUNC 截断 + 线性缩放到 [0, 255]，输出 CV_8U
+class ToneMappingNode : public ImageNode {
+public:
+    ToneMappingNode();
+    ~ToneMappingNode() override = default;
+
+    cv::Mat Process(const cv::Mat& input) override;
+    bool ProcessInPlace(cv::Mat& input) override;
+    std::string GetName() const override { return "ToneMapping"; }
+    bool IsEnabled() const override { return enabled_; }
+    void SetEnabled(bool enabled) override { enabled_ = enabled; }
+
+    // 设置输入有效范围 [min, max]（默认 [0, Max_DN]）
+    void SetInputRange(float min, float max);
+    // 设置 Max_DN（位深自适应，默认 12-bit → 4095）
+    void SetMaxDN(int max_dn);
+
+private:
+    bool enabled_;
+    float input_min_;        // 输入下限（一般为 0）
+    float input_max_;        // 输入上限（使用 Max_DN）
+    int max_dn_;             // 当前位深的 Max DN
+};
+
+// 节点 8：Gamma 校正（8-bit → 8-bit）
+// 作用：纯 Gamma 校正，归一化到 [0,1] → pow(1/gamma) → 缩放回 [0, 255]
 class GammaNode : public ImageNode {
 public:
     GammaNode();
     ~GammaNode() override = default;
-    
+
     cv::Mat Process(const cv::Mat& input) override;
     bool ProcessInPlace(cv::Mat& input) override;
     std::string GetName() const override { return "Gamma"; }
     bool IsEnabled() const override { return enabled_; }
     void SetEnabled(bool enabled) override { enabled_ = enabled; }
-    
+
     void SetGamma(float gamma);
+    // 保留向后兼容：旧 Pipeline 可能仍调用此方法设置输入范围
+    // 新版 Gamma 为 8-bit 纯校正，此方法仅做兼容存储（不再参与 8-bit gamma 路径）
     void SetInputRange(float min, float max);
-    
+
 private:
     bool enabled_;
     float gamma_;
-    float input_min_;
-    float input_max_;
+    float input_min_;        // 兼容旧接口
+    float input_max_;        // 兼容旧接口
 };
 
 }
